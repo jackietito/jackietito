@@ -1,5 +1,5 @@
 /** Banner fijo y siempre visible que identifica el prototipo (requerimiento no funcional). */
-export function BannerPrototipo() {
+export function BannerPrototipo({ fechaSimulada }: { fechaSimulada?: string }) {
   return (
     <div
       role="note"
@@ -10,6 +10,7 @@ export function BannerPrototipo() {
       <span className="hidden sm:inline">
         {" "}· No es un servicio oficial. Las postulaciones y trámites se realizan en los canales de cada entidad.
       </span>
+      {fechaSimulada && <span className="block font-semibold sm:inline"> · Fecha simulada: {fechaSimulada}</span>}
     </div>
   );
 }

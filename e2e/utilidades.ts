@@ -9,6 +9,8 @@ export async function abrirFiltros(page: Page) {
 
 /** Revisión automática de accesibilidad (WCAG 2.1 A y AA) con axe-core. */
 export async function revisarAccesibilidad(page: Page) {
+  // Espera a que terminen las actualizaciones en curso (p. ej. tras guardar un cambio).
+  await page.waitForLoadState("networkidle");
   const r = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
   const resumen = r.violations.map((v) => `${v.id}: ${v.help} (${v.nodes.length})`);
   expect(resumen, "Infracciones de accesibilidad").toEqual([]);

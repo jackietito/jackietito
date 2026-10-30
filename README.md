@@ -19,7 +19,7 @@ Este prototipo funcional sirve para validar la experiencia con usuarios en prueb
 | 1 | Modelo de datos, datos de prueba, catálogo, ficha, buscador y filtros | ✅ Listo |
 | 2 | Registro, perfil, recomendaciones, comparador y guardado | ✅ Listo |
 | 3 | Mapa de trámites, ruta paso a paso y checklist | ✅ Listo |
-| 4 | Alertas, panel de seguimiento, orientación y encuesta | ⏳ Pendiente |
+| 4 | Alertas, panel de seguimiento, orientación y encuesta | ✅ Listo |
 | 5 | Gestión de contenidos, tablero de indicadores y reporte a entidades | ⏳ Pendiente |
 
 ## Tecnología
@@ -82,6 +82,16 @@ Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Cr
 | RF09 Ruta paso a paso | Ficha → «Preparar mi postulación» | Ingresa como `rosa@ventanilla.test`, abre la *Beca de Cooperación Iberoamericana en Innovación Educativa* (en «Mi panel») y genera la ruta. Cada paso dice qué hacer, ante quién y desde qué fecha. |
 | RF11 Checklist | `/ruta/…` | Marca requisitos y mira cómo sube el porcentaje. Cambia el estado de un trámite a «En curso». |
 | Ruta con avances | «Mi panel» de `diego@ventanilla.test` | Ruta ya generada con 30 % del checklist listo y trámites en curso. |
+
+### Qué probar en el incremento 4
+
+| Requerimiento | Dónde | Cómo |
+|---|---|---|
+| RF12 Alertas | «Alertas» | Con `rosa@ventanilla.test`: aviso de vencimiento de su beca guardada (con correo simulado) y de una oportunidad nueva para su perfil. |
+| Fecha simulada | `/admin` | Con `admin@ventanilla.test`, adelanta la fecha 2 semanas; ingresa como Diego y verás la alerta de 7 días. Vuelve luego a la fecha real. |
+| RF13 Panel de seguimiento | «Mi panel» | Con `diego@ventanilla.test`: próximas fechas, avance del checklist y estado de cada trámite. |
+| RF14 Orientación | «Orientación» y `/bandeja` | Lee las preguntas frecuentes; con Rosa envía una consulta; con `orientador@ventanilla.test` respóndela; Rosa recibe la alerta y ve la respuesta. |
+| RF15 Encuesta | «Mi panel» → «Responder la encuesta» | Califica de 1 a 5 las cuatro dimensiones y deja un comentario. |
 
 ## Pruebas
 

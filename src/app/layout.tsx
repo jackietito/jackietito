@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { BannerPrototipo } from "@/components/BannerPrototipo";
 import { Encabezado } from "@/components/Encabezado";
+import { obtenerFechaSimulada } from "@/lib/hoy";
+import { formatearFecha } from "@/lib/fechas";
 
 export const metadata: Metadata = {
   title: {
@@ -21,7 +23,8 @@ export const viewport: Viewport = {
 // Las páginas dependen de la sesión y de la fecha simulada: se generan en cada solicitud.
 export const dynamic = "force-dynamic";
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const simulada = await obtenerFechaSimulada();
   return (
     <html lang="es-PE">
       <body className="min-h-screen antialiased">
@@ -31,7 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           Saltar al contenido
         </a>
-        <BannerPrototipo />
+        <BannerPrototipo fechaSimulada={simulada ? formatearFecha(simulada) : undefined} />
         <Encabezado />
         <main id="contenido" className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
           {children}

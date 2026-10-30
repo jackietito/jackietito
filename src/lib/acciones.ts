@@ -9,6 +9,8 @@ import { cerrarSesion, iniciarSesion, inicioPorRol, obtenerSesion, type Rol } fr
 import { AREAS, IDIOMAS, MODALIDADES, NIVELES, PAISES, REGIONES } from "./catalogos";
 import { MAX_COMPARAR, escribirComparador, leerComparador } from "./comparador";
 import { aFechaCalendario } from "./fechas";
+import { sincronizarAlertas } from "./alertas";
+import { obtenerHoy } from "./hoy";
 
 export type EstadoFormulario = {
   errores?: Record<string, string>;
@@ -44,6 +46,7 @@ export async function ingresar(_: EstadoFormulario, fd: FormData): Promise<Estad
     return { mensaje: "El correo o la contraseña no son correctos. Revísalos e inténtalo de nuevo.", valores: { email } };
   }
   await iniciarSesion({ uid: u.id, rol: u.rol as Rol });
+  if (u.rol === "ciudadano") await sincronizarAlertas(prisma, u.id, await obtenerHoy());
   const volver = fd.get("volver");
   redirect(rutaSegura(volver, inicioPorRol(u.rol as Rol, !!u.perfil)));
 }

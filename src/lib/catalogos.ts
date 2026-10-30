@@ -112,3 +112,28 @@ export const UMBRALES_ALERTA = [7, 15, 30] as const;
 export function etiqueta<T extends Record<string, string>>(mapa: T, clave: string): string {
   return (mapa as Record<string, string>)[clave] ?? clave;
 }
+
+/** Temas del canal de orientación (RF14). */
+export const TEMAS_ORIENTACION = [
+  "Financiamiento",
+  "Requisitos y documentos",
+  "Trámites",
+  "Idiomas",
+  "Uso de la Ventanilla",
+] as const;
+
+/** Dimensiones de la encuesta de satisfacción (RF15), escala 1 a 5. */
+export const DIMENSIONES_ENCUESTA = {
+  claridad: "Claridad: ¿la información fue fácil de entender?",
+  suficiencia: "Suficiencia: ¿encontraste toda la información que necesitabas?",
+  oportunidadInfo: "Oportunidad: ¿la información llegó a tiempo para actuar?",
+  utilidad: "Utilidad: ¿te sirvió para decidir y prepararte?",
+} as const;
+
+export const ESCALA_ENCUESTA = {
+  1: "Muy en desacuerdo",
+  2: "En desacuerdo",
+  3: "Ni de acuerdo ni en desacuerdo",
+  4: "De acuerdo",
+  5: "Muy de acuerdo",
+} as const;

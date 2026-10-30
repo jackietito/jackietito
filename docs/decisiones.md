@@ -59,3 +59,17 @@ Decisiones tomadas ante ambigüedades del documento de requerimientos (`docs/req
 **D22. Checklist y avance (RF11, RF13).** El checklist es la lista de requisitos de la ficha (académicos, de idioma y documentarios). El porcentaje de avance se calcula solo sobre el checklist; los trámites se cuentan aparte («N de M trámites completados») con su estado autodeclarado (pendiente, en curso, completado), que se cambia en la misma ruta. Las casillas y los estados se guardan al instante, sin botón de envío, y el cambio se anuncia a los lectores de pantalla. Si la gestora agrega requisitos a la ficha, al volver a generar la ruta se agregan sin perder lo ya marcado.
 
 **D23. Mapa de trámites (RF10).** Es una página pública (`/tramites`) con los 7 trámites en orden sugerido, entidad responsable, documentos, plazo, costo y anticipación referenciales, y cuántas oportunidades del catálogo lo piden. Se accede desde el encabezado y desde la sección de trámites de cada ficha.
+
+## Incremento 4
+
+**D24. Alertas (RF12).** Se calculan al ingresar y al abrir «Mi panel» o «Alertas», con la fecha actual o simulada; no hay tareas programadas, porque Vercel no las necesita para el prototipo y así la fecha simulada surte efecto de inmediato. Tipos: *vencimiento* de una convocatoria guardada y abierta (solo el umbral más cercano alcanzado entre 30, 15 y 7 días, para no repetir avisos); *trámite* de una ruta generada, pendiente o en curso, cuya fecha recomendada está a 7 días o menos o ya pasó; *nueva oportunidad* publicada en los últimos 14 días que cumple el criterio de recomendación (D17); y *respuesta* del orientador. Cada alerta tiene una clave única (p. ej. `venc-7-<oportunidad>`) para no duplicarse. El correo se simula en las alertas de vencimiento y de respuesta: se guarda el destinatario en `correoSimulado` y se muestra «envío simulado».
+
+**D25. Panel de seguimiento (RF13).** Reúne un resumen (guardadas, fechas próximas, alertas sin leer), una lista de «Próximas fechas» de los próximos 60 días (cierres y pasos pendientes de las rutas, incluidos los atrasados) y, por cada oportunidad guardada, el avance del checklist y el estado autodeclarado de cada trámite. El estado se cambia en la ruta (D22).
+
+**D26. Canal de orientación (RF14).** Preguntas frecuentes por cinco temas (sin IA generativa, sección 11), visibles sin cuenta. Para derivar una consulta se necesita una cuenta de ciudadano; puede asociarse a una oportunidad guardada. El orientador responde desde «Bandeja de consultas», donde ve el tema, la región y la universidad de la persona, pero no su correo (minimización de datos). Cada consulta se responde una sola vez y la respuesta genera una alerta para el ciudadano.
+
+**D27. Encuesta de satisfacción (RF15).** Cuatro dimensiones en escala de 1 a 5 (claridad, suficiencia, oportunidad y utilidad) y un comentario opcional. Se puede asociar a una oportunidad guardada, lo que permitirá el reporte por entidad (RF18). Hay una respuesta por persona y oportunidad (o una general): si se responde de nuevo, se actualiza.
+
+**D28. Fecha simulada (sección 8, D08).** El control está en `/admin`, solo para el administrador, y se adelantó a este incremento para poder demostrar las alertas. Mientras está activa, el banner del prototipo muestra «Fecha simulada: …» para todas las personas.
+
+**D29. Navegación.** Con más enlaces por rol, en pantallas anchas la navegación pasa a una segunda fila del encabezado; en pantallas menores a 1280 px se usa el menú desplegable.
