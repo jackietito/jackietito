@@ -64,7 +64,7 @@ test("filtra por costo total, financiamiento y fecha de inicio", async ({ page }
 
 test("la ficha muestra todos los grupos de la ficha estándar y el enlace oficial", async ({ page }) => {
   await page.goto("/catalogo?q=Innovación Educativa");
-  await page.getByRole("link", { name: "Beca de Cooperación Iberoamericana en Innovación Educativa" }).click();
+  await page.getByRole("link", { name: "Beca de Cooperación Iberoamericana en Innovación Educativa", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Beca de Cooperación Iberoamericana en Innovación Educativa");
   for (const titulo of ["Datos académicos", "Convocatoria", "Costos", "Financiamiento", "Requisitos", "Trámites nacionales asociados", "Fuente y actualización"]) {
     await expect(page.getByRole("heading", { name: titulo, level: 2 })).toBeVisible();

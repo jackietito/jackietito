@@ -21,6 +21,8 @@ import {
   formatearMonto,
 } from "@/lib/oportunidades";
 import { AvisoDesactualizada, EtiquetaEstado, textoPlazo } from "@/components/oportunidad";
+import { AccionesOportunidad } from "@/components/BotonesOportunidad";
+import { contextoAcciones } from "@/lib/contexto";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -66,7 +68,7 @@ function Datos({ filas }: { filas: [string, React.ReactNode][] }) {
 export default async function FichaOportunidad({ params }: Params) {
   const o = await cargar((await params).id);
   if (!o) notFound();
-  const hoy = await obtenerHoy();
+  const [hoy, ctx] = await Promise.all([obtenerHoy(), contextoAcciones()]);
   const estado = estadoConvocatoria(o, hoy);
   const m = (n: number) => formatearMonto(n, o.moneda);
   const tramites = o.tramites.map((t) => t.tramite).sort((a, b) => a.orden - b.orden);
@@ -96,6 +98,10 @@ export default async function FichaOportunidad({ params }: Params) {
           </a>
         </div>
         <p className="text-xs text-suave">En el prototipo, los enlaces oficiales son enlaces de ejemplo.</p>
+        <div className="max-w-md">
+          <AccionesOportunidad id={o.id} nombre={o.nombre} rol={ctx.rol} guardada={ctx.guardadas.has(o.id)}
+            enComparador={ctx.comparar.has(o.id)} volver={`/oportunidades/${o.id}`} />
+        </div>
       </header>
 
       {estaDesactualizada(o, hoy) && (

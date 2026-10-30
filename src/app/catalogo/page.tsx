@@ -15,6 +15,8 @@ import { filtrarOportunidades, leerFiltros, type Filtros } from "@/lib/oportunid
 import { formatearFechaCorta, desdeISO } from "@/lib/fechas";
 import { TarjetaOportunidad } from "@/components/oportunidad";
 import { PanelPlegable } from "@/components/PanelPlegable";
+import { AccionesOportunidad } from "@/components/BotonesOportunidad";
+import { contextoAcciones } from "@/lib/contexto";
 
 export const metadata: Metadata = { title: "Catálogo de oportunidades" };
 
@@ -82,7 +84,12 @@ export default async function Catalogo({
 }) {
   const filtros = leerFiltros(await searchParams);
   const hoy = await obtenerHoy();
-  const todas = await prisma.oportunidad.findMany({ where: { publicada: true }, include: { entidad: true } });
+  const [todas, ctx] = await Promise.all([
+    prisma.oportunidad.findMany({ where: { publicada: true }, include: { entidad: true } }),
+    contextoAcciones(),
+  ]);
+  const consulta = new URLSearchParams(filtros as Record<string, string>).toString();
+  const volver = consulta ? `/catalogo?${consulta}` : "/catalogo";
   const resultados = filtrarOportunidades(todas, filtros, hoy);
   const paises = [...new Set(todas.map((o) => o.pais))].sort((a, b) => a.localeCompare(b, "es"));
   const activos = (Object.keys(NOMBRES_FILTRO) as (keyof Filtros)[]).filter((k) => filtros[k]);
@@ -177,7 +184,12 @@ export default async function Catalogo({
           {resultados.length ? (
             <ul className="grid gap-4 md:grid-cols-2">
               {resultados.map((o) => (
-                <li key={o.id}><TarjetaOportunidad o={o} hoy={hoy} /></li>
+                <li key={o.id}>
+                  <TarjetaOportunidad o={o} hoy={hoy}>
+                    <AccionesOportunidad id={o.id} nombre={o.nombre} rol={ctx.rol} guardada={ctx.guardadas.has(o.id)}
+                      enComparador={ctx.comparar.has(o.id)} volver={volver} />
+                  </TarjetaOportunidad>
+                </li>
               ))}
             </ul>
           ) : (

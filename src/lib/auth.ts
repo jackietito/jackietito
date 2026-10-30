@@ -71,3 +71,13 @@ export async function exigirRol(roles: Rol[], volverA = "/") {
   if (!roles.includes(u.rol as Rol)) redirect("/?acceso=denegado");
   return u;
 }
+
+/** Página de llegada según el rol, después de ingresar. */
+export function inicioPorRol(rol: Rol, tienePerfil: boolean): string {
+  switch (rol) {
+    case "gestor": return "/gestion";
+    case "orientador": return "/bandeja";
+    case "admin": return "/admin";
+    default: return tienePerfil ? "/recomendaciones" : "/perfil";
+  }
+}

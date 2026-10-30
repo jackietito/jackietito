@@ -15,7 +15,7 @@ Este prototipo funcional sirve para validar la experiencia con usuarios en prueb
 | # | Contenido | Estado |
 |---|---|---|
 | 1 | Modelo de datos, datos de prueba, catálogo, ficha, buscador y filtros | ✅ Listo |
-| 2 | Registro, perfil, recomendaciones, comparador y guardado | ⏳ Pendiente |
+| 2 | Registro, perfil, recomendaciones, comparador y guardado | ✅ Listo |
 | 3 | Mapa de trámites, ruta paso a paso y checklist | ⏳ Pendiente |
 | 4 | Alertas, panel de seguimiento, orientación y encuesta | ⏳ Pendiente |
 | 5 | Gestión de contenidos, tablero de indicadores y reporte a entidades | ⏳ Pendiente |
@@ -45,7 +45,7 @@ Contenido: 36 oportunidades (13 países, 8 áreas, 3 niveles), 7 trámites, 5 en
 
 ### Usuarios de prueba
 
-Todas las cuentas usan la contraseña **`Prototipo2026!`**. *(El ingreso se habilita en el incremento 2.)*
+Todas las cuentas usan la contraseña **`Prototipo2026!`**. Se ingresa desde **Ingresar**, en el encabezado.
 
 | Rol | Correo | Descripción |
 |---|---|---|
@@ -60,7 +60,17 @@ Todas las cuentas usan la contraseña **`Prototipo2026!`**. *(El ingreso se habi
 | Orientadora | `orientador@ventanilla.test` | Atiende la bandeja de consultas |
 | Administrador | `admin@ventanilla.test` | Tablero de indicadores, reporte por entidad y fecha simulada |
 
-Cualquier persona puede, además, crear su propia cuenta de ciudadano desde la aplicación.
+Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Crear cuenta** (pide aceptar el tratamiento de datos personales).
+
+### Qué probar en el incremento 2
+
+| Requerimiento | Dónde | Cómo |
+|---|---|---|
+| RF03 Registro y perfil | `/registro`, `/perfil` | Crea una cuenta (prueba primero sin marcar el consentimiento) y completa tu perfil. |
+| RF05 Recomendaciones | `/recomendaciones` | Ingresa como `rosa@ventanilla.test`: cada tarjeta dice en cuántos criterios coincide y cuáles. |
+| RF07 Comparador | `/comparador` | En el catálogo pulsa «Comparar» en 3 fichas (la cuarta no entra). Las filas que cambian se marcan como «Diferente». No requiere cuenta. |
+| RF08 Guardado | Catálogo, ficha, `/panel` | Con una cuenta de ciudadano pulsa «Guardar» y revisa «Mi panel». |
+| Roles | Encabezado | Ingresa como gestor, orientador o administrador: cada rol ve sus propios enlaces. |
 
 ## Pruebas
 
