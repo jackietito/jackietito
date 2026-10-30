@@ -33,3 +33,9 @@ Decisiones tomadas ante ambigüedades del documento de requerimientos (`docs/req
 **D13. Entidades sin oportunidades propias.** SUGRAT (rol de regulador) no publica oportunidades: es responsable de trámites del mapa de trámites.
 
 **D14. Enlaces oficiales de ejemplo (regla 5).** Todos los enlaces oficiales apuntan a `https://example.org/...`, dominio reservado para ejemplos.
+
+**D15. Conexión con Neon (complementa D02).** Siguiendo la guía de Neon para Prisma en Vercel:
+- *Cadenas de conexión.* `DATABASE_URL` es la cadena **con pooling** (host `-pooler`) y la usa la aplicación; `DATABASE_URL_UNPOOLED` es la **directa** y la usan `prisma db push` (`directUrl`) y el seed. Son los nombres que entregan `neon env pull` y la integración Neon–Vercel. `scripts/prisma-provider.mjs` agrega `directUrl` al datasource solo en PostgreSQL, porque SQLite no lo necesita.
+- *Driver.* En PostgreSQL, `src/lib/db.ts` usa el driver `node-postgres` (`pg`) mediante el adaptador `@prisma/adapter-pg`, y registra el pool con `attachDatabasePool` de `@vercel/functions` para que Vercel (Fluid compute) cierre las conexiones inactivas antes de suspender la función. Es el driver que Neon recomienda para Next.js en Vercel; `@neondatabase/serverless` queda para entornos *edge*, que la app no usa. En SQLite se mantiene el motor por defecto de Prisma.
+- *Archivos de entorno.* Las variables de Neon se guardan en `.env.neon` (`npm run neon:env`), no en `.env` ni `.env.local`: Next.js da prioridad a `.env.local` y el desarrollo local y las pruebas E2E deben seguir en SQLite. `scripts/con-neon.mjs` carga `.env.neon` solo para los comandos `npm run neon:*`. Como `neon deploy` escribe por defecto en `.env` (si existe), se ejecuta con `--no-env-pull`.
+- *Proyecto.* Organización `org-billowing-rice-24597176`, proyecto `summer-haze-17674729` (PosgradoEnElExterior), rama `production`. El archivo `.neon` y los `.env*` no se versionan.

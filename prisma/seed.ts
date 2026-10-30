@@ -5,7 +5,11 @@ import { PrismaClient } from "@prisma/client";
 import { aFechaCalendario } from "../src/lib/fechas";
 import { sembrar } from "../src/lib/seed/sembrar";
 
-const prisma = new PrismaClient();
+// En PostgreSQL (Neon) el seed usa la conexión directa, no la de pooling.
+const prisma = new PrismaClient(
+  process.env.DATABASE_URL?.startsWith("postgres") && process.env.DATABASE_URL_UNPOOLED
+    ? { datasourceUrl: process.env.DATABASE_URL_UNPOOLED } : undefined,
+);
 
 async function main() {
   if (process.argv.includes("--si-vacia") && (await prisma.entidad.count()) > 0) {

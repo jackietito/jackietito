@@ -72,15 +72,61 @@ Las pruebas levantan un servidor propio en el puerto 3100 con una base aparte (`
 
 ## Despliegue en Vercel + Neon
 
-La aplicación se publica en Vercel con una base PostgreSQL gratuita en Neon, para que el jurado y los participantes de las pruebas puedan entrar desde cualquier dispositivo con un enlace.
+La aplicación se publica en Vercel con una base PostgreSQL en Neon, para que el jurado y los participantes de las pruebas puedan entrar desde cualquier dispositivo con un enlace. En local y en las pruebas se sigue usando SQLite (ver decisiones D02 y D15).
 
-1. Crea una cuenta en [neon.tech](https://neon.tech) y un proyecto nuevo. Copia la cadena de conexión (`postgresql://...`).
-2. Crea una cuenta en [vercel.com](https://vercel.com) con tu cuenta de GitHub e importa este repositorio.
-3. En **Settings → Environment Variables** agrega:
-   - `DATABASE_URL`: la cadena de conexión de Neon.
-   - `SESSION_SECRET`: una cadena larga y aleatoria (por ejemplo, el resultado de `openssl rand -base64 32`).
-4. En **Settings → Build and Deployment**, cambia el *Build Command* a `npm run vercel-build`.
-5. Despliega. El build crea las tablas y, si la base está vacía, carga los datos de prueba.
+| Variable | Valor | La usa |
+|---|---|---|
+| `DATABASE_URL` | Cadena de Neon **con pooling** (host con `-pooler`) | La aplicación (driver `pg` con `@prisma/adapter-pg`) |
+| `DATABASE_URL_UNPOOLED` | Cadena de Neon **directa** (sin `-pooler`) | `prisma db push` (`directUrl`) y el seed |
+| `SESSION_SECRET` | Cadena larga y aleatoria (`openssl rand -base64 32`) | Firma de la cookie de sesión |
+
+### Proyecto Neon vinculado
+
+El repositorio ya está vinculado al proyecto Neon *PosgradoEnElExterior* (`summer-haze-17674729`, rama `production`) mediante `neon.ts`. En un clon nuevo:
+
+```bash
+npm i -g neon@latest
+```
+
+```bash
+neon init -y --org-id org-billowing-rice-24597176 --project-id summer-haze-17674729 --branch production --services postgres
+```
+
+```bash
+neon deploy --no-env-pull
+```
+
+```bash
+npm run neon:env      # guarda DATABASE_URL y DATABASE_URL_UNPOOLED en .env.neon (no se versiona)
+```
+
+Las variables de Neon van en `.env.neon` y no en `.env` ni `.env.local`, para que `npm run dev` y `npm run test:e2e` sigan usando SQLite. *(Si `neon init` crea un `.env.local` con esas variables, bórralo o renómbralo.)*
+
+Comandos contra Neon (cargan `.env.neon` solo para ese comando):
+
+```bash
+npm run neon:setup    # crea las tablas en Neon y carga los datos de prueba (borra los existentes)
+```
+
+```bash
+npm run neon:build    # compila la aplicación apuntando a Neon
+```
+
+```bash
+npm run neon:start    # levanta la aplicación compilada (http://localhost:3000)
+```
+
+```bash
+npm run db:sqlite     # después de usar Neon: vuelve a generar el cliente de Prisma para SQLite
+```
+
+### Publicar en Vercel
+
+1. Crea una cuenta en [vercel.com](https://vercel.com) con tu cuenta de GitHub e importa este repositorio.
+2. Conecta la base: en **Storage**, agrega la integración de Neon y elige el proyecto existente (crea `DATABASE_URL` y `DATABASE_URL_UNPOOLED`), o copia ambas cadenas desde `.env.neon` en **Settings → Environment Variables**.
+3. Agrega `SESSION_SECRET` en **Settings → Environment Variables**.
+4. En **Settings → Build and Deployment**, cambia el *Build Command* a `npm run vercel-build`. Deja activado *Fluid compute* (es el valor por defecto).
+5. Despliega. El build crea o actualiza las tablas y, si la base está vacía, carga los datos de prueba.
 
 Cada `git push` a la rama principal vuelve a desplegar la aplicación sin borrar los datos.
 
