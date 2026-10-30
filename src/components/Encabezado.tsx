@@ -8,12 +8,14 @@ type Enlace = { href: string; texto: string };
 
 function enlacesPorRol(rol: string | undefined, enComparador: number): Enlace[] {
   const catalogo: Enlace = { href: "/catalogo", texto: "Catálogo" };
+  const tramites: Enlace = { href: "/tramites", texto: "Trámites" };
   const comparador: Enlace = { href: "/comparador", texto: enComparador ? `Comparador (${enComparador})` : "Comparador" };
   switch (rol) {
     case "ciudadano":
       return [
         catalogo,
         { href: "/recomendaciones", texto: "Recomendaciones" },
+        tramites,
         comparador,
         { href: "/panel", texto: "Mi panel" },
         { href: "/perfil", texto: "Mi perfil" },
@@ -25,7 +27,7 @@ function enlacesPorRol(rol: string | undefined, enComparador: number): Enlace[] 
     case "admin":
       return [catalogo, { href: "/admin", texto: "Tablero de indicadores" }];
     default:
-      return [catalogo, comparador];
+      return [catalogo, tramites, comparador];
   }
 }
 

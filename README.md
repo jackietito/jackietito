@@ -7,6 +7,8 @@ En el Perú, la información sobre posgrados y becas en el exterior está disper
 
 Este prototipo funcional sirve para validar la experiencia con usuarios en pruebas de usabilidad.
 
+**Versión publicada:** https://jackietito.vercel.app (Vercel + Neon). Se actualiza con cada cambio en `main`.
+
 - Requerimientos: [`docs/requerimientos.md`](docs/requerimientos.md)
 - Decisiones tomadas durante la construcción: [`docs/decisiones.md`](docs/decisiones.md)
 
@@ -16,7 +18,7 @@ Este prototipo funcional sirve para validar la experiencia con usuarios en prueb
 |---|---|---|
 | 1 | Modelo de datos, datos de prueba, catálogo, ficha, buscador y filtros | ✅ Listo |
 | 2 | Registro, perfil, recomendaciones, comparador y guardado | ✅ Listo |
-| 3 | Mapa de trámites, ruta paso a paso y checklist | ⏳ Pendiente |
+| 3 | Mapa de trámites, ruta paso a paso y checklist | ✅ Listo |
 | 4 | Alertas, panel de seguimiento, orientación y encuesta | ⏳ Pendiente |
 | 5 | Gestión de contenidos, tablero de indicadores y reporte a entidades | ⏳ Pendiente |
 
@@ -71,6 +73,15 @@ Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Cr
 | RF07 Comparador | `/comparador` | En el catálogo pulsa «Comparar» en 3 fichas (la cuarta no entra). Las filas que cambian se marcan como «Diferente». No requiere cuenta. |
 | RF08 Guardado | Catálogo, ficha, `/panel` | Con una cuenta de ciudadano pulsa «Guardar» y revisa «Mi panel». |
 | Roles | Encabezado | Ingresa como gestor, orientador o administrador: cada rol ve sus propios enlaces. |
+
+### Qué probar en el incremento 3
+
+| Requerimiento | Dónde | Cómo |
+|---|---|---|
+| RF10 Mapa de trámites | `/tramites` (enlace «Trámites») | Revisa los 7 trámites con entidad, documentos, plazo y costo referenciales. |
+| RF09 Ruta paso a paso | Ficha → «Preparar mi postulación» | Ingresa como `rosa@ventanilla.test`, abre la *Beca de Cooperación Iberoamericana en Innovación Educativa* (en «Mi panel») y genera la ruta. Cada paso dice qué hacer, ante quién y desde qué fecha. |
+| RF11 Checklist | `/ruta/…` | Marca requisitos y mira cómo sube el porcentaje. Cambia el estado de un trámite a «En curso». |
+| Ruta con avances | «Mi panel» de `diego@ventanilla.test` | Ruta ya generada con 30 % del checklist listo y trámites en curso. |
 
 ## Pruebas
 

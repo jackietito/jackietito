@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { obtenerHoy } from "@/lib/hoy";
 import { contextoAcciones } from "@/lib/contexto";
 import { formatearFecha } from "@/lib/fechas";
+import { porcentaje } from "@/lib/ruta";
 import { TarjetaOportunidad } from "@/components/oportunidad";
 import { AccionesOportunidad } from "@/components/BotonesOportunidad";
 
@@ -16,7 +17,7 @@ export default async function Panel() {
     obtenerHoy(),
     prisma.guardada.findMany({
       where: { usuarioId: u.id, oportunidad: { publicada: true } },
-      include: { oportunidad: { include: { entidad: true } } },
+      include: { oportunidad: { include: { entidad: true, checklist: { where: { usuarioId: u.id }, select: { completado: true } } } } },
       orderBy: { creadaEn: "desc" },
     }),
     contextoAcciones(),
@@ -26,7 +27,7 @@ export default async function Panel() {
     <div className="space-y-6">
       <div>
         <h1 className="titulo-pagina">Mi panel</h1>
-        <p className="mt-2 text-suave">Las oportunidades que guardaste. Pronto verás aquí también tu ruta, tu checklist y tus alertas.</p>
+        <p className="mt-2 text-suave">Las oportunidades que guardaste. Desde cada una puedes abrir tu ruta y tu checklist. Pronto verás aquí también tus alertas.</p>
       </div>
       <section aria-labelledby="titulo-guardadas" className="space-y-4">
         <h2 id="titulo-guardadas" className="titulo-seccion">
@@ -34,10 +35,17 @@ export default async function Panel() {
         </h2>
         {guardadas.length ? (
           <ul className="grid gap-4 md:grid-cols-2">
-            {guardadas.map(({ oportunidad: o, creadaEn }) => (
+            {guardadas.map(({ oportunidad: o, creadaEn, rutaGeneradaEn }) => (
               <li key={o.id}>
                 <TarjetaOportunidad o={o} hoy={hoy}>
                   <p className="text-xs text-suave">La guardaste el {formatearFecha(creadaEn)}.</p>
+                  {rutaGeneradaEn ? (
+                    <Link href={`/ruta/${o.id}`} className="btn-primario text-sm">
+                      Ver mi ruta y checklist ({porcentaje(o.checklist.filter((i) => i.completado).length, o.checklist.length)}% listo)
+                    </Link>
+                  ) : (
+                    <Link href={`/ruta/${o.id}`} className="btn-secundario text-sm">Preparar mi postulación</Link>
+                  )}
                   <AccionesOportunidad id={o.id} nombre={o.nombre} rol={ctx.rol} guardada
                     enComparador={ctx.comparar.has(o.id)} volver="/panel" />
                 </TarjetaOportunidad>

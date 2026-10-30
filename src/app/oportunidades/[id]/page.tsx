@@ -91,7 +91,10 @@ export default async function FichaOportunidad({ params }: Params) {
         <p className={`text-lg font-bold ${estado === "abierta" ? "text-peligro" : "text-texto"}`}>{textoPlazo(o, hoy)}</p>
         <p className="max-w-3xl">{o.descripcion}</p>
         <div className="flex flex-wrap gap-3">
-          <a href={o.enlaceOficial} target="_blank" rel="noopener noreferrer" className="btn-primario">
+          {estado !== "cerrada" && ctx.rol !== "gestor" && ctx.rol !== "orientador" && ctx.rol !== "admin" && (
+            <Link href={`/ruta/${o.id}`} className="btn-primario">Preparar mi postulación</Link>
+          )}
+          <a href={o.enlaceOficial} target="_blank" rel="noopener noreferrer" className="btn-secundario">
             Ir a la convocatoria oficial
             <span className="sr-only">(se abre en una pestaña nueva)</span>
             <span aria-hidden="true">↗</span>
@@ -180,7 +183,10 @@ export default async function FichaOportunidad({ params }: Params) {
       </Seccion>
 
       <Seccion titulo="Trámites nacionales asociados">
-        <p className="mb-3 text-suave">Trámites que normalmente debes hacer en el Perú antes de postular. Plazos y costos referenciales.</p>
+        <p className="mb-3 text-suave">
+          Trámites que normalmente debes hacer en el Perú antes de postular. Plazos y costos referenciales.{" "}
+          <Link href="/tramites" className="enlace">Ver el mapa de trámites completo</Link>
+        </p>
         <ol className="space-y-3">
           {tramites.map((t) => (
             <li key={t.id} className="rounded-lg border border-borde p-3">

@@ -43,3 +43,16 @@ export function navegacion(page: Page) {
 export function alerta(page: Page) {
   return page.getByRole("alert").and(page.locator(":not(#__next-route-announcer__)"));
 }
+
+/** Crea una cuenta de ciudadano nueva (con consentimiento) para que la prueba no dependa de datos previos. */
+export async function registrarCuenta(page: Page) {
+  const email = `ruta-${Date.now()}-${Math.floor(Math.random() * 1e6)}@ventanilla.test`;
+  await page.goto("/registro");
+  await page.getByLabel("Correo electrónico").fill(email);
+  await page.getByLabel("Contraseña", { exact: true }).fill("ClaveSegura1");
+  await page.getByLabel("Repite la contraseña").fill("ClaveSegura1");
+  await page.getByLabel(/Acepto el tratamiento/).check();
+  await page.getByRole("button", { name: "Crear cuenta" }).click();
+  await expect(page).toHaveURL(/\/perfil/);
+  return email;
+}
