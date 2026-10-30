@@ -1,0 +1,274 @@
+// Modelo de datos de la Ventanilla Digital de Oportunidades de Posgrado.
+// Basado en la ficha estándar (docs/requerimientos.md, sección 5).
+//
+// El proveedor es "sqlite" en desarrollo. En producción (Vercel + Neon),
+// scripts/prisma-provider.mjs lo cambia a "postgresql" antes de generar
+// el cliente. Por eso el esquema evita tipos exclusivos de un motor:
+// los valores de catálogo (tipo, nivel, estado, etc.) son String y se
+// validan en src/lib/catalogos.ts.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Entidad proveedora de información (rol de MRE, PRONABEC, SUNEDU, universidades, MINEDU).
+model Entidad {
+  id            String        @id @default(cuid())
+  sigla         String        @unique
+  nombre        String
+  /// cancilleria | becas | regulador | universidad | administradora
+  tipo          String
+  descripcion   String
+  enlace        String
+  oportunidades Oportunidad[]
+  tramites      Tramite[]
+  usuarios      Usuario[]
+}
+
+/// Ficha estándar de una oportunidad de posgrado o beca.
+model Oportunidad {
+  id                       String               @id @default(cuid())
+  // Identificación
+  /// programa | beca | programa_con_beca
+  tipo                     String
+  nombre                   String
+  institucion              String
+  pais                     String
+  ciudad                   String
+  descripcion              String
+  // Académico
+  area                     String
+  /// maestria | doctorado | especializacion
+  nivel                    String
+  /// presencial | virtual | semipresencial
+  modalidad                String
+  idioma                   String
+  duracionMeses            Int
+  fechaInicio              DateTime
+  // Convocatoria (el estado se calcula con la fecha actual o simulada)
+  fechaApertura            DateTime
+  fechaCierre              DateTime
+  // Costos
+  costoMatricula           Float
+  costoVidaMensual         Float
+  otrosCostos              Float
+  otrosCostosDetalle       String
+  moneda                   String
+  // Financiamiento
+  /// integral | parcial | credito | ninguno
+  financiamientoTipo       String
+  cobertura                String
+  entidadFinanciadora      String
+  // Trazabilidad
+  enlaceOficial            String
+  publicada                Boolean              @default(true)
+  destacada                Boolean              @default(false)
+  creadaEn                 DateTime
+  actualizadoEn            DateTime
+  responsableActualizacion String
+  entidadId                String
+  entidad                  Entidad              @relation(fields: [entidadId], references: [id])
+  requisitos               Requisito[]
+  tramites                 OportunidadTramite[]
+  guardadas                Guardada[]
+  checklist                ItemChecklist[]
+  avances                  AvanceTramite[]
+  alertas                  Alerta[]
+  consultas                Consulta[]
+  encuestas                Encuesta[]
+
+  @@index([entidadId])
+}
+
+model Requisito {
+  id            String      @id @default(cuid())
+  /// academico | idioma | documentario
+  categoria     String
+  descripcion   String
+  orden         Int
+  oportunidadId String
+  oportunidad   Oportunidad @relation(fields: [oportunidadId], references: [id], onDelete: Cascade)
+  checklist     ItemChecklist[]
+
+  @@index([oportunidadId])
+}
+
+/// Trámite nacional previo a la postulación (mapa de trámites).
+model Tramite {
+  id                 String               @id @default(cuid())
+  nombre             String
+  entidadResponsable String
+  descripcion        String
+  /// Un documento por línea
+  documentos         String
+  plazoDias          Int
+  costoReferencial   Float
+  enlaceOficial      String
+  /// Orden sugerido en la ruta paso a paso
+  orden              Int
+  /// Días antes del cierre de la convocatoria en que se recomienda iniciar el trámite
+  anticipacionDias   Int
+  publicado          Boolean              @default(true)
+  actualizadoEn      DateTime
+  entidadId          String
+  entidad            Entidad              @relation(fields: [entidadId], references: [id])
+  oportunidades      OportunidadTramite[]
+  avances            AvanceTramite[]
+}
+
+model OportunidadTramite {
+  oportunidadId String
+  tramiteId     String
+  oportunidad   Oportunidad @relation(fields: [oportunidadId], references: [id], onDelete: Cascade)
+  tramite       Tramite     @relation(fields: [tramiteId], references: [id], onDelete: Cascade)
+
+  @@id([oportunidadId, tramiteId])
+}
+
+model Usuario {
+  id                String          @id @default(cuid())
+  email             String          @unique
+  /// Solo para personal (gestor, orientador, administrador). Al ciudadano no se le pide.
+  nombre            String?
+  passwordHash      String
+  /// ciudadano | gestor | orientador | admin
+  rol               String
+  creadoEn          DateTime
+  /// Fecha en que aceptó el tratamiento de datos personales
+  consentimientoEn  DateTime?
+  entidadId         String?
+  entidad           Entidad?        @relation(fields: [entidadId], references: [id])
+  perfil            Perfil?
+  guardadas         Guardada[]
+  checklist         ItemChecklist[]
+  avances           AvanceTramite[]
+  alertas           Alerta[]
+  consultas         Consulta[]      @relation("consultasCiudadano")
+  respuestas        Consulta[]      @relation("consultasOrientador")
+  encuestas         Encuesta[]
+}
+
+/// Perfil de intereses (RF03). Solo contiene los datos definidos en RF03.
+model Perfil {
+  id                     String   @id @default(cuid())
+  usuarioId              String   @unique
+  usuario                Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  area                   String
+  nivel                  String
+  /// Países separados por "|"
+  paises                 String
+  modalidad              String
+  idioma                 String
+  /// Costo total máximo en USD referenciales (0 = sin límite)
+  costoMaxUsd            Float
+  necesitaFinanciamiento Boolean
+  region                 String
+  universidadOrigen      String
+  actualizadoEn          DateTime
+}
+
+model Guardada {
+  id             String      @id @default(cuid())
+  usuarioId      String
+  oportunidadId  String
+  creadaEn       DateTime
+  /// Fecha en que el usuario generó su ruta y checklist
+  rutaGeneradaEn DateTime?
+  usuario        Usuario     @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  oportunidad    Oportunidad @relation(fields: [oportunidadId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, oportunidadId])
+}
+
+model ItemChecklist {
+  id            String      @id @default(cuid())
+  usuarioId     String
+  oportunidadId String
+  requisitoId   String?
+  descripcion   String
+  categoria     String
+  completado    Boolean     @default(false)
+  usuario       Usuario     @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  oportunidad   Oportunidad @relation(fields: [oportunidadId], references: [id], onDelete: Cascade)
+  requisito     Requisito?  @relation(fields: [requisitoId], references: [id], onDelete: SetNull)
+
+  @@index([usuarioId, oportunidadId])
+}
+
+/// Estado autodeclarado de un trámite de la ruta (RF13).
+model AvanceTramite {
+  id            String      @id @default(cuid())
+  usuarioId     String
+  oportunidadId String
+  tramiteId     String
+  /// pendiente | en_curso | completado
+  estado        String      @default("pendiente")
+  usuario       Usuario     @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  oportunidad   Oportunidad @relation(fields: [oportunidadId], references: [id], onDelete: Cascade)
+  tramite       Tramite     @relation(fields: [tramiteId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, oportunidadId, tramiteId])
+}
+
+model Alerta {
+  id             String       @id @default(cuid())
+  usuarioId      String
+  /// nueva | vencimiento | tramite | respuesta
+  tipo           String
+  titulo         String
+  mensaje        String
+  enlace         String
+  /// Evita duplicar la misma alerta (p. ej. "venc-7-<oportunidad>")
+  clave          String
+  creadaEn       DateTime
+  leida          Boolean      @default(false)
+  /// El envío por correo se simula: se registra el destinatario
+  correoSimulado String?
+  oportunidadId  String?
+  usuario        Usuario      @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  oportunidad    Oportunidad? @relation(fields: [oportunidadId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, clave])
+}
+
+model Consulta {
+  id            String       @id @default(cuid())
+  usuarioId     String
+  tema          String
+  pregunta      String
+  oportunidadId String?
+  creadaEn      DateTime
+  respuesta     String?
+  respondidaEn  DateTime?
+  orientadorId  String?
+  usuario       Usuario      @relation("consultasCiudadano", fields: [usuarioId], references: [id], onDelete: Cascade)
+  orientador    Usuario?     @relation("consultasOrientador", fields: [orientadorId], references: [id])
+  oportunidad   Oportunidad? @relation(fields: [oportunidadId], references: [id], onDelete: SetNull)
+}
+
+/// Encuesta de satisfacción (RF15), escala 1 a 5.
+model Encuesta {
+  id            String       @id @default(cuid())
+  usuarioId     String
+  oportunidadId String?
+  claridad      Int
+  suficiencia   Int
+  /// Dimensión "oportunidad" (información a tiempo); se renombra para no chocar con la relación
+  oportunidadInfo Int
+  utilidad      Int
+  comentario    String
+  creadaEn      DateTime
+  usuario       Usuario      @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  oportunidad   Oportunidad? @relation(fields: [oportunidadId], references: [id], onDelete: SetNull)
+}
+
+/// Parámetros globales del prototipo (p. ej. "fechaSimulada").
+model Configuracion {
+  clave String @id
+  valor String
+}

@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/*
+ * Paleta propia del prototipo (no usa la identidad gráfica de gob.pe ni de ninguna entidad).
+ * Contrastes verificados para WCAG 2.1 AA sobre fondo blanco:
+ * marca #0b5563 (8,1:1), texto #1f2937 (14,7:1), texto suave #4b5563 (7,6:1).
+ */
+@theme {
+  --color-marca: #0b5563;
+  --color-marca-oscura: #073b45;
+  --color-marca-clara: #e6f2f4;
+  --color-acento: #9a3412;
+  --color-texto: #1f2937;
+  --color-suave: #4b5563;
+  --color-borde: #d1d5db;
+  --color-fondo: #f8fafc;
+  --color-exito: #166534;
+  --color-exito-claro: #dcfce7;
+  --color-alerta: #92400e;
+  --color-alerta-claro: #fef3c7;
+  --color-peligro: #b91c1c;
+  --color-peligro-claro: #fee2e2;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  scroll-padding-top: 6rem;
+}
+
+body {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Foco visible y consistente para navegación con teclado */
+:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer components {
+  .btn-primario {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 py-2 font-semibold no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-60 bg-marca text-white hover:bg-marca-oscura;
+  }
+  .btn-secundario {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 py-2 font-semibold no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-60 border-2 border-marca bg-white text-marca hover:bg-marca-clara;
+  }
+  .btn-peligro {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 py-2 font-semibold no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-60 border-2 border-peligro bg-white text-peligro hover:bg-peligro-claro;
+  }
+  .tarjeta {
+    @apply rounded-xl border border-borde bg-white p-4 shadow-sm sm:p-5;
+  }
+  .campo {
+    @apply mt-1 block min-h-11 w-full rounded-lg border border-gray-400 bg-white px-3 py-2 text-base text-texto;
+  }
+  .etiqueta-campo {
+    @apply block text-sm font-semibold text-texto;
+  }
+  .enlace {
+    @apply font-semibold text-marca underline hover:text-marca-oscura;
+  }
+  .titulo-pagina {
+    @apply text-2xl font-bold text-marca-oscura sm:text-3xl;
+  }
+  .titulo-seccion {
+    @apply text-xl font-bold text-marca-oscura;
+  }
+}
