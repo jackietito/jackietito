@@ -37,7 +37,7 @@ export default async function Panel() {
         oportunidad: {
           include: {
             entidad: true,
-            tramites: { include: { tramite: true } },
+            tramites: { where: { tramite: { publicado: true } }, include: { tramite: true } },
             checklist: { where: { usuarioId: u.id }, select: { completado: true } },
             avances: { where: { usuarioId: u.id } },
           },

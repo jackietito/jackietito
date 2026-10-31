@@ -95,7 +95,7 @@ export async function sembrar(db: PrismaClient, hoy: Date) {
         otrosCostosDetalle: otrosCostosDetalle(o),
         moneda: o.mon,
         financiamientoTipo: o.fin,
-        cobertura: o.cob ?? "",
+        cobertura: o.incompleta ? "" : (o.cob ?? ""),
         entidadFinanciadora: o.financ ?? "",
         enlaceOficial: `https://example.org/convocatorias/${slug}`,
         destacada: o.dest ?? false,

@@ -20,7 +20,7 @@ Este prototipo funcional sirve para validar la experiencia con usuarios en prueb
 | 2 | Registro, perfil, recomendaciones, comparador y guardado | ✅ Listo |
 | 3 | Mapa de trámites, ruta paso a paso y checklist | ✅ Listo |
 | 4 | Alertas, panel de seguimiento, orientación y encuesta | ✅ Listo |
-| 5 | Gestión de contenidos, tablero de indicadores y reporte a entidades | ⏳ Pendiente |
+| 5 | Gestión de contenidos, tablero de indicadores y reporte a entidades | ✅ Listo |
 
 ## Tecnología
 
@@ -92,6 +92,15 @@ Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Cr
 | RF13 Panel de seguimiento | «Mi panel» | Con `diego@ventanilla.test`: próximas fechas, avance del checklist y estado de cada trámite. |
 | RF14 Orientación | «Orientación» y `/bandeja` | Lee las preguntas frecuentes; con Rosa envía una consulta; con `orientador@ventanilla.test` respóndela; Rosa recibe la alerta y ve la respuesta. |
 | RF15 Encuesta | «Mi panel» → «Responder la encuesta» | Califica de 1 a 5 las cuatro dimensiones y deja un comentario. |
+
+### Qué probar en el incremento 5
+
+| Requerimiento | Dónde | Cómo |
+|---|---|---|
+| RF16 Gestión de contenidos | `/gestion` | Con `gestor.fonabep@ventanilla.test`: crea una ficha con «Nueva ficha» (prueba guardarla incompleta), edítala, despublícala. Completa la cobertura de la ficha marcada «Incompleta». Con `gestor.uhor@ventanilla.test`, usa «Confirmar que sigue vigente» en una ficha desactualizada. |
+| RF17 Tablero de indicadores | `/admin` | Con `admin@ventanilla.test`: los cuatro indicadores, la tabla por región y la tabla por entidad. Cambian al publicar o completar fichas, al generar rutas o al responder encuestas. |
+| RF18 Reporte a entidades | `/reporte` | Con el administrador, elige una entidad; con un gestor, ves el de tu entidad. |
+| Criterio de aceptación | `/gestion` y `/admin` | Mira el indicador 1 como administrador, crea o completa una ficha como gestor y vuelve al tablero: el número cambia. |
 
 ## Pruebas
 

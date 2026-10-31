@@ -25,11 +25,11 @@ function enlacesPorRol(rol: string | undefined, enComparador: number, alertas: n
         { href: "/perfil", texto: "Mi perfil" },
       ];
     case "gestor":
-      return [catalogo, { href: "/gestion", texto: "Gestión de contenidos" }];
+      return [catalogo, { href: "/gestion", texto: "Gestión de contenidos" }, { href: "/reporte", texto: "Reporte de mi entidad" }];
     case "orientador":
       return [catalogo, { href: "/bandeja", texto: "Bandeja de consultas" }];
     case "admin":
-      return [catalogo, { href: "/admin", texto: "Tablero de indicadores" }];
+      return [catalogo, { href: "/admin", texto: "Tablero de indicadores" }, { href: "/reporte", texto: "Reporte por entidad" }];
     default:
       return [catalogo, tramites, comparador, orientacion];
   }

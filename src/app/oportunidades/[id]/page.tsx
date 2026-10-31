@@ -32,7 +32,7 @@ async function cargar(id: string) {
     include: {
       entidad: true,
       requisitos: { orderBy: { orden: "asc" } },
-      tramites: { include: { tramite: true } },
+      tramites: { where: { tramite: { publicado: true } }, include: { tramite: true } },
     },
   });
 }

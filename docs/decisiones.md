@@ -73,3 +73,19 @@ Decisiones tomadas ante ambigüedades del documento de requerimientos (`docs/req
 **D28. Fecha simulada (sección 8, D08).** El control está en `/admin`, solo para el administrador, y se adelantó a este incremento para poder demostrar las alertas. Mientras está activa, el banner del prototipo muestra «Fecha simulada: …» para todas las personas.
 
 **D29. Navegación.** Con más enlaces por rol, en pantallas anchas la navegación pasa a una segunda fila del encabezado; en pantallas menores a 1280 px se usa el menú desplegable.
+
+## Incremento 5
+
+**D30. Indicadores del tablero (RF17).** Se calculan en el momento con la fecha actual o simulada:
+1. *Oportunidades publicadas con ficha estándar completa*: fichas publicadas con todos los campos obligatorios, cobertura si hay financiamiento y al menos un requisito (`camposFaltantes`), sobre el total de fichas publicadas.
+2. *Usuarios registrados que generan su checklist*: ciudadanos con al menos una ruta generada, sobre el total de ciudadanos.
+3. *Usuarios que califican la información como clara, oportuna y útil*: personas cuya última encuesta tiene nota 4 o 5 en claridad, oportunidad y utilidad, sobre las personas que respondieron la encuesta (la suficiencia se informa en el reporte por entidad, pero no forma parte del indicador).
+4. *Fichas actualizadas dentro del plazo acordado*: fichas publicadas revisadas en los últimos 90 días, sobre el total de fichas publicadas.
+
+Los indicadores 2 y 3 se desagregan por la región del perfil; los 1 y 4, también por entidad. Para que el indicador 1 no quede en 100 %, el seed publica dos fichas sin cobertura (UHOR y FONABEP), como si se hubieran migrado a medias.
+
+**D31. Reporte a entidades (RF18).** Muestra, para las fichas de una entidad, el número de respuestas, el promedio de cada dimensión, el porcentaje de respuestas «clara, oportuna y útil», una tabla por ficha y los comentarios escritos, sin datos de quién respondió. El administrador elige la entidad; cada gestor ve solo el de la suya.
+
+**D32. Gestión de contenidos (RF16).** Cada gestor ve, crea y edita solo las fichas y los trámites de su entidad; la ficha de otra entidad responde «no encontrada». No se puede guardar una ficha con campos obligatorios vacíos, sin requisitos, con cierre anterior a la apertura, sin cobertura si hay financiamiento o con un enlace oficial que no empiece con `https://`. Al guardar se registran la fecha de actualización (actual o simulada) y el nombre del gestor como responsable. «Despublicar» retira la ficha del catálogo sin borrarla (las rutas y encuestas existentes se conservan) y se puede volver a publicar. Una ficha desactualizada puede renovarse con «Confirmar que sigue vigente» sin cambiar sus datos. Al editar los requisitos, los que no cambian se conservan para no duplicar ítems en los checklists ya generados. Los trámites despublicados dejan de aparecer en fichas, rutas, panel y alertas.
+
+**D33. Fuera de alcance del prototipo.** La gestión de cuentas de usuarios y de entidades por el administrador (sección 3) no tiene un requerimiento funcional propio; las cuentas del personal y las entidades vienen del seed.

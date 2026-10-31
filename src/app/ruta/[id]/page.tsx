@@ -51,7 +51,7 @@ export default async function Ruta({ params, searchParams }: Params) {
   const [o, hoy, guardada, items, avances] = await Promise.all([
     prisma.oportunidad.findFirst({
       where: { id, publicada: true },
-      include: { entidad: true, tramites: { include: { tramite: true } } },
+      include: { entidad: true, tramites: { where: { tramite: { publicado: true } }, include: { tramite: true } } },
     }),
     obtenerHoy(),
     prisma.guardada.findUnique({ where: { usuarioId_oportunidadId: { usuarioId: u.id, oportunidadId: id } } }),

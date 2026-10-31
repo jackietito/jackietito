@@ -31,7 +31,7 @@ export async function sincronizarAlertas(db: PrismaClient, usuarioId: string, ho
       perfil: true,
       guardadas: {
         where: { oportunidad: { publicada: true } },
-        include: { oportunidad: { include: { tramites: { include: { tramite: true } } } } },
+        include: { oportunidad: { include: { tramites: { where: { tramite: { publicado: true } }, include: { tramite: true } } } } },
       },
       avances: true,
     },
