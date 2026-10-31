@@ -7,8 +7,12 @@ import { DIAS_VIGENCIA_FICHA } from "@/lib/catalogos";
 import { aFechaCalendario, aISO, formatearFecha } from "@/lib/fechas";
 import { NOTA_SATISFACCION, indicadoresFichas, indicadoresUsuarios, type Proporcion } from "@/lib/indicadores";
 import { cambiarFechaSimulada } from "@/lib/acciones-seguimiento";
+import { FormRestablecer } from "@/components/FormRestablecer";
 
 export const metadata: Metadata = { title: "Tablero de indicadores" };
+
+// Restablecer los datos recarga todo el seed: se da más tiempo a la función en Vercel.
+export const maxDuration = 120;
 
 function Indicador({ id, titulo, p, detalle, nota }: { id: string; titulo: string; p: Proporcion; detalle: string; nota?: string }) {
   return (
@@ -150,6 +154,15 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
           <button type="submit" name="accion" value="simular" className="btn-primario">Usar esta fecha</button>
           {simulada && <button type="submit" name="accion" value="real" formNoValidate className="btn-secundario">Volver a la fecha real</button>}
         </form>
+      </section>
+
+      <section aria-labelledby="titulo-restablecer" className="tarjeta max-w-2xl space-y-3 border-peligro">
+        <h2 id="titulo-restablecer" className="titulo-seccion">Restablecer los datos de prueba</h2>
+        <p>
+          Borra todo lo que se hizo en el prototipo y vuelve a cargar los datos ficticios iniciales, con fechas calculadas
+          desde hoy. Úsalo entre una sesión de pruebas con participantes y la siguiente. <strong>No se puede deshacer.</strong>
+        </p>
+        <FormRestablecer habilitado={!!process.env.CLAVE_RESTABLECER} />
       </section>
     </div>
   );

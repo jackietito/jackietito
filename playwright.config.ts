@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 // Las pruebas usan una base SQLite propia (prisma/e2e.db) que se recarga con el seed
 // cada vez que se levanta el servidor de pruebas.
 const PUERTO = 3100;
-const env = { DATABASE_URL: "file:./e2e.db", SESSION_SECRET: "clave-de-pruebas-e2e" };
+const env = { DATABASE_URL: "file:./e2e.db", SESSION_SECRET: "clave-de-pruebas-e2e", CLAVE_RESTABLECER: "clave-restablecer-e2e" };
 
 export default defineConfig({
   testDir: "./e2e",

@@ -119,6 +119,7 @@ La aplicación se publica en Vercel con una base PostgreSQL en Neon, para que el
 | `DATABASE_URL` | Cadena de Neon **con pooling** (host con `-pooler`) | La aplicación (driver `pg` con `@prisma/adapter-pg`) |
 | `DATABASE_URL_UNPOOLED` | Cadena de Neon **directa** (sin `-pooler`) | `prisma db push` (`directUrl`) y el seed |
 | `SESSION_SECRET` | Cadena larga y aleatoria (`openssl rand -base64 32`) | Firma de la cookie de sesión |
+| `CLAVE_RESTABLECER` | Contraseña que tú eliges (no la compartas con participantes) | Botón «Restablecer los datos de prueba» en `/admin`. Si falta, el botón queda desactivado |
 
 ### Proyecto Neon vinculado
 
@@ -164,11 +165,15 @@ npm run db:sqlite     # después de usar Neon: vuelve a generar el cliente de Pr
 
 1. Crea una cuenta en [vercel.com](https://vercel.com) con tu cuenta de GitHub e importa este repositorio.
 2. Conecta la base: en **Storage**, agrega la integración de Neon y elige el proyecto existente (crea `DATABASE_URL` y `DATABASE_URL_UNPOOLED`), o copia ambas cadenas desde `.env.neon` en **Settings → Environment Variables**.
-3. Agrega `SESSION_SECRET` en **Settings → Environment Variables**.
+3. Agrega `SESSION_SECRET` y `CLAVE_RESTABLECER` en **Settings → Environment Variables**.
 4. En **Settings → Build and Deployment**, cambia el *Build Command* a `npm run vercel-build`. Deja activado *Fluid compute* (es el valor por defecto).
 5. Despliega. El build crea o actualiza las tablas y, si la base está vacía, carga los datos de prueba.
 
 Cada `git push` a la rama principal vuelve a desplegar la aplicación sin borrar los datos.
+
+### Restablecer los datos entre sesiones de prueba
+
+Ingresa como `admin@ventanilla.test`, ve a **Tablero de indicadores** (`/admin`) y, al final de la página, usa **Restablecer los datos de prueba**: marca la casilla de confirmación y escribe la contraseña de `CLAVE_RESTABLECER`. Se borran todas las cuentas, rutas, consultas, encuestas y fichas creadas o editadas, y se vuelven a cargar los datos ficticios con fechas calculadas desde ese día. No se puede deshacer.
 
 ## Estructura
 
