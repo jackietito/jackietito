@@ -105,7 +105,7 @@ export default async function FichaOportunidad({ params }: Params) {
   const integral = o.financiamientoTipo === "integral";
   const puedePreparar = estado !== "cerrada" && ctx.rol !== "gestor" && ctx.rol !== "orientador" && ctx.rol !== "admin";
   const preparar = (clase: string) =>
-    puedePreparar ? <Link href={`/ruta/${o.id}`} className={`btn-primario ${clase}`}>Preparar mi postulación</Link> : null;
+    puedePreparar ? <Link href={`/ruta/${o.id}`} prefetch={false} className={`btn-primario ${clase}`}>Preparar mi postulación</Link> : null;
   const cobertura = coberturaCorta(o);
 
   return (

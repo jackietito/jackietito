@@ -41,7 +41,7 @@ test("la ciudadana recibe alertas de vencimiento y de nuevas oportunidades, con 
 
 test("con la fecha simulada, la alerta pasa al umbral de 7 días", async ({ page, browser }) => {
   await ingresar(page, "admin@ventanilla.test");
-  await page.getByLabel("Nueva fecha").fill(enDias(20));
+  await page.getByLabel("Nueva fecha").fill(enDias(27));
   await page.getByRole("button", { name: "Usar esta fecha" }).click();
   await expect(page.getByRole("status")).toContainText("Actualizamos la fecha");
   try {
@@ -72,7 +72,11 @@ test("el panel de seguimiento muestra próximas fechas, avance del checklist y e
   await expect(page.getByRole("heading", { name: "Próximas fechas" })).toBeVisible();
   await expect(page.getByRole("region", { name: "Próximas fechas" }).getByRole("listitem").first()).toBeVisible();
   const tarjeta = page.getByRole("article").filter({ hasText: "Doctorado en Energías Renovables con beca de investigación" });
-  await expect(tarjeta.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "30");
+  await expect(tarjeta.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "22");
+  // Una tarjeta por oportunidad con semáforo y próximo paso (D63); nunca «Atrasado».
+  await expect(tarjeta.getByText(/^¿Llego a tiempo?/)).toHaveCount(1);
+  await expect(tarjeta).toContainText("Próximo paso");
+  await expect(page.getByRole("main")).not.toContainText("Atrasado");
   await expect(tarjeta).toContainText("Completado");
   await expect(tarjeta).toContainText("En curso");
   await expect(page.getByRole("link", { name: /alertas? sin leer/ })).toBeVisible();

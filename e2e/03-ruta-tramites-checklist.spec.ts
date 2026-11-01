@@ -49,10 +49,10 @@ test("genera la ruta y el checklist, marca avances y se conservan", async ({ pag
   await page.goto(`/catalogo?q=${encodeURIComponent(OPORTUNIDAD)}`);
   await page.getByRole("link", { name: OPORTUNIDAD, exact: true }).click();
   await page.getByRole("link", { name: "Preparar mi postulación" }).first().click();
+  // Sin pantalla intermedia (D63): la ruta se arma al llegar.
   await expect(page).toHaveURL(/\/ruta\//);
-  await revisarAccesibilidad(page);
-  await page.getByRole("button", { name: "Generar mi ruta y checklist" }).click();
-  await expect(page.getByRole("status")).toContainText("generamos tu ruta y tu checklist");
+  await expect(page.getByRole("status")).toContainText("armamos tu ruta y tu checklist");
+  await expect(page.getByRole("button", { name: "Generar mi ruta y checklist" })).toHaveCount(0);
 
   // Ruta: pasos ordenados con fecha calculada desde el cierre; el último es la postulación oficial.
   const pasos = page.getByRole("region", { name: "Ruta paso a paso" }).getByRole("article");
@@ -91,7 +91,7 @@ test("una ruta con avances previos muestra el progreso", async ({ page }) => {
   await page.getByRole("link", { name: /Ver mi ruta y checklist/ }).first().click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Doctorado en Energías Renovables con beca de investigación");
   await expect(page.getByRole("region", { name: "Mi avance" })).toContainText(/Tienes 3 de \d+ requisitos listos/);
-  await expect(page.getByRole("progressbar", { name: /Checklist/ })).toBeVisible();
+  await expect(page.getByRole("progressbar", { name: "Avance de mi postulación" })).toBeVisible();
 });
 
 test("no se arma una ruta para una convocatoria cerrada", async ({ page }) => {
@@ -102,6 +102,23 @@ test("no se arma una ruta para una convocatoria cerrada", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Preparar mi postulación" })).toHaveCount(0);
   const id = page.url().split("/").pop();
   await page.goto(`/ruta/${id}`);
-  await expect(page.getByText("Esta convocatoria ya cerró, por eso no podemos armar una ruta.")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Generar mi ruta y checklist" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Esta convocatoria ya no es alcanzable: mira estas alternativas" })).toBeVisible();
+  await expect(page.getByText("La convocatoria ya cerró, por eso no armamos una ruta.")).toBeVisible();
+  await expect(page.getByRole("region", { name: "Ruta paso a paso" })).toHaveCount(0);
+});
+
+test("si los trámites ya no alcanzan, la ruta lo dice y ofrece alternativas", async ({ page }) => {
+  await registrarCuenta(page);
+  await page.goto(`/catalogo?q=${encodeURIComponent("Maestría en Ciencia de Datos")}`);
+  await page.getByRole("link", { name: "Maestría en Ciencia de Datos", exact: true }).click();
+  await page.getByRole("link", { name: "Preparar mi postulación" }).first().click();
+  const alternativas = page.getByRole("region", { name: "Esta convocatoria ya no es alcanzable: mira estas alternativas" });
+  await expect(alternativas).toBeVisible();
+  await expect(alternativas.getByRole("link").first()).toHaveAttribute("href", /\/oportunidades\//);
+  // Los pasos vencidos dicen hasta cuándo aún llegas, sin hablar de atraso.
+  const ruta = page.getByRole("region", { name: "Ruta paso a paso" });
+  await expect(ruta.getByText(/^Inicia hoy: aún llegas si lo completas antes del /).first()).toBeVisible();
+  await expect(page.getByRole("main")).not.toContainText("Atrasado");
+  await expect(page.getByRole("main")).not.toContainText("ya pasó");
+  await revisarAccesibilidad(page);
 });

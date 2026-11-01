@@ -1,6 +1,6 @@
 // Ruta paso a paso (RF09) y checklist personalizado (RF11).
 import type { PrismaClient, Tramite } from "@prisma/client";
-import { sumarDias } from "./fechas";
+import { diasEntre, formatearFecha, sumarDias, textoDias } from "./fechas";
 import { enlacesTramite, textoCosto, textoPlazo, type EnlaceTramite } from "./tramites";
 
 /** Días antes del cierre recomendados para enviar la postulación en el canal oficial. */
@@ -17,6 +17,8 @@ export type PasoRuta = {
   fechaRecomendada: Date;
   /** Plazo y costo referenciales, ya en palabras (null en el paso de postulación) */
   plazo: string | null;
+  /** Días que toma el trámite (0 en la postulación) */
+  plazoDias: number;
   costo: string | null;
   enlace: string;
   /** Enlaces oficiales del trámite; si hay, reemplazan al enlace de ejemplo */
@@ -45,6 +47,7 @@ export function construirRuta(
       documentos: t.documentos.split("\n").map((d) => d.trim()).filter(Boolean),
       fechaRecomendada: sumarDias(oportunidad.fechaCierre, -t.anticipacionDias),
       plazo: textoPlazo(t),
+      plazoDias: t.plazoDias,
       costo: textoCosto(t),
       enlace: t.enlaceOficial,
       enlaces: enlacesTramite(t),
@@ -60,6 +63,7 @@ export function construirRuta(
     documentos: ["Todos los documentos de tu checklist"],
     fechaRecomendada: sumarDias(oportunidad.fechaCierre, -DIAS_MARGEN_POSTULACION),
     plazo: null,
+    plazoDias: 0,
     costo: null,
     enlace: oportunidad.enlaceOficial,
     enlaces: [],
@@ -117,3 +121,31 @@ export async function generarRuta(db: Cliente, usuarioId: string, oportunidadId:
 export function porcentaje(hechos: number, total: number): number {
   return total === 0 ? 0 : Math.round((hechos / total) * 100);
 }
+
+/** Días antes de la fecha recomendada en que un paso se marca como «pronto». */
+export const DIAS_PROXIMO = 14;
+
+export type AvisoPaso = {
+  nivel: "hecho" | "normal" | "pronto" | "inicia-hoy" | "no-alcanza";
+  texto: string;
+};
+
+/**
+ * Qué decirle a la persona sobre un paso (D63). Si la fecha recomendada ya pasó, no
+ * se habla de «atraso»: se dice hasta cuándo aún llega si empieza hoy, o que ese
+ * paso ya no alcanza antes del cierre.
+ */
+export function avisoPaso(p: Pick<PasoRuta, "tipo" | "fechaRecomendada" | "plazoDias">, cierre: Date, hoy: Date, completado = false): AvisoPaso {
+  if (completado) return { nivel: "hecho", texto: "Completado" };
+  const dias = diasEntre(hoy, p.fechaRecomendada);
+  if (dias >= 0) return { nivel: dias <= DIAS_PROXIMO ? "pronto" : "normal", texto: `Empieza ${textoDias(dias)}.` };
+  const limite = p.tipo === "postulacion" ? cierre : sumarDias(cierre, -DIAS_MARGEN_POSTULACION);
+  const termina = sumarDias(hoy, p.plazoDias);
+  if (termina <= cierre) {
+    const fecha = termina <= limite ? limite : cierre;
+    return { nivel: "inicia-hoy", texto: `Inicia hoy: aún llegas si lo completas antes del ${formatearFecha(fecha)}.` };
+  }
+  return { nivel: "no-alcanza", texto: "Este paso ya no alcanza a completarse antes del cierre." };
+}
+
+export const NO_ALCANZABLE = "Esta convocatoria ya no es alcanzable: mira estas alternativas";
