@@ -49,6 +49,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
               La Ventanilla informa y deriva: no recibe postulaciones ni realiza trámites. Los plazos y costos de
               trámites son referenciales.
             </p>
+            <p>
+              <a href="/guia" className="enlace">Guía de uso: tu ruta al posgrado en seis pasos</a>
+            </p>
           </div>
         </footer>
       </body>

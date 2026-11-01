@@ -72,3 +72,27 @@ test("la ficha muestra todos los grupos de la ficha estándar y el enlace oficia
   await expect(page.getByRole("link", { name: /Ir a la convocatoria oficial/ })).toHaveAttribute("href", /^https:\/\/example\.org\//);
   await revisarAccesibilidad(page);
 });
+
+test("la guía visual de uso se abre desde el pie de página, con sus capturas", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: /Guía de uso/ }).click();
+  await expect(page).toHaveURL(/\/guia$/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Tu posgrado en el exterior");
+  await expect(page.getByRole("note")).toContainText("Prototipo académico – datos ficticios");
+  const pasos = page.locator("section.paso");
+  await expect(pasos).toHaveCount(6);
+  // Todas las capturas cargan.
+  const imagenes = page.locator("img");
+  const n = await imagenes.count();
+  for (let i = 0; i < n; i++) {
+    await imagenes.nth(i).scrollIntoViewIfNeeded();
+    await expect.poll(() => imagenes.nth(i).evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
+  }
+  await page.getByRole("link", { name: /Abrir la Ventanilla/ }).first().click();
+  await expect(page).toHaveURL(/\/$/);
+});
+
+test("la guía visual cumple la revisión de accesibilidad", async ({ page }) => {
+  await page.goto("/guia");
+  await revisarAccesibilidad(page);
+});

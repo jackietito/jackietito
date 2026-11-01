@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Guía visual para usar la Ventanilla de Posgrado: seis pasos desde tu ciudad hasta tu posgrado en el exterior. Prototipo académico con datos ficticios.">
+<title>Guía de uso · Ventanilla de Posgrado – Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img { max-width: 100%; }
+/* Layout: un itinerario de viaje — pase de abordar en el héroe, seis paradas con capturas reales del teléfono, cierre con «lo que haces tú». */
+:root {
+  --papel: #f4f7f6;
+  --superficie: #ffffff;
+  --tinta: #073b45;
+  --mar: #0b5563;
+  --mar-claro: #e3f0f2;
+  --sol: #f5b301;
+  --sol-claro: #fff4d1;
+  --texto: #15292e;
+  --suave: #4a5e63;
+  --borde: #cfdcdd;
+  --ok: #166534;
+  --ok-claro: #dcf3e2;
+  --rojo: #b42318;
+  --marco: #1d2b2f;
+  --display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --cuerpo: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papel: #0b171a; --superficie: #12252a; --tinta: #0f3a42; --mar: #7cc7d2; --mar-claro: #16343a;
+    --sol: #f5b301; --sol-claro: #3a2f0e; --texto: #e5eef0; --suave: #a9bcc0; --borde: #27434a;
+    --ok: #7fd69a; --ok-claro: #133222; --rojo: #ff9b8f; --marco: #000000; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --papel: #0b171a; --superficie: #12252a; --tinta: #0f3a42; --mar: #7cc7d2; --mar-claro: #16343a;
+  --sol: #f5b301; --sol-claro: #3a2f0e; --texto: #e5eef0; --suave: #a9bcc0; --borde: #27434a;
+  --ok: #7fd69a; --ok-claro: #133222; --rojo: #ff9b8f; --marco: #000000; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--papel); color: var(--texto); font-family: var(--cuerpo); font-size: 1.0625rem; line-height: 1.55; }
+.envoltura { max-width: 72rem; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.08; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--sol); outline-offset: 3px; border-radius: 6px; }
+
+/* Aviso del prototipo, igual que en la app */
+.aviso { background: #fde9a8; color: #4a3500; border-bottom: 2px solid var(--sol); text-align: center; font-size: .9rem; padding-block: .45rem; }
+.aviso strong { font-weight: 700; }
+
+/* Héroe: cielo de la app + pase de abordar */
+.heroe { background: var(--tinta); color: #fff; padding-block: clamp(2rem, 6vw, 4.5rem) clamp(2.5rem, 6vw, 4rem); position: relative; overflow: hidden; }
+.heroe::after { content: ""; position: absolute; inset: auto -10% -45% 40%; height: 120%; background: radial-gradient(closest-side, rgba(245,179,1,.22), transparent); pointer-events: none; }
+.heroe .envoltura { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; position: relative; z-index: 1; }
+.etiqueta { font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.heroe .etiqueta { color: var(--sol); }
+.heroe h1 { font-size: clamp(2.3rem, 6.2vw, 4.4rem); font-weight: 800; letter-spacing: -.02em; margin-top: .6rem; }
+.heroe h1 em { font-style: normal; color: var(--sol); }
+.heroe .bajada { font-size: clamp(1.1rem, 2.2vw, 1.3rem); max-width: 34rem; margin-top: 1rem; color: rgba(255,255,255,.9); }
+.acciones { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.6rem; }
+.boton { display: inline-flex; align-items: center; gap: .5rem; min-height: 3rem; padding: .7rem 1.3rem; border-radius: 999px; font-weight: 700; text-decoration: none; font-size: 1.05rem; transition: transform .15s ease; }
+.boton:hover { transform: translateY(-2px); }
+.boton-sol { background: var(--sol); color: #1d1600; }
+.boton-linea { border: 2px solid rgba(255,255,255,.7); color: #fff; }
+.datos { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; margin-top: 1.6rem; color: rgba(255,255,255,.85); font-size: .95rem; }
+.datos b { font-family: var(--display); font-size: 1.5rem; color: #fff; margin-right: .3rem; }
+
+/* Pase de abordar */
+.pase { background: var(--superficie); color: var(--texto); border-radius: 1.2rem; box-shadow: 0 24px 50px rgba(0,0,0,.28); transform: rotate(-2.5deg); overflow: hidden; max-width: 26rem; justify-self: center; width: 100%; }
+.pase-cab { background: var(--sol); color: #1d1600; padding: .7rem 1.2rem; display: flex; justify-content: space-between; font-weight: 700; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+.pase-cuerpo { padding: 1.2rem; display: grid; gap: 1rem; }
+.tramo { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .7rem; }
+.tramo .lugar small { display: block; color: var(--suave); font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; }
+.tramo .lugar b { font-family: var(--display); font-size: 1.6rem; color: var(--mar); }
+.tramo .lugar:last-child { text-align: right; }
+.vuelo { border-top: 2px dashed var(--borde); position: relative; height: 0; }
+.vuelo svg { position: absolute; left: 50%; top: -13px; transform: translateX(-50%); background: var(--superficie); padding: 0 4px; }
+.paradas { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .3rem; }
+.paradas a { text-decoration: none; text-align: center; font-size: .72rem; color: var(--suave); display: grid; gap: .25rem; justify-items: center; }
+.paradas a span { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--mar-claro); color: var(--mar); font-weight: 700; font-size: .95rem; }
+.paradas a:hover span { background: var(--sol); color: #1d1600; }
+.pase-pie { border-top: 2px dashed var(--borde); padding: .8rem 1.2rem; display: flex; justify-content: space-between; font-size: .85rem; color: var(--suave); }
+.pase-pie b { color: var(--texto); }
+
+/* ¿Por dónde empiezo? */
+.empiezo { padding-block: clamp(2.2rem, 5vw, 3.5rem) 1rem; }
+.empiezo h2 { font-size: clamp(1.6rem, 3.6vw, 2.3rem); color: var(--mar); }
+.opciones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+.opcion { display: grid; gap: .4rem; background: var(--superficie); border: 2px solid var(--borde); border-radius: 1rem; padding: 1.1rem 1.2rem; text-decoration: none; transition: border-color .15s ease, transform .15s ease; }
+.opcion:hover { border-color: var(--mar); transform: translateY(-3px); }
+.opcion .frase { font-weight: 700; font-size: 1.1rem; }
+.opcion .ir { color: var(--mar); font-weight: 700; font-size: .95rem; }
+
+/* Paradas del itinerario */
+.paso { padding-block: clamp(2.5rem, 6vw, 4.5rem); border-top: 1px solid var(--borde); scroll-margin-top: 1rem; }
+.paso .envoltura { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1.5rem, 5vw, 4rem); align-items: center; }
+.paso:nth-of-type(even) .texto { order: 2; }
+.numero { display: inline-flex; align-items: center; gap: .6rem; }
+.numero > span:first-child { font-family: var(--display); font-weight: 800; font-size: 1rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; background: var(--sol); color: #1d1600; }
+.numero .etiqueta { color: var(--suave); }
+.paso h2 { font-size: clamp(2rem, 4.6vw, 3.1rem); color: var(--mar); margin-top: .7rem; letter-spacing: -.01em; }
+.paso .promesa { font-size: clamp(1.15rem, 2.2vw, 1.35rem); margin-top: .5rem; }
+.chip { display: inline-block; margin-top: .9rem; font-size: .85rem; font-weight: 700; padding: .25rem .7rem; border-radius: 999px; }
+.chip-libre { background: var(--ok-claro); color: var(--ok); }
+.chip-cuenta { background: var(--mar-claro); color: var(--mar); }
+.hazlo { list-style: none; padding: 0; margin: 1.4rem 0 0; display: grid; gap: .8rem; }
+.hazlo li { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); gap: .8rem; align-items: start; }
+.hazlo .icono { width: 2.4rem; height: 2.4rem; border-radius: .7rem; background: var(--mar-claro); color: var(--mar); display: grid; place-items: center; }
+.hazlo b { color: var(--mar); }
+.dato { margin-top: 1.4rem; background: var(--sol-claro); border-radius: .9rem; padding: .9rem 1rem; font-size: .98rem; }
+.dato::before { content: "Dato"; display: inline-block; margin-right: .55rem; font-weight: 700; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; background: var(--sol); color: #1d1600; border-radius: .4rem; padding: .1rem .45rem; vertical-align: .1em; }
+
+/* Teléfonos con capturas reales */
+.pantallas { display: flex; justify-content: center; align-items: flex-start; gap: 1rem; }
+.telefono { margin: 0; width: min(17rem, 100%); background: var(--marco); border-radius: 2.2rem; padding: .55rem; box-shadow: 0 22px 44px rgba(7,59,69,.22); flex-shrink: 1; min-width: 0; }
+.telefono img { display: block; width: 100%; border-radius: 1.7rem; aspect-ratio: 390 / 760; object-fit: cover; object-position: top; }
+.telefono figcaption { color: #dfe8ea; font-size: .78rem; text-align: center; padding: .45rem .2rem .1rem; }
+.pantallas.dos .telefono { width: min(14.5rem, 48%); }
+.pantallas.dos .telefono:last-child { margin-top: 3rem; }
+
+/* Tú y la Ventanilla */
+.reparto { padding-block: clamp(2.5rem, 6vw, 4rem); background: var(--superficie); border-top: 1px solid var(--borde); }
+.reparto h2 { font-size: clamp(1.7rem, 3.6vw, 2.4rem); color: var(--mar); }
+.columnas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.4rem; }
+.columna { border-radius: 1rem; padding: 1.2rem 1.3rem; }
+.columna h3 { font-size: 1.25rem; }
+.columna ul { margin: .7rem 0 0; padding-left: 1.2rem; display: grid; gap: .35rem; }
+.ventanilla { background: var(--mar-claro); }
+.ventanilla h3 { color: var(--mar); }
+.tu { border: 2px dashed var(--borde); }
+
+/* Si te trabas */
+.trabas { padding-block: clamp(2.5rem, 6vw, 4rem); }
+.trabas h2 { font-size: clamp(1.7rem, 3.6vw, 2.4rem); color: var(--mar); }
+.tarjetas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 1.4rem; }
+.traba { background: var(--superficie); border: 1px solid var(--borde); border-radius: 1rem; padding: 1rem 1.1rem; display: grid; gap: .4rem; align-content: start; }
+.traba .si { font-weight: 700; }
+.traba .haz { color: var(--suave); }
+
+/* Cierre */
+.cierre { background: var(--tinta); color: #fff; padding-block: clamp(2.5rem, 6vw, 4rem); }
+.cierre .envoltura { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 2rem; align-items: center; }
+.cierre h2 { font-size: clamp(2rem, 5vw, 3.2rem); }
+.cierre h2 em { font-style: normal; color: var(--sol); }
+.cierre p { margin-top: .8rem; color: rgba(255,255,255,.88); max-width: 34rem; }
+.prueba { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.25); border-radius: 1rem; padding: 1.1rem 1.2rem; display: grid; gap: .7rem; }
+.prueba .etiqueta { color: var(--sol); }
+.credencial { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; align-items: center; }
+.credencial small { display: block; color: rgba(255,255,255,.75); font-size: .8rem; }
+.credencial code { font-size: 1rem; color: #fff; word-break: break-all; font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; }
+.copiar { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.6); border-radius: 999px; padding: .35rem .8rem; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; min-height: 2.25rem; }
+.copiar:hover { background: rgba(255,255,255,.12); }
+.pie { padding-block: 1.4rem; font-size: .88rem; color: var(--suave); }
+
+@media (max-width: 56rem) {
+  .heroe .envoltura, .paso .envoltura, .cierre .envoltura { grid-template-columns: minmax(0, 1fr); }
+  .paso:nth-of-type(even) .texto { order: 0; }
+  .pase { transform: rotate(-1.5deg); }
+  .opciones, .columnas { grid-template-columns: minmax(0, 1fr); }
+  .tarjetas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 30rem) {
+  .tarjetas { grid-template-columns: minmax(0, 1fr); }
+  .pantallas.dos .telefono:last-child { margin-top: 2rem; }
+  .paradas a { font-size: .66rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .boton, .opcion { transition: none; }
+  .boton:hover, .opcion:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="aviso" role="note"><strong>Prototipo académico – datos ficticios</strong> · Guía de uso de la Ventanilla de Posgrado</div>
+
+<header class="heroe">
+  <div class="envoltura">
+    <div>
+      <p class="etiqueta">Ventanilla de Posgrado · Guía rápida</p>
+      <h1>Tu posgrado en el exterior, <em>paso a paso</em> y en un solo lugar</h1>
+      <p class="bajada">Encuentra becas y programas de varias entidades, compáralos y prepara tus trámites con fechas claras. Desde tu celular y gratis.</p>
+      <div class="acciones">
+        <a class="boton boton-sol" href="/">Abrir la Ventanilla <span aria-hidden="true">→</span></a>
+        <a class="boton boton-linea" href="#paso-1">Ver cómo funciona</a>
+      </div>
+      <p class="datos"><span><b>36</b>oportunidades</span><span><b>13</b>países</span><span><b>5</b>entidades</span><span><b>7</b>trámites explicados</span></p>
+    </div>
+
+    <div class="pase" aria-label="Tu itinerario: seis paradas desde tu ciudad hasta tu posgrado">
+      <div class="pase-cab"><span>Pase de abordar</span><span>Ruta al posgrado</span></div>
+      <div class="pase-cuerpo">
+        <div class="tramo">
+          <div class="lugar"><small>Desde</small><b>Tu ciudad</b></div>
+          <div class="vuelo" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--mar)"><path d="M2 16l20-8-6 12-3-6-6-1z" fill="var(--sol)" stroke="var(--mar)"/></svg>
+          </div>
+          <div class="lugar"><small>Hacia</small><b>Tu posgrado</b></div>
+        </div>
+        <nav class="paradas" aria-label="Paradas del itinerario">
+          <a href="#paso-1"><span>1</span>Descubre</a>
+          <a href="#paso-2"><span>2</span>Regístrate</a>
+          <a href="#paso-3"><span>3</span>Elige</a>
+          <a href="#paso-4"><span>4</span>Prepárate</a>
+          <a href="#paso-5"><span>5</span>Sigue</a>
+          <a href="#paso-6"><span>6</span>Pregunta</a>
+        </nav>
+      </div>
+      <div class="pase-pie"><span>Equipaje: <b>tu correo</b></span><span>Costo: <b>gratis</b></span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="empiezo" aria-labelledby="t-empiezo">
+    <div class="envoltura">
+      <h2 id="t-empiezo">¿Por dónde empiezo?</h2>
+      <div class="opciones">
+        <a class="opcion" href="#paso-1"><span class="frase">«Todavía no sé qué estudiar ni dónde»</span><span class="ir">Empieza en la parada 1 →</span></a>
+        <a class="opcion" href="#paso-3"><span class="frase">«Sé lo que quiero, busco opciones que me convengan»</span><span class="ir">Ve a la parada 3 →</span></a>
+        <a class="opcion" href="#paso-4"><span class="frase">«Ya elegí una beca y quiero postular a tiempo»</span><span class="ir">Salta a la parada 4 →</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="paso" id="paso-1" aria-labelledby="t-1">
+    <div class="envoltura">
+      <div class="texto">
+        <p class="numero"><span>1</span><span class="etiqueta">Descubre</span></p>
+        <h2 id="t-1">Todas las becas, en un solo lugar</h2>
+        <p class="promesa">Ya no tienes que buscar entidad por entidad.</p>
+        <span class="chip chip-libre">Sin cuenta</span>
+        <ul class="hazlo">
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><p>Escribe lo que te interesa, por ejemplo «educación España», y pulsa <b>Buscar</b>.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg></span><p>Filtra por país, costo o tipo de beca con <b>Mostrar filtros</b>.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/></svg></span><p>Abre una ficha: requisitos, costos y fecha de cierre, todo junto.</p></li>
+        </ul>
+        <p class="dato">La etiqueta verde <b>«Convocatoria abierta»</b> te dice que todavía estás a tiempo de postular.</p>
+      </div>
+      <div class="pantallas dos">
+        <figure class="telefono"><img src="/guia/img/1-inicio.jpg" alt="Página de inicio de la Ventanilla con el buscador y el resumen: 36 oportunidades, 21 con convocatoria abierta" loading="lazy"><figcaption>Inicio</figcaption></figure>
+        <figure class="telefono"><img src="/guia/img/1-filtros.jpg" alt="Filtros del catálogo: buscar por texto, estado de la convocatoria, país y área" loading="lazy"><figcaption>Filtros del catálogo</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="paso" id="paso-2" aria-labelledby="t-2">
+    <div class="envoltura">
+      <div class="texto">
+        <p class="numero"><span>2</span><span class="etiqueta">Regístrate</span></p>
+        <h2 id="t-2">Un minuto y solo tu correo</h2>
+        <p class="promesa">Cuéntanos qué quieres estudiar y la Ventanilla trabaja para ti.</p>
+        <span class="chip chip-cuenta">Aquí creas tu cuenta</span>
+        <ul class="hazlo">
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><p>Pulsa <b>Crear cuenta</b>: correo y una contraseña de 8 caracteres o más.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><p>Lee para qué usamos tus datos y marca que estás de acuerdo.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-5 9 5-9 5z"/><path d="M7 12v4c3 2 7 2 10 0v-4"/></svg></span><p>Completa tu perfil: área, nivel, países, presupuesto y si necesitas beca.</p></li>
+        </ul>
+        <p class="dato">No te pedimos nombre, DNI ni teléfono. Puedes cambiar tu perfil cuando quieras.</p>
+      </div>
+      <div class="pantallas">
+        <figure class="telefono"><img src="/guia/img/2-registro.jpg" alt="Formulario Crear cuenta con correo, contraseña y la explicación del uso de datos personales" loading="lazy"><figcaption>Crear cuenta</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="paso" id="paso-3" aria-labelledby="t-3">
+    <div class="envoltura">
+      <div class="texto">
+        <p class="numero"><span>3</span><span class="etiqueta">Elige</span></p>
+        <h2 id="t-3">Te mostramos lo que encaja contigo</h2>
+        <p class="promesa">Y comparas lado a lado antes de decidir.</p>
+        <span class="chip chip-cuenta">Con tu cuenta</span>
+        <ul class="hazlo">
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span><p>En <b>Recomendaciones</b>, cada tarjeta te dice en qué coincide con tu perfil.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg></span><p>Pulsa <b>Guardar</b> en las que te gusten.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="7" height="16" rx="1.5"/><rect x="14" y="4" width="7" height="16" rx="1.5"/></svg></span><p>Pulsa <b>Comparar</b> en hasta 3. Lo que cambia entre ellas se marca <b>«Diferente»</b>.</p></li>
+        </ul>
+        <p class="dato">La marca <b>«Menor costo total»</b> te señala la opción más económica, con todo incluido.</p>
+      </div>
+      <div class="pantallas dos">
+        <figure class="telefono"><img src="/guia/img/3-recomendaciones.jpg" alt="Tarjeta recomendada que coincide en 7 de 7 criterios, con el botón Guardada" loading="lazy"><figcaption>Recomendaciones</figcaption></figure>
+        <figure class="telefono"><img src="/guia/img/3-comparador.jpg" alt="Comparador con filas resaltadas como Diferente y la marca Menor costo total" loading="lazy"><figcaption>Comparador</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="paso" id="paso-4" aria-labelledby="t-4">
+    <div class="envoltura">
+      <div class="texto">
+        <p class="numero"><span>4</span><span class="etiqueta">Prepárate</span></p>
+        <h2 id="t-4">Tu ruta de trámites, con fechas</h2>
+        <p class="promesa">Sabrás qué hacer, ante quién y desde cuándo.</p>
+        <span class="chip chip-cuenta">Con tu cuenta</span>
+        <ul class="hazlo">
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6a4 4 0 000-8h-4a4 4 0 010-8h6"/></svg></span><p>En la ficha, pulsa <b>Preparar mi postulación</b> y luego <b>Generar mi ruta</b>.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><p>Cada paso dice la fecha en que conviene empezar, contada desde el cierre.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg></span><p>Marca tu <b>checklist</b> de documentos y mira crecer tu porcentaje.</p></li>
+        </ul>
+        <p class="dato">Un paso en rojo significa que su fecha ya pasó: hazlo cuanto antes. Todo se guarda solo.</p>
+      </div>
+      <div class="pantallas dos">
+        <figure class="telefono"><img src="/guia/img/4-ruta.jpg" alt="Mi avance al 30 por ciento y el primer paso de la ruta, completado" loading="lazy"><figcaption>Ruta paso a paso</figcaption></figure>
+        <figure class="telefono"><img src="/guia/img/4-checklist.jpg" alt="Checklist con requisitos académicos, de idioma y documentos, algunos marcados" loading="lazy"><figcaption>Mi checklist</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="paso" id="paso-5" aria-labelledby="t-5">
+    <div class="envoltura">
+      <div class="texto">
+        <p class="numero"><span>5</span><span class="etiqueta">Sigue tu avance</span></p>
+        <h2 id="t-5">Te avisamos antes de que cierre</h2>
+        <p class="promesa">Para que ninguna fecha te tome por sorpresa.</p>
+        <span class="chip chip-cuenta">Con tu cuenta</span>
+        <ul class="hazlo">
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg></span><p><b>Mi panel</b> te muestra tus próximas fechas y cuánto llevas.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 21h4"/></svg></span><p><b>Alertas</b> a 30, 15 y 7 días del cierre de lo que guardaste.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></svg></span><p>Y un aviso cuando aparece una oportunidad nueva para tu perfil.</p></li>
+        </ul>
+        <p class="dato">El número junto a <b>Alertas</b> en el menú te dice cuántos avisos tienes sin leer.</p>
+      </div>
+      <div class="pantallas dos">
+        <figure class="telefono"><img src="/guia/img/5-panel.jpg" alt="Mi panel con la lista de próximas fechas, las atrasadas en rojo" loading="lazy"><figcaption>Mi panel</figcaption></figure>
+        <figure class="telefono"><img src="/guia/img/5-alertas.jpg" alt="Alertas de nuevas oportunidades y de vencimiento, marcadas como sin leer" loading="lazy"><figcaption>Alertas</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="paso" id="paso-6" aria-labelledby="t-6">
+    <div class="envoltura">
+      <div class="texto">
+        <p class="numero"><span>6</span><span class="etiqueta">Pregunta y opina</span></p>
+        <h2 id="t-6">No estás sola ni solo en esto</h2>
+        <p class="promesa">Si algo no te queda claro, hay alguien para ayudarte.</p>
+        <span class="chip chip-libre">Preguntas frecuentes sin cuenta</span>
+        <ul class="hazlo">
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .5c0 2-2.5 2-2.5 4M12 17h.01"/></svg></span><p>En <b>Orientación</b>, busca tu duda en las preguntas frecuentes.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg></span><p>¿No está? Escríbele a un orientador. Te avisamos cuando responda.</p></li>
+          <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V12M10 20V8M15 20v-6M20 20V4"/></svg></span><p>Al final, cuéntanos en la <b>encuesta</b> qué tan útil te fue, del 1 al 5.</p></li>
+        </ul>
+        <p class="dato">Tu opinión llega, sin tu nombre, a la entidad que publicó la beca para que mejore su información.</p>
+      </div>
+      <div class="pantallas">
+        <figure class="telefono"><img src="/guia/img/6-orientacion.jpg" alt="Preguntas frecuentes de Orientación, con la respuesta sobre la apostilla abierta" loading="lazy"><figcaption>Orientación</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="reparto" aria-labelledby="t-reparto">
+    <div class="envoltura">
+      <h2 id="t-reparto">La Ventanilla te prepara; tú das el último paso</h2>
+      <div class="columnas">
+        <div class="columna ventanilla">
+          <h3>La Ventanilla hace por ti</h3>
+          <ul>
+            <li>Reúne becas y programas de varias entidades.</li>
+            <li>Te recomienda, compara y ordena los trámites.</li>
+            <li>Te avisa de las fechas y te orienta.</li>
+          </ul>
+        </div>
+        <div class="columna tu">
+          <h3>Tú haces en el sitio oficial</h3>
+          <ul>
+            <li>La postulación, con el botón <b>Ir a la convocatoria oficial</b>.</li>
+            <li>Los trámites, ante cada entidad.</li>
+            <li>Confirmar plazos y costos: aquí son referenciales.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="trabas" aria-labelledby="t-trabas">
+    <div class="envoltura">
+      <h2 id="t-trabas">¿Te trabaste? Casi siempre es esto</h2>
+      <div class="tarjetas">
+        <div class="traba"><p class="si">En el celular no veo los enlaces</p><p class="haz">Pulsa <b>Menú</b>, arriba a la derecha.</p></div>
+        <div class="traba"><p class="si">No me deja crear la cuenta</p><p class="haz">Marca la casilla del uso de tus datos.</p></div>
+        <div class="traba"><p class="si">No tengo recomendaciones</p><p class="haz">Agrega países o sube tu presupuesto en <b>Mi perfil</b>.</p></div>
+        <div class="traba"><p class="si">No aparece «Preparar mi postulación»</p><p class="haz">Esa convocatoria ya cerró: elige otra.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="cierre">
+    <div class="envoltura">
+      <div>
+        <h2>Tu próxima parada: <em>la Ventanilla</em></h2>
+        <p>Abre la aplicación en tu celular, busca tu primera beca y guarda la que te guste. Cuando la elijas, la Ventanilla te arma la ruta.</p>
+        <div class="acciones">
+          <a class="boton boton-sol" href="/">Abrir la Ventanilla <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="prueba" aria-labelledby="t-prueba">
+        <p class="etiqueta" id="t-prueba">¿Vienes a una sesión de prueba?</p>
+        <p>Crea tu cuenta o usa esta cuenta de ejemplo:</p>
+        <div class="credencial"><span><small>Correo</small><code id="c-correo">rosa@ventanilla.test</code></span><button class="copiar" type="button" data-copiar="c-correo" id="b-correo">Copiar</button></div>
+        <div class="credencial"><span><small>Contraseña</small><code id="c-clave">Prototipo2026!</code></span><button class="copiar" type="button" data-copiar="c-clave" id="b-clave">Copiar</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="envoltura pie">
+    <p>Prototipo académico del Programa de Gobernabilidad e Innovación Pública PUCP–CAF. Todo el contenido es ficticio; las capturas muestran datos de prueba.</p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll("[data-copiar]").forEach((boton) => {
+  boton.addEventListener("click", () => {
+    const codigo = document.getElementById(boton.dataset.copiar);
+    const texto = codigo.textContent;
+    const listo = () => { boton.textContent = "Copiado"; setTimeout(() => { boton.textContent = "Copiar"; }, 1600); };
+    const seleccionar = () => {
+      const r = document.createRange(); r.selectNodeContents(codigo);
+      const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      boton.textContent = "Seleccionado";
+      setTimeout(() => { boton.textContent = "Copiar"; }, 1600);
+    };
+    try {
+      navigator.clipboard.writeText(texto).then(listo, seleccionar);
+    } catch (e) { seleccionar(); }
+  });
+});
+</script>
+</body>
+</html>

@@ -8,6 +8,7 @@ En el Perú, la información sobre posgrados y becas en el exterior está disper
 Este prototipo funcional sirve para validar la experiencia con usuarios en pruebas de usabilidad.
 
 **Versión publicada:** https://jackietito.vercel.app (Vercel + Neon). Se actualiza con cada cambio en `main`.
+**Guía de uso para ciudadanos:** [`/guia`](https://jackietito.vercel.app/guia), también enlazada en el pie de cada página.
 
 - Requerimientos: [`docs/requerimientos.md`](docs/requerimientos.md)
 - Decisiones tomadas durante la construcción: [`docs/decisiones.md`](docs/decisiones.md)
@@ -185,6 +186,7 @@ src/app/               páginas (App Router)
 src/components/        componentes de interfaz
 src/lib/               reglas de negocio: fechas, estado de convocatorias, costos, filtros, ruta, sesión
 src/lib/seed/          datos de prueba ficticios
+public/guia/           guía visual de uso para ciudadanos (página estática en /guia)
 e2e/                   pruebas de Playwright
 ```
 
