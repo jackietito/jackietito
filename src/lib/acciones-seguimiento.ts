@@ -8,6 +8,7 @@ import { DIMENSIONES_ENCUESTA, TEMAS_ORIENTACION } from "./catalogos";
 import { prisma } from "./db";
 import { desdeISO } from "./fechas";
 import { CLAVE_FECHA_SIMULADA, obtenerHoy } from "./hoy";
+import { CLAVE_PALETA, PALETAS } from "./paletas";
 import type { EstadoFormulario } from "./acciones";
 
 const texto = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
@@ -87,7 +88,11 @@ export async function responderConsulta(_: EstadoFormulario, fd: FormData): Prom
 
 export async function enviarEncuesta(_: EstadoFormulario, fd: FormData): Promise<EstadoFormulario> {
   const uid = await sesionCon("ciudadano", "/encuesta");
-  const valores: Record<string, string> = { comentario: texto(fd, "comentario"), oportunidadId: texto(fd, "oportunidadId") };
+  const valores: Record<string, string> = {
+    comentario: texto(fd, "comentario"),
+    oportunidadId: texto(fd, "oportunidadId"),
+    publicar: fd.get("publicar") === "si" ? "si" : "",
+  };
   const errores: Record<string, string> = {};
   const notas: Record<string, number> = {};
   for (const d of Object.keys(DIMENSIONES_ENCUESTA)) {
@@ -106,6 +111,8 @@ export async function enviarEncuesta(_: EstadoFormulario, fd: FormData): Promise
     oportunidadInfo: notas.oportunidadInfo,
     utilidad: notas.utilidad,
     comentario: valores.comentario,
+    // Solo se ofrece para publicar si autorizó y escribió un comentario; lo aprueba el administrador.
+    publicacion: fd.get("publicar") === "si" && valores.comentario ? "pendiente" : "no",
     creadaEn: await obtenerHoy(),
   };
   // Una respuesta por persona y oportunidad (o general): si responde de nuevo, se actualiza (D27).
@@ -130,4 +137,26 @@ export async function cambiarFechaSimulada(fd: FormData) {
   }
   revalidatePath("/", "layout");
   redirect("/admin?fecha=actualizada");
+}
+
+/** Cambia las tonalidades de toda la plataforma (D49). */
+export async function cambiarPaleta(fd: FormData) {
+  await sesionCon("admin", "/admin");
+  const valor = texto(fd, "paleta");
+  if (valor in PALETAS) {
+    await prisma.configuracion.upsert({ where: { clave: CLAVE_PALETA }, create: { clave: CLAVE_PALETA, valor }, update: { valor } });
+  }
+  revalidatePath("/", "layout");
+  redirect("/admin?paleta=actualizada#tonalidades");
+}
+
+/** El administrador aprueba o rechaza un testimonio antes de publicarlo (D50). */
+export async function moderarTestimonio(fd: FormData) {
+  await sesionCon("admin", "/admin");
+  const decision = texto(fd, "decision");
+  if (decision === "aprobado" || decision === "rechazado") {
+    await prisma.encuesta.updateMany({ where: { id: texto(fd, "id"), publicacion: "pendiente" }, data: { publicacion: decision } });
+  }
+  revalidatePath("/", "layout");
+  redirect("/admin#testimonios");
 }

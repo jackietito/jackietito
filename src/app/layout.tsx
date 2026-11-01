@@ -3,6 +3,7 @@ import "./globals.css";
 import { BannerPrototipo } from "@/components/BannerPrototipo";
 import { Encabezado } from "@/components/Encabezado";
 import { obtenerFechaSimulada } from "@/lib/hoy";
+import { obtenerPaleta, variablesPaleta } from "@/lib/paletas";
 import { formatearFecha } from "@/lib/fechas";
 
 export const metadata: Metadata = {
@@ -24,9 +25,9 @@ export const viewport: Viewport = {
 export const dynamic = "force-dynamic";
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const simulada = await obtenerFechaSimulada();
+  const [simulada, paleta] = await Promise.all([obtenerFechaSimulada(), obtenerPaleta()]);
   return (
-    <html lang="es-PE">
+    <html lang="es-PE" data-paleta={paleta} style={variablesPaleta(paleta) as React.CSSProperties}>
       <body className="min-h-screen antialiased">
         <a
           href="#contenido"

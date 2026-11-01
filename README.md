@@ -115,6 +115,9 @@ Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Cr
 | Semáforo y correo simulado | «Alertas» | Con `rosa@ventanilla.test`: el aviso de vencimiento lleva color y texto; abre «Ver el correo que te enviaríamos». |
 | Compartir | Ficha de una oportunidad | Botones de WhatsApp, Facebook, LinkedIn, X y «Copiar enlace». |
 | Mapa mundial | Catálogo → «Ver en el mapa mundial» | Toca un país o un continente para filtrar el catálogo. |
+| Directorio y financiamiento | «Orientación» | Sitios oficiales de las entidades de trámites y programas de becas reales (verificados el 1/11/2026). |
+| Tonalidades | `/admin` | Con `admin@ventanilla.test`, elige otra paleta en «Tonalidades de la plataforma». |
+| Testimonios | Encuesta, `/admin` e inicio | Responde la encuesta autorizando publicar tu comentario; apruébalo como administrador y míralo en «Experiencias». |
 
 ## Pruebas
 

@@ -141,6 +141,7 @@ export default async function Catalogo({
         </p>
         <nav aria-label="Vista del catálogo" className="mt-3">
           <Link href="/catalogo/mapa" className="btn-secundario text-sm">Ver en el mapa mundial</Link>
+          <Link href="/orientacion#financiamiento" className="enlace ml-3 text-sm">¿Buscas financiamiento? Mira dónde buscar becas</Link>
         </nav>
       </div>
 

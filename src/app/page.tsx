@@ -4,6 +4,7 @@ import { obtenerHoy } from "@/lib/hoy";
 import { diasEntre } from "@/lib/fechas";
 import { estadoConvocatoria } from "@/lib/oportunidades";
 import { TarjetaOportunidad } from "@/components/oportunidad";
+import { obtenerTestimonios } from "@/lib/testimonios";
 
 const ETAPAS = [
   { titulo: "Descubre", texto: "Programas y becas de varias entidades, reunidos en un solo lugar." },
@@ -16,12 +17,13 @@ const ETAPAS = [
 export default async function Inicio({ searchParams }: { searchParams: Promise<{ acceso?: string }> }) {
   const { acceso } = await searchParams;
   const hoy = await obtenerHoy();
-  const [oportunidades, entidades] = await Promise.all([
+  const [oportunidades, entidades, testimonios] = await Promise.all([
     prisma.oportunidad.findMany({ where: { publicada: true }, include: { entidad: true } }),
     prisma.entidad.findMany({
       include: { _count: { select: { oportunidades: { where: { publicada: true } }, tramites: { where: { publicado: true } } } } },
       orderBy: { nombre: "asc" },
     }),
+    obtenerTestimonios(3),
   ]);
 
   const abiertas = oportunidades.filter((o) => estadoConvocatoria(o, hoy) === "abierta");
@@ -115,6 +117,28 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
         <p className="mt-4 text-sm text-suave">
           Talento sin Fronteras informa y te deriva a los canales oficiales. La postulación y los trámites se realizan ante cada entidad.
         </p>
+      </section>
+
+      <section aria-labelledby="titulo-testimonios">
+        <h2 id="titulo-testimonios" className="titulo-seccion mb-4">Experiencias</h2>
+        <ul className="grid gap-4 md:grid-cols-3">
+          {testimonios.map((x, i) => (
+            <li key={i}>
+              <figure className="tarjeta flex h-full flex-col gap-3">
+                <blockquote className="text-lg leading-snug">«{x.texto}»</blockquote>
+                <figcaption className="mt-auto text-sm">
+                  <span className="font-semibold">{x.quien}</span>
+                  {x.sobre && <span className="block text-suave">Sobre: {x.sobre}</span>}
+                  <span className={`mt-1 block text-xs ${x.ilustrativo ? "text-alerta" : "text-exito"}`}>
+                    {x.ilustrativo
+                      ? "Testimonio ilustrativo: personaje del prototipo, no es una persona real."
+                      : "Testimonio real, publicado con autorización."}
+                  </span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section aria-labelledby="titulo-entidades">

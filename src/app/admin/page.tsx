@@ -6,7 +6,8 @@ import { obtenerFechaSimulada, obtenerHoy } from "@/lib/hoy";
 import { DIAS_VIGENCIA_FICHA } from "@/lib/catalogos";
 import { aFechaCalendario, aISO, formatearFecha } from "@/lib/fechas";
 import { NOTA_SATISFACCION, indicadoresFichas, indicadoresUsuarios, type Proporcion } from "@/lib/indicadores";
-import { cambiarFechaSimulada } from "@/lib/acciones-seguimiento";
+import { cambiarFechaSimulada, cambiarPaleta, moderarTestimonio } from "@/lib/acciones-seguimiento";
+import { PALETAS, obtenerPaleta, type ClavePaleta } from "@/lib/paletas";
 import { FormRestablecer } from "@/components/FormRestablecer";
 
 export const metadata: Metadata = { title: "Tablero de indicadores" };
@@ -28,8 +29,16 @@ function Indicador({ id, titulo, p, detalle, nota }: { id: string; titulo: strin
 const celda = "border-t border-borde p-2";
 
 /** Tablero de indicadores de la matriz de formulación (RF17), con desagregación por región. */
-export default async function Admin({ searchParams }: { searchParams: Promise<{ fecha?: string }> }) {
-  const { fecha } = await searchParams;
+export default async function Admin({ searchParams }: { searchParams: Promise<{ fecha?: string; paleta?: string }> }) {
+  const { fecha, paleta: avisoPaleta } = await searchParams;
+  const [paleta, pendientes] = await Promise.all([
+    obtenerPaleta(),
+    prisma.encuesta.findMany({
+      where: { publicacion: "pendiente" },
+      include: { usuario: { include: { perfil: true } }, oportunidad: true },
+      orderBy: { creadaEn: "asc" },
+    }),
+  ]);
   await exigirRol(["admin"], "/admin");
   const [hoy, simulada, fichas, entidades, ciudadanos] = await Promise.all([
     obtenerHoy(),
@@ -146,14 +155,82 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
         <p className="font-semibold">
           {simulada ? <>Fecha simulada activa: {formatearFecha(simulada)}.</> : <>Se usa la fecha real: {formatearFecha(real)}.</>}
         </p>
-        <form action={cambiarFechaSimulada} className="flex flex-col gap-3 sm:flex-row sm:items-end">
-          <div>
-            <label htmlFor="fecha" className="etiqueta-campo">Nueva fecha</label>
-            <input id="fecha" name="fecha" type="date" required defaultValue={aISO(simulada ?? real)} className="campo" />
-          </div>
-          <button type="submit" name="accion" value="simular" className="btn-primario">Usar esta fecha</button>
-          {simulada && <button type="submit" name="accion" value="real" formNoValidate className="btn-secundario">Volver a la fecha real</button>}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+          <form action={cambiarFechaSimulada} className="flex flex-col gap-3 sm:flex-row sm:items-end">
+            <input type="hidden" name="accion" value="simular" />
+            <div>
+              <label htmlFor="fecha" className="etiqueta-campo">Nueva fecha</label>
+              <input id="fecha" name="fecha" type="date" required defaultValue={aISO(simulada ?? real)} className="campo" />
+            </div>
+            <button type="submit" className="btn-primario">Usar esta fecha</button>
+          </form>
+          {simulada && (
+            <form action={cambiarFechaSimulada}>
+              <input type="hidden" name="accion" value="real" />
+              <button type="submit" className="btn-secundario">Volver a la fecha real</button>
+            </form>
+          )}
+        </div>
+      </section>
+
+      <section id="testimonios" aria-labelledby="titulo-testimonios" className="tarjeta max-w-3xl space-y-3">
+        <h2 id="titulo-testimonios" className="titulo-seccion">Testimonios por aprobar ({pendientes.length})</h2>
+        <p className="text-sm text-suave">
+          Comentarios de la encuesta que sus autores autorizaron publicar. Al aprobarlos aparecen en la página de inicio, solo
+          con la región de la persona.
+        </p>
+        {pendientes.length ? (
+          <ul className="space-y-3">
+            {pendientes.map((e) => (
+              <li key={e.id} className="rounded-lg border border-borde p-3">
+                <p>«{e.comentario}»</p>
+                <p className="mt-1 text-xs text-suave">
+                  Persona de {e.usuario.perfil?.region ?? "región no indicada"}{e.oportunidad && <> · Sobre: {e.oportunidad.nombre}</>}
+                </p>
+                {/* Un formulario por botón: la decisión va en un campo oculto, no en el botón que se pulsó. */}
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {([["aprobado", "Aprobar", "btn-primario"], ["rechazado", "Rechazar", "btn-peligro"]] as const).map(([decision, texto, clase]) => (
+                    <form key={decision} action={moderarTestimonio}>
+                      <input type="hidden" name="id" value={e.id} />
+                      <input type="hidden" name="decision" value={decision} />
+                      <button type="submit" className={`${clase} text-sm`} aria-label={`${texto} el testimonio: ${e.comentario.slice(0, 60)}`}>{texto}</button>
+                    </form>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : <p className="text-suave">No hay testimonios por aprobar.</p>}
+      </section>
+
+      <section id="tonalidades" aria-labelledby="titulo-tonalidades" className="tarjeta max-w-2xl space-y-3">
+        <h2 id="titulo-tonalidades" className="titulo-seccion">Tonalidades de la plataforma</h2>
+        {avisoPaleta && (
+          <p role="status" className="rounded-lg border border-exito bg-exito-claro p-3 font-semibold text-exito">Actualizamos las tonalidades.</p>
+        )}
+        <p>Elige la paleta de colores de todo el sitio. Todas cumplen el contraste exigido por WCAG 2.1 AA.</p>
+        <form action={cambiarPaleta} className="space-y-3">
+          <fieldset>
+            <legend className="sr-only">Paleta de colores</legend>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {(Object.keys(PALETAS) as ClavePaleta[]).map((k) => (
+                <div key={k} className="flex min-h-11 items-center gap-3 rounded-lg border border-borde px-3 py-2">
+                  <input id={`paleta-${k}`} type="radio" name="paleta" value={k} defaultChecked={k === paleta} className="h-5 w-5" />
+                  <label htmlFor={`paleta-${k}`} className="flex flex-1 items-center justify-between gap-2">
+                    <span>{PALETAS[k].nombre}</span>
+                    <span aria-hidden="true" className="flex">
+                      {[PALETAS[k].oscura, PALETAS[k].marca, PALETAS[k].clara].map((c) => (
+                        <span key={c} className="h-6 w-6 border border-borde" style={{ background: c }} />
+                      ))}
+                    </span>
+                  </label>
+                </div>
+              ))}
+            </div>
+          </fieldset>
+          <button type="submit" className="btn-primario">Aplicar tonalidad</button>
         </form>
+        <p className="text-sm text-suave">Restablecer los datos de prueba vuelve a la paleta predeterminada.</p>
       </section>
 
       <section aria-labelledby="titulo-restablecer" className="tarjeta max-w-2xl space-y-3 border-peligro">

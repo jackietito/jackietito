@@ -272,6 +272,8 @@ model Encuesta {
   oportunidadInfo Int
   utilidad      Int
   comentario    String
+  /// Testimonio (D50): no | pendiente (autorizó publicar) | aprobado | rechazado
+  publicacion   String       @default("no")
   creadaEn      DateTime
   usuario       Usuario      @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   oportunidad   Oportunidad? @relation(fields: [oportunidadId], references: [id], onDelete: SetNull)

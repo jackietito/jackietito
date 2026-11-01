@@ -94,6 +94,13 @@ export function FormEncuesta({ oportunidades, inicial }: { oportunidades: Opcion
       ))}
       <AreaTexto id="comentario" etiqueta="Comentarios (opcional)" valor={v.comentario} error={e.comentario}
         ayuda="¿Qué mejorarías? Tus comentarios sobre una oportunidad se comparten, sin identificarte, con la entidad que la publica." />
+      <div className="flex items-start gap-3">
+        <input id="publicar" name="publicar" type="checkbox" value="si" defaultChecked={v.publicar === "si"} className="mt-1 h-6 w-6 shrink-0 accent-marca" />
+        <label htmlFor="publicar">
+          Autorizo publicar mi comentario como testimonio en la página de inicio, solo con mi región (sin mi correo).
+          <span className="block text-sm text-suave">Antes de publicarse, lo revisa el equipo de Talento sin Fronteras.</span>
+        </label>
+      </div>
       <BotonEnviar texto="Enviar encuesta" enviando="Enviando…" />
     </form>
   );
