@@ -114,10 +114,15 @@ export function fichaCompleta(o: Oportunidad & { requisitos: Requisito[] }): boo
 export const FILTROS_MULTIPLES = ["pais", "area", "nivel", "modalidad", "idioma", "financiamiento"] as const;
 export type FiltroMultiple = (typeof FILTROS_MULTIPLES)[number];
 
+/** «Cierran pronto»: abiertas que cierran en estos días o menos (filtro rápido del catálogo). */
+export const DIAS_CIERRAN_PRONTO = 30;
+
 type FiltrosSimples = {
   q?: string;
   /** Sigla de la entidad proveedora */
   entidad?: string;
+  /** "1" = solo abiertas que cierran en DIAS_CIERRAN_PRONTO días o menos */
+  pronto?: string;
   estado?: string;
   costoMax?: string;
   inicioDesde?: string;
@@ -127,7 +132,7 @@ type FiltrosSimples = {
 
 export type Filtros = FiltrosSimples & Partial<Record<FiltroMultiple, string[]>>;
 
-const CLAVES_SIMPLES: (keyof FiltrosSimples)[] = ["q", "entidad", "estado", "costoMax", "inicioDesde", "inicioHasta", "orden"];
+const CLAVES_SIMPLES: (keyof FiltrosSimples)[] = ["q", "entidad", "pronto", "estado", "costoMax", "inicioDesde", "inicioHasta", "orden"];
 
 export function leerFiltros(sp: Record<string, string | string[] | undefined>): Filtros {
   const f: Filtros = {};
@@ -183,6 +188,7 @@ export function filtrarOportunidades<T extends OportunidadConEntidad>(
     }
     // Dentro de un mismo filtro basta con coincidir con una opción; entre filtros, con todos.
     if (f.entidad && o.entidad.sigla !== f.entidad) return false;
+    if (f.pronto && !(estadoConvocatoria(o, hoy) === "abierta" && diasEntre(hoy, o.fechaCierre) <= DIAS_CIERRAN_PRONTO)) return false;
     const fuera = (valores: string[] | undefined, valor: string) => !!valores?.length && !valores.includes(valor);
     if (fuera(f.pais, o.pais)) return false;
     if (fuera(f.area, o.area)) return false;

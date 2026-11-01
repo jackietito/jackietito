@@ -3,15 +3,19 @@ import { prisma } from "@/lib/db";
 import { obtenerHoy } from "@/lib/hoy";
 import { diasEntre } from "@/lib/fechas";
 import { estadoConvocatoria } from "@/lib/oportunidades";
+import { Bell, Compass, Route, Scale, Search, SlidersHorizontal } from "lucide-react";
 import { TarjetaOportunidad } from "@/components/oportunidad";
+import { IlustracionInicio } from "@/components/IlustracionInicio";
+import { AsistenteBusqueda } from "@/components/AsistenteBusqueda";
+import { AREAS } from "@/lib/catalogos";
 import { obtenerTestimonios } from "@/lib/testimonios";
 
 const ETAPAS = [
-  { titulo: "Descubre", texto: "Programas y becas de varias entidades, reunidos en un solo lugar." },
-  { titulo: "Revisa", texto: "Filtra por país, área, costo o financiamiento y recibe recomendaciones según tu perfil." },
-  { titulo: "Compara", texto: "Pon hasta tres fichas lado a lado y mira las diferencias de un vistazo." },
-  { titulo: "Prepárate", texto: "Sigue una ruta paso a paso con los trámites y un checklist de documentos." },
-  { titulo: "No te pierdas nada", texto: "Recibe alertas antes de que venzan las convocatorias que guardaste." },
+  { titulo: "Descubre", texto: "Programas y becas de varias entidades, reunidos en un solo lugar.", Icono: Compass },
+  { titulo: "Revisa", texto: "Filtra por país, área, costo o financiamiento y recibe recomendaciones según tu perfil.", Icono: SlidersHorizontal },
+  { titulo: "Compara", texto: "Pon hasta tres fichas lado a lado y mira las diferencias de un vistazo.", Icono: Scale },
+  { titulo: "Prepárate", texto: "Sigue una ruta paso a paso con los trámites y un checklist de documentos.", Icono: Route },
+  { titulo: "No te pierdas nada", texto: "Recibe alertas antes de que venzan las convocatorias que guardaste.", Icono: Bell },
 ];
 
 export default async function Inicio({ searchParams }: { searchParams: Promise<{ acceso?: string }> }) {
@@ -32,7 +36,8 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
     .filter((o) => diasEntre(hoy, o.fechaCierre) <= 30)
     .sort((a, b) => a.fechaCierre.getTime() - b.fechaCierre.getTime())
     .slice(0, 6);
-  const paises = new Set(oportunidades.map((o) => o.pais)).size;
+  const listaPaises = [...new Set(oportunidades.map((o) => o.pais))].sort((a, b) => a.localeCompare(b, "es"));
+  const paises = listaPaises.length;
 
   return (
     <div className="space-y-12">
@@ -42,38 +47,39 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
         </p>
       )}
 
-      <section aria-labelledby="titulo-inicio" className="rounded-2xl bg-marca-oscura px-5 py-8 text-white sm:px-10 sm:py-12">
-        <h1 id="titulo-inicio" className="max-w-3xl text-3xl font-bold leading-tight sm:text-4xl">
-          Encuentra posgrados y becas en el exterior en un solo lugar
-        </h1>
-        <p className="mt-3 max-w-2xl text-lg text-white/90">
-          Reunimos la información de varias entidades, te ayudamos a comparar y te guiamos en los trámites antes de postular.
-        </p>
-        <form action="/catalogo" role="search" className="mt-6 flex max-w-2xl flex-col gap-2 sm:flex-row">
-          <label htmlFor="busqueda-inicio" className="sr-only">
-            Buscar oportunidades
-          </label>
-          <input
-            id="busqueda-inicio"
-            name="q"
-            type="search"
-            placeholder="Ej.: educación, España, beca integral"
-            className="min-h-12 flex-1 rounded-lg border-0 bg-white px-4 text-base text-texto placeholder:text-gray-600"
-          />
-          <button type="submit" className="min-h-12 rounded-lg bg-amber-400 px-6 font-bold text-gray-900 hover:bg-amber-300">
-            Buscar
-          </button>
-        </form>
-        <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/90" aria-label="Resumen del catálogo">
-          <li><strong className="text-xl text-white">{oportunidades.length}</strong> oportunidades</li>
-          <li><strong className="text-xl text-white">{abiertas.length}</strong> con convocatoria abierta</li>
-          <li><strong className="text-xl text-white">{entidades.length}</strong> entidades proveedoras</li>
-          <li><strong className="text-xl text-white">{paises}</strong> países</li>
-        </ul>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/catalogo" className="inline-flex min-h-11 items-center rounded-lg bg-white px-5 font-bold text-marca-oscura hover:bg-marca-clara">
-            Ver todo el catálogo
-          </Link>
+      <section aria-labelledby="titulo-inicio" className="overflow-hidden rounded-[var(--radius-panel)] bg-marca-oscura text-white">
+        <div className="grid items-center gap-6 px-5 pb-6 pt-8 sm:px-10 sm:pt-12 lg:grid-cols-[1.25fr_1fr]">
+          <div>
+            <h1 id="titulo-inicio" className="max-w-3xl font-[family-name:var(--font-display)] text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+              Encuentra posgrados y becas en el exterior en un solo lugar
+            </h1>
+            <p className="mt-3 max-w-2xl text-lg text-white/90">
+              Reunimos la información de varias entidades, te ayudamos a comparar y te guiamos en los trámites antes de postular.
+            </p>
+            <form action="/catalogo" role="search" className="mt-6 flex max-w-2xl flex-col gap-2 sm:flex-row">
+              <label htmlFor="busqueda-inicio" className="sr-only">Buscar oportunidades</label>
+              <input id="busqueda-inicio" name="q" type="search" placeholder="Ej.: educación, España, beca integral"
+                className="min-h-12 flex-1 rounded-[var(--radius-control)] border-0 bg-white px-4 text-base text-texto placeholder:text-gray-600" />
+              <button type="submit" className="btn-primario min-h-12 px-6">
+                <Search aria-hidden="true" className="h-5 w-5" /> Buscar
+              </button>
+            </form>
+            <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/90" aria-label="Resumen del catálogo">
+              <li><strong className="text-xl text-white">{oportunidades.length}</strong> oportunidades</li>
+              <li><strong className="text-xl text-white">{abiertas.length}</strong> con convocatoria abierta</li>
+              <li><strong className="text-xl text-white">{entidades.length}</strong> entidades proveedoras</li>
+              <li><strong className="text-xl text-white">{paises}</strong> países</li>
+            </ul>
+          </div>
+          <div className="flex justify-center">
+            <IlustracionInicio />
+          </div>
+        </div>
+        <div className="px-3 pb-3 sm:px-6 sm:pb-6">
+          <AsistenteBusqueda areas={AREAS} paises={listaPaises} />
+          <p className="mt-3 text-center">
+            <Link href="/catalogo" className="inline-flex min-h-11 items-center font-bold text-white underline">Ver todo el catálogo</Link>
+          </p>
         </div>
       </section>
 
@@ -108,6 +114,9 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
         <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {ETAPAS.map((e, i) => (
             <li key={e.titulo} className="tarjeta">
+              <span className="mb-2 flex h-11 w-11 items-center justify-center rounded-full bg-acento-claro text-acento">
+                <e.Icono aria-hidden="true" className="h-6 w-6" />
+              </span>
               <span className="text-sm font-bold text-acento">Paso {i + 1}</span>
               <h3 className="font-bold text-marca-oscura">{e.titulo}</h3>
               <p className="text-sm text-suave">{e.texto}</p>

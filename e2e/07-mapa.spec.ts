@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { abrirFiltros, revisarAccesibilidad } from "./utilidades";
+import { abrirFiltros, cerrarFiltros, revisarAccesibilidad } from "./utilidades";
 
 // Mapa mundial del catálogo (D47): totales por continente y país; un clic filtra el catálogo.
 
@@ -42,8 +42,8 @@ test("la lista y el mapa comparten los mismos filtros", async ({ page }) => {
   await abrirFiltros(page);
   await page.locator("summary", { hasText: /^Idioma/ }).click();
   await page.getByRole("group", { name: /^Idioma/ }).getByLabel("Inglés", { exact: true }).check();
-  await page.getByRole("button", { name: "Aplicar filtros" }).click();
   await expect(page).toHaveURL(/\/catalogo\/mapa\?.*idioma=Ingl/);
+  await cerrarFiltros(page);
   await expect(aplicados).toHaveCount(3);
 
   // Un país del mapa abre la lista con los mismos filtros y ese país.

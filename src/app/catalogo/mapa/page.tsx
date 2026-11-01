@@ -3,7 +3,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { obtenerHoy } from "@/lib/hoy";
 import { aConsulta, filtrarOportunidades, leerFiltros, type Filtros } from "@/lib/oportunidades";
-import { FiltrosAplicados, PanelFiltros } from "@/components/FiltrosCatalogo";
+import { FiltrosAplicados, FiltrosRapidos } from "@/components/FiltrosCatalogo";
+import { PanelFiltros } from "@/components/PanelFiltros";
 import { ALTO, ANCHO, PAISES_MAPA, PERU, trazarMapa, type Continente } from "@/lib/mapa";
 
 export const metadata: Metadata = { title: "Mapa de oportunidades" };
@@ -66,8 +67,9 @@ export default async function Mapa({ searchParams }: { searchParams: Promise<Rec
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[18rem_1fr]">
-        <PanelFiltros filtros={filtros} paises={todosLosPaises} base="/catalogo/mapa" conOrden={false} />
+        <PanelFiltros filtros={filtros} paises={todosLosPaises} base="/catalogo/mapa" total={visibles.length} conOrden={false} />
         <div className="min-w-0 space-y-6">
+          <FiltrosRapidos filtros={filtros} base="/catalogo/mapa" />
           <FiltrosAplicados filtros={filtros} base="/catalogo/mapa" />
           <section aria-labelledby="titulo-mapa" className="space-y-2">
             <h2 id="titulo-mapa" className="titulo-seccion">Mapa mundial</h2>

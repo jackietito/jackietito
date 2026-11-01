@@ -4,7 +4,8 @@ import { prisma } from "@/lib/db";
 import { obtenerHoy } from "@/lib/hoy";
 import { aConsulta, filtrarOportunidades, leerFiltros } from "@/lib/oportunidades";
 import { TarjetaOportunidad } from "@/components/oportunidad";
-import { FiltrosAplicados, PanelFiltros } from "@/components/FiltrosCatalogo";
+import { FiltrosAplicados, FiltrosRapidos } from "@/components/FiltrosCatalogo";
+import { PanelFiltros } from "@/components/PanelFiltros";
 import { AccionesOportunidad } from "@/components/BotonesOportunidad";
 import { contextoAcciones } from "@/lib/contexto";
 
@@ -41,13 +42,14 @@ export default async function Catalogo({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[18rem_1fr]">
-        <PanelFiltros filtros={filtros} paises={paises} base="/catalogo" />
+        <PanelFiltros filtros={filtros} paises={paises} base="/catalogo" total={resultados.length} />
 
-        <section aria-labelledby="titulo-resultados" className="space-y-4">
+        <section aria-labelledby="titulo-resultados" className="min-w-0 space-y-4">
           <h2 id="titulo-resultados" className="text-lg font-bold" role="status">
             {resultados.length === 1 ? "1 oportunidad encontrada" : `${resultados.length} oportunidades encontradas`}
           </h2>
 
+          <FiltrosRapidos filtros={filtros} base="/catalogo" />
           <FiltrosAplicados filtros={filtros} base="/catalogo" />
 
           {resultados.length ? (

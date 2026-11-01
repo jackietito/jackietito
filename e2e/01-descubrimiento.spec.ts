@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { abrirFiltros, revisarAccesibilidad } from "./utilidades";
+import { abrirFiltros, cerrarFiltros, revisarAccesibilidad } from "./utilidades";
 
 // Incremento 1 — Catálogo, ficha, buscador y filtros (pasos 1 y 3 del recorrido).
 
@@ -57,8 +57,9 @@ test("filtra por país, estado y texto libre", async ({ page }) => {
   await abrirFiltros(page);
   await page.locator("summary", { hasText: /^País/ }).click();
   await page.getByRole("group", { name: /^País/ }).getByLabel("España", { exact: true }).check();
-  await page.getByRole("button", { name: "Aplicar filtros" }).click();
+  // Filtrado instantáneo, sin botón «Aplicar».
   await expect(page).toHaveURL(/pais=Espa/);
+  await cerrarFiltros(page);
   const tarjetas = page.getByRole("article");
   const n = await tarjetas.count();
   expect(n).toBeGreaterThan(1);
@@ -87,9 +88,10 @@ test("filtra con varias opciones a la vez en país, nivel, modalidad, idioma y f
   const niveles = page.getByRole("group", { name: /^Nivel/ });
   await niveles.getByLabel("Maestría", { exact: true }).check();
   await niveles.getByLabel("Especialización", { exact: true }).check();
-  await page.getByRole("button", { name: "Aplicar filtros" }).click();
+  await expect(page).toHaveURL(/nivel=especializacion/);
   await expect(page).toHaveURL(/pais=Chile/);
   await expect(page).toHaveURL(/pais=Espa/);
+  await cerrarFiltros(page);
 
   const aplicados = page.getByRole("list", { name: "Filtros aplicados" }).getByRole("listitem");
   await expect(aplicados).toHaveCount(4);
@@ -105,11 +107,15 @@ test("filtra con varias opciones a la vez en país, nivel, modalidad, idioma y f
   await expect(page.locator("summary", { hasText: /^País/ })).toContainText("2 elegidos");
   await expect(paises.getByLabel("Chile", { exact: true })).toBeChecked();
   await revisarAccesibilidad(page);
+  await cerrarFiltros(page);
 
-  // Quitar una sola opción deja las demás.
+  // Quitar una sola opción deja las demás (y el formulario se pone al día).
   await page.getByRole("link", { name: /País: Chile/ }).click();
   await expect(aplicados).toHaveCount(3);
   await expect(page).not.toHaveURL(/pais=Chile/);
+  await abrirFiltros(page);
+  await expect(page.getByRole("group", { name: /^País/ }).getByLabel("Chile", { exact: true })).not.toBeChecked();
+  await cerrarFiltros(page);
 
   await page.goto("/catalogo?modalidad=virtual&modalidad=semipresencial&idioma=Inglés&idioma=Francés&financiamiento=integral&financiamiento=parcial");
   await expect(page.getByRole("list", { name: "Filtros aplicados" }).getByRole("listitem")).toHaveCount(6);
@@ -119,6 +125,43 @@ test("filtra con varias opciones a la vez en país, nivel, modalidad, idioma y f
     await expect(otras.nth(i)).toContainText(/Inglés|Francés/);
     await expect(otras.nth(i)).toContainText(/Beca integral|Beca parcial/);
   }
+});
+
+test("filtros rápidos de un toque y búsqueda por texto instantánea", async ({ page }) => {
+  await page.goto("/catalogo");
+  const rapidos = page.getByRole("navigation", { name: "Filtros rápidos" });
+  await rapidos.getByRole("link", { name: /^Becas integrales/ }).click();
+  await expect(page).toHaveURL(/financiamiento=integral/);
+  await expect(rapidos.getByRole("link", { name: /^Becas integrales.*activo/ })).toBeVisible();
+  const tarjetas = page.getByRole("article");
+  for (let i = 0; i < (await tarjetas.count()); i++) await expect(tarjetas.nth(i)).toContainText("Beca integral");
+  await rapidos.getByRole("link", { name: /^Cierran pronto/ }).click();
+  await expect(page).toHaveURL(/pronto=1/);
+  for (let i = 0; i < (await tarjetas.count()); i++) await expect(tarjetas.nth(i)).toContainText(/Cierra (hoy|mañana|en \d+ días)/);
+  // Volver a tocar un chip lo quita.
+  await rapidos.getByRole("link", { name: /^Becas integrales/ }).click();
+  await expect(page).not.toHaveURL(/financiamiento=integral/);
+  await revisarAccesibilidad(page);
+
+  await page.goto("/catalogo");
+  await abrirFiltros(page);
+  await page.getByLabel("Buscar por texto").fill("ecologia amazonica");
+  await expect(page).toHaveURL(/q=ecologia/);
+  await cerrarFiltros(page);
+  await expect(page.getByRole("status")).toHaveText("1 oportunidad encontrada");
+});
+
+test("el asistente del inicio lleva al catálogo filtrado en tres toques", async ({ page }) => {
+  await page.goto("/");
+  const asistente = page.getByRole("region", { name: /¿Qué te gustaría estudiar\?/ });
+  await asistente.getByRole("button", { name: "Educación" }).click();
+  await expect(page.getByRole("heading", { name: "¿Dónde te gustaría estudiar?" })).toBeFocused();
+  await page.getByRole("button", { name: "España" }).click();
+  await page.getByRole("button", { name: "Sí, necesito beca o crédito" }).click();
+  await expect(page).toHaveURL(/\/catalogo\?area=Educaci.*pais=Espa.*financiamiento=integral/);
+  const tarjetas = page.getByRole("article");
+  expect(await tarjetas.count()).toBeGreaterThan(0);
+  for (let i = 0; i < (await tarjetas.count()); i++) await expect(tarjetas.nth(i)).toContainText("España");
 });
 
 test("filtra por costo total, financiamiento y fecha de inicio", async ({ page }) => {

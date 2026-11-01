@@ -1,10 +1,16 @@
 import { expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-/** En móvil los filtros están plegados: los muestra si hace falta. */
+/** En el celular los filtros están en una hoja inferior: la abre si hace falta. */
 export async function abrirFiltros(page: Page) {
-  const boton = page.getByRole("button", { name: "Mostrar filtros" });
+  const boton = page.getByRole("button", { name: /^Filtros/ });
   if (await boton.isVisible()) await boton.click();
+}
+
+/** Cierra la hoja de filtros del celular (con «Ver N resultados»), si está abierta. */
+export async function cerrarFiltros(page: Page) {
+  const ver = page.getByRole("button", { name: /^Ver \d+ resultados?$/ });
+  if (await ver.isVisible()) await ver.click();
 }
 
 /** Revisión automática de accesibilidad (WCAG 2.1 A y AA) con axe-core. */
