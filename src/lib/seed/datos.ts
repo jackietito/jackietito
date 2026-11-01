@@ -1,42 +1,48 @@
 // Datos de prueba ficticios (docs/requerimientos.md, sección 8).
 // Las fechas se expresan en días relativos a "hoy" para que siempre haya
 // convocatorias abiertas, próximas y cerradas, sin importar cuándo se cargue el seed.
-// Todas las instituciones, entidades, personas y enlaces son inventados.
+// Las oportunidades, programas, becas, universidades (peruanas y extranjeras),
+// personas y enlaces son inventados. Las entidades públicas proveedoras (MRE,
+// PRONABEC, MINEDU, SUNEDU) son reales, sin logotipos ni identidad gráfica (D43).
 
 export const ENTIDADES = [
   {
-    sigla: "ORAE",
-    nombre: "Oficina de Relaciones Académicas Exteriores",
+    sigla: "MRE",
+    nombre: "Ministerio de Relaciones Exteriores",
     tipo: "cancilleria",
     descripcion:
-      "Difunde becas de cooperación internacional ofrecidas por gobiernos y organismos extranjeros, y apostilla documentos para su uso en el exterior.",
+      "Apostilla y legaliza tu grado para uso en el exterior, y difunde becas de cooperación ofrecidas por gobiernos extranjeros.",
   },
   {
-    sigla: "FONABEP",
-    nombre: "Fondo Nacional de Becas de Posgrado",
+    sigla: "PRONABEC",
+    nombre: "Programa Nacional de Becas y Crédito Educativo",
     tipo: "becas",
-    descripcion: "Otorga becas y créditos educativos para estudios de posgrado en el exterior.",
+    descripcion: "Publica becas propias y becas de cooperación internacional.",
   },
   {
-    sigla: "SUGRAT",
-    nombre: "Superintendencia de Grados y Títulos",
-    tipo: "regulador",
-    descripcion:
-      "Mantiene el registro nacional de grados y títulos y emite constancias de inscripción.",
-  },
-  {
-    sigla: "UHOR",
-    nombre: "Red Universitaria Horizonte",
-    tipo: "universidad",
-    descripcion:
-      "Consorcio de universidades que publica programas de posgrado en convenio con instituciones del exterior.",
-  },
-  {
-    sigla: "DINES",
-    nombre: "Dirección Nacional de Educación Superior",
+    sigla: "MINEDU",
+    nombre: "Ministerio de Educación",
     tipo: "administradora",
     descripcion:
-      "Entidad administradora de la Ventanilla. Coordina a las entidades proveedoras y publica oportunidades propias.",
+      "Entidad administradora de Talento sin Fronteras: coordina a las entidades proveedoras y mantiene la información general de trámites. No publica oportunidades.",
+  },
+  {
+    sigla: "SUNEDU",
+    nombre: "Superintendencia Nacional de Educación Superior Universitaria",
+    tipo: "regulador",
+    descripcion: "Publica información de trámites de grados y títulos. No publica oportunidades.",
+  },
+  {
+    sigla: "ORI-UML",
+    nombre: "Oficina de Relaciones Internacionales – Universidad Metropolitana de Lima (ficticia)",
+    tipo: "universidad",
+    descripcion: "Publica programas de posgrado en convenio con universidades del exterior.",
+  },
+  {
+    sigla: "ORI-UDM",
+    nombre: "Oficina de Relaciones Internacionales – Universidad del Misti (ficticia)",
+    tipo: "universidad",
+    descripcion: "Publica programas de posgrado en convenio con universidades del exterior.",
   },
 ] as const;
 
@@ -51,7 +57,7 @@ export const TRAMITES = [
     clave: "idioma",
     nombre: "Rendir un examen internacional de idioma",
     entidadResponsable: "Centro evaluador autorizado del examen",
-    entidad: "DINES",
+    entidad: "MINEDU",
     descripcion:
       "Acredita tu nivel del idioma en que se dicta el programa. Inscríbete con anticipación: las fechas de examen y la entrega de resultados pueden tardar varias semanas.",
     documentos: "Documento de identidad o pasaporte\nComprobante de pago del examen",
@@ -66,7 +72,7 @@ export const TRAMITES = [
     clave: "diploma",
     nombre: "Solicitar copia certificada del diploma de grado",
     entidadResponsable: "Tu universidad de origen",
-    entidad: "UHOR",
+    entidad: "SUNEDU",
     descripcion:
       "Pide en tu universidad una copia certificada de tu diploma de bachiller, título o maestría. Es la base para los demás trámites de certificación.",
     documentos: "Solicitud dirigida a la universidad\nDocumento de identidad\nComprobante de pago",
@@ -81,7 +87,7 @@ export const TRAMITES = [
     clave: "certificado",
     nombre: "Solicitar certificado de estudios",
     entidadResponsable: "Tu universidad de origen",
-    entidad: "UHOR",
+    entidad: "SUNEDU",
     descripcion:
       "Documento con todas las asignaturas cursadas, calificaciones y créditos. Muchas convocatorias lo piden junto con el promedio ponderado.",
     documentos: "Solicitud dirigida a la universidad\nDocumento de identidad\nComprobante de pago",
@@ -96,7 +102,7 @@ export const TRAMITES = [
     clave: "constancia",
     nombre: "Obtener constancia de inscripción del grado",
     entidadResponsable: "Superintendencia Nacional de Educación Superior Universitaria (SUNEDU)",
-    entidad: "SUGRAT",
+    entidad: "SUNEDU",
     descripcion:
       "Certifica que tu grado o título está inscrito en el Registro Nacional de Grados y Títulos. Se solicita en línea y llega en PDF a tu correo.",
     documentos: "Documento de identidad\nDatos del grado o título",
@@ -111,7 +117,7 @@ export const TRAMITES = [
     clave: "apostilla",
     nombre: "Apostillar documentos académicos",
     entidadResponsable: "Ministerio de Relaciones Exteriores (Cancillería)",
-    entidad: "ORAE",
+    entidad: "MRE",
     descripcion:
       "La apostilla da validez a tus documentos peruanos en los países que forman parte del Convenio de La Haya. Antes, verifica que las firmas de tu universidad estén registradas.",
     documentos: "Copia certificada del diploma\nCertificado de estudios",
@@ -126,7 +132,7 @@ export const TRAMITES = [
     clave: "traduccion",
     nombre: "Traducir oficialmente los documentos",
     entidadResponsable: "Traductores públicos juramentados",
-    entidad: "ORAE",
+    entidad: "MRE",
     descripcion:
       "Si el programa se dicta en otro idioma, traduce el diploma, el certificado de estudios y la apostilla. La traducción oficial la realizan traductores públicos juramentados.",
     documentos: "Documentos apostillados\nDocumento de identidad",
@@ -141,7 +147,7 @@ export const TRAMITES = [
     clave: "penales",
     nombre: "Obtener certificado de antecedentes penales",
     entidadResponsable: "Poder Judicial",
-    entidad: "DINES",
+    entidad: "MINEDU",
     descripcion:
       "Algunas becas y visas de estudiante piden acreditar que no tienes antecedentes penales. Revisa su vigencia: suele ser de 3 a 6 meses.",
     documentos: "Documento de identidad\nComprobante de pago",
@@ -156,7 +162,7 @@ export const TRAMITES = [
     clave: "policiales",
     nombre: "Obtener certificado de antecedentes policiales",
     entidadResponsable: "Policía Nacional del Perú",
-    entidad: "DINES",
+    entidad: "MINEDU",
     descripcion:
       "Algunas becas y visas de estudiante piden acreditar que no tienes antecedentes policiales. Pide el certificado para uso en el extranjero.",
     documentos: "Documento de identidad\nComprobante de pago",
@@ -204,42 +210,42 @@ type Op = {
 };
 
 export const OPORTUNIDADES: Op[] = [
-  { tipo: "beca", nombre: "Beca de Cooperación Iberoamericana en Innovación Educativa", inst: "Universidad de Valdemora", pais: "España", ciudad: "Madrid", area: "Educación", nivel: "maestria", mod: "presencial", idioma: "Español", dur: 12, ap: -30, ci: 25, ini: 200, mat: 9800, vida: 1100, otros: 1500, mon: "EUR", fin: "integral", cob: "Matrícula, pasajes, seguro médico y asignación mensual de 1 100 EUR", financ: "Fondo de Cooperación Iberoamericana (ficticio)", ent: "ORAE", act: 20, dest: true },
-  { tipo: "programa", nombre: "Maestría en Gestión Educativa Rural", inst: "Universidad de Los Aromos", pais: "Chile", ciudad: "Valparaíso", area: "Educación", nivel: "maestria", mod: "semipresencial", idioma: "Español", dur: 18, ap: -45, ci: 23, ini: 120, mat: 6500000, vida: 650000, otros: 400000, mon: "CLP", fin: "parcial", cob: "50 % de la matrícula para egresados de universidades públicas de regiones", financ: "Universidad de Los Aromos", ent: "UHOR", act: 40 },
-  { tipo: "beca", nombre: "Beca Nacional de Posgrado en Pedagogía e Interculturalidad", inst: "Universidad Autónoma de Tlalcoyan", pais: "México", ciudad: "Puebla", area: "Educación", nivel: "maestria", mod: "presencial", idioma: "Español", dur: 24, ap: -10, ci: 40, ini: 220, mat: 90000, vida: 14000, otros: 12000, mon: "MXN", fin: "integral", cob: "Matrícula, manutención mensual, pasajes y seguro médico", financ: "Fondo Nacional de Becas de Posgrado", ent: "FONABEP", act: 10, dest: true },
-  { tipo: "programa_con_beca", nombre: "Doctorado en Energías Renovables con beca de investigación", inst: "Hochschule Lindenfeld", pais: "Alemania", ciudad: "Bremen", area: "Ingeniería y tecnología", nivel: "doctorado", mod: "presencial", idioma: "Inglés", dur: 36, ap: -20, ci: 24, ini: 250, mat: 900, vida: 1050, otros: 2500, mon: "EUR", fin: "integral", cob: "Asignación mensual de 1 300 EUR, seguro de salud y pasajes", financ: "Agencia de Intercambio Académico Lindenfeld (ficticia)", ent: "ORAE", act: 15, dest: true },
-  { tipo: "programa", nombre: "Maestría en Ciencia de Datos", inst: "Maplewood University", pais: "Canadá", ciudad: "Toronto", area: "Ingeniería y tecnología", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 20, ap: -60, ci: 22, ini: 150, mat: 38000, vida: 1800, otros: 3000, mon: "CAD", fin: "ninguno", ent: "UHOR", act: 70 },
-  { tipo: "beca", nombre: "Beca de Excelencia en Gestión del Agua", inst: "Hogeschool Veldmeer", pais: "Países Bajos", ciudad: "Utrecht", area: "Medio ambiente y sostenibilidad", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 12, ap: -5, ci: 55, ini: 230, mat: 18000, vida: 1200, otros: 2000, mon: "EUR", fin: "integral", cob: "Matrícula completa, manutención, seguro y pasajes", financ: "Fondo Nacional de Becas de Posgrado", ent: "FONABEP", act: 5, dest: true },
-  { tipo: "beca", nombre: "Beca de Gobierno para Investigación en Robótica", inst: "Universidad de Kitahara", pais: "Japón", ciudad: "Osaka", area: "Ingeniería y tecnología", nivel: "doctorado", mod: "presencial", idioma: "Inglés", dur: 42, ap: 15, ci: 75, ini: 330, mat: 535800, vida: 144000, otros: 150000, mon: "JPY", fin: "integral", cob: "Matrícula, asignación mensual y pasajes de ida y vuelta", financ: "Programa de Becas de Cooperación Japón–Perú (ficticio)", ent: "ORAE", act: 30 },
-  { tipo: "programa", nombre: "Maestría en Economía del Desarrollo", inst: "Ashmoor University", pais: "Reino Unido", ciudad: "Mánchester", area: "Economía y negocios", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 12, ap: -90, ci: -10, ini: 60, mat: 24000, vida: 1300, otros: 2500, mon: "GBP", fin: "ninguno", ent: "UHOR", act: 100 },
-  { tipo: "beca", nombre: "Crédito Educativo para Maestría en Políticas Públicas", inst: "Ashmoor University", pais: "Reino Unido", ciudad: "Londres", area: "Gestión pública y políticas", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 12, ap: -15, ci: 28, ini: 180, mat: 26000, vida: 1500, otros: 3000, mon: "GBP", fin: "credito", cob: "Préstamo de hasta 40 000 USD con periodo de gracia de 12 meses", financ: "Fondo Nacional de Becas de Posgrado", ent: "FONABEP", act: 25 },
-  { tipo: "beca", nombre: "Beca de Movilidad en Estudios Latinoamericanos", inst: "Université de Beaucastel", pais: "Francia", ciudad: "Lyon", area: "Ciencias sociales", nivel: "maestria", mod: "presencial", idioma: "Francés", dur: 24, ap: 20, ci: 90, ini: 300, mat: 3800, vida: 950, otros: 1200, mon: "EUR", fin: "integral", cob: "Matrícula, alojamiento universitario y asignación mensual", financ: "Programa Franco-Andino de Becas (ficticio)", ent: "ORAE", act: 12 },
-  { tipo: "programa", nombre: "Especialización en Salud Pública Digital", inst: "Universidad de Valdemora", pais: "España", ciudad: "Madrid", area: "Ciencias de la salud", nivel: "especializacion", mod: "virtual", idioma: "Español", dur: 9, ap: -40, ci: 35, ini: 90, mat: 4200, vida: 0, otros: 150, mon: "EUR", fin: "parcial", cob: "25 % de descuento para profesionales de salud del sector público", financ: "Universidad de Valdemora", ent: "UHOR", act: 50 },
-  { tipo: "beca", nombre: "Beca de Doctorado en Ecología Amazónica", inst: "Universidade Federal de Serra Clara", pais: "Brasil", ciudad: "Manaos", area: "Medio ambiente y sostenibilidad", nivel: "doctorado", mod: "presencial", idioma: "Portugués", dur: 48, ap: -25, ci: 26, ini: 140, mat: 0, vida: 3500, otros: 2500, mon: "BRL", fin: "integral", cob: "Asignación mensual de investigación y seguro de salud", financ: "Fondo Nacional de Becas de Posgrado", ent: "FONABEP", act: 18 },
-  { tipo: "programa", nombre: "Especialización en Gobierno Digital", inst: "Universidad de Puerto Albar", pais: "Argentina", ciudad: "Buenos Aires", area: "Gestión pública y políticas", nivel: "especializacion", mod: "virtual", idioma: "Español", dur: 12, ap: -50, ci: 29, ini: 70, mat: 2400, vida: 0, otros: 100, mon: "USD", fin: "ninguno", ent: "DINES", act: 35 },
-  { tipo: "programa_con_beca", nombre: "Maestría en Ciudades Inteligentes con beca completa", inst: "Universidad Nacional de Seoryeong", pais: "Corea del Sur", ciudad: "Seúl", area: "Ingeniería y tecnología", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 24, ap: 5, ci: 60, ini: 280, mat: 9000000, vida: 1200000, otros: 2000000, mon: "KRW", fin: "integral", cob: "Matrícula, curso de coreano, manutención y pasajes", financ: "Programa de Becas Corea–Andes (ficticio)", ent: "ORAE", act: 8 },
-  { tipo: "programa", nombre: "Maestría en Salud Global", inst: "Coralbay University", pais: "Australia", ciudad: "Brisbane", area: "Ciencias de la salud", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 24, ap: -120, ci: -30, ini: 30, mat: 70000, vida: 2200, otros: 6000, mon: "AUD", fin: "ninguno", ent: "UHOR", act: 130 },
-  { tipo: "beca", nombre: "Beca de Doctorado en Estudios Andinos", inst: "Universidad de Los Aromos", pais: "Chile", ciudad: "Santiago", area: "Ciencias sociales", nivel: "doctorado", mod: "presencial", idioma: "Español", dur: 48, ap: -35, ci: 45, ini: 240, mat: 5000000, vida: 800000, otros: 500000, mon: "CLP", fin: "integral", cob: "Matrícula, manutención y seguro de salud", financ: "Fondo Nacional de Becas de Posgrado", ent: "FONABEP", act: 22 },
-  { tipo: "programa", nombre: "Maestría en Finanzas Sostenibles", inst: "Universidad Autónoma de Tlalcoyan", pais: "México", ciudad: "Ciudad de México", area: "Economía y negocios", nivel: "maestria", mod: "semipresencial", idioma: "Español", dur: 24, ap: -40, ci: 45, ini: 120, mat: 140000, vida: 16000, otros: 8000, mon: "MXN", fin: "parcial", cob: "30 % de la matrícula por rendimiento académico", financ: "Universidad Autónoma de Tlalcoyan", ent: "UHOR", act: 60 , incompleta: true },
-  { tipo: "beca", nombre: "Beca de Investigación en Patrimonio Cultural", inst: "Universidad de Valdemora", pais: "España", ciudad: "Sevilla", area: "Artes y humanidades", nivel: "doctorado", mod: "presencial", idioma: "Español", dur: 36, ap: -12, ci: 30, ini: 210, mat: 2500, vida: 1000, otros: 1500, mon: "EUR", fin: "integral", cob: "Contrato predoctoral con asignación mensual y matrícula", financ: "Fondo de Cooperación Iberoamericana (ficticio)", ent: "ORAE", act: 14 },
-  { tipo: "programa_con_beca", nombre: "Especialización en Didáctica del Francés", inst: "Université de Beaucastel", pais: "Francia", ciudad: "Burdeos", area: "Educación", nivel: "especializacion", mod: "semipresencial", idioma: "Francés", dur: 10, ap: -8, ci: 31, ini: 100, mat: 3000, vida: 900, otros: 800, mon: "EUR", fin: "parcial", cob: "Matrícula y pasajes para la fase presencial", financ: "Dirección Nacional de Educación Superior", ent: "DINES", act: 9 },
-  { tipo: "programa", nombre: "Maestría en Administración Pública Internacional", inst: "Hochschule Lindenfeld", pais: "Alemania", ciudad: "Berlín", area: "Gestión pública y políticas", nivel: "maestria", mod: "presencial", idioma: "Alemán", dur: 24, ap: 30, ci: 100, ini: 330, mat: 1200, vida: 1000, otros: 2200, mon: "EUR", fin: "ninguno", ent: "UHOR", act: 45 },
-  { tipo: "beca", nombre: "Crédito para Doctorado en Epidemiología", inst: "Maplewood University", pais: "Canadá", ciudad: "Montreal", area: "Ciencias de la salud", nivel: "doctorado", mod: "presencial", idioma: "Inglés", dur: 48, ap: -18, ci: 50, ini: 260, mat: 22000, vida: 1700, otros: 3500, mon: "CAD", fin: "credito", cob: "Préstamo de hasta 60 000 USD con tasa preferencial", financ: "Fondo Nacional de Becas de Posgrado", ent: "FONABEP", act: 30 },
-  { tipo: "beca", nombre: "Beca de Maestría en Gestión Cultural", inst: "Universidad de Puerto Albar", pais: "Argentina", ciudad: "Córdoba", area: "Artes y humanidades", nivel: "maestria", mod: "presencial", idioma: "Español", dur: 24, ap: -100, ci: -40, ini: 20, mat: 6000, vida: 700, otros: 500, mon: "USD", fin: "integral", cob: "Matrícula y manutención", financ: "Programa de Cooperación Cultural Sur–Sur (ficticio)", ent: "ORAE", act: 95 },
-  { tipo: "programa", nombre: "Máster en Dirección Pública y Gobernanza", inst: "Universidad de Valdemora", pais: "España", ciudad: "Barcelona", area: "Gestión pública y políticas", nivel: "maestria", mod: "presencial", idioma: "Español", dur: 12, ap: -20, ci: 65, ini: 250, mat: 11000, vida: 1200, otros: 1800, mon: "EUR", fin: "ninguno", ent: "UHOR", act: 28 },
-  { tipo: "beca", nombre: "Beca de Doctorado en Ciencias del Clima", inst: "Coralbay University", pais: "Australia", ciudad: "Perth", area: "Medio ambiente y sostenibilidad", nivel: "doctorado", mod: "presencial", idioma: "Inglés", dur: 42, ap: 45, ci: 120, ini: 400, mat: 45000, vida: 2300, otros: 5000, mon: "AUD", fin: "integral", cob: "Matrícula, manutención, seguro de salud y pasajes", financ: "Fondo Nacional de Becas de Posgrado", ent: "FONABEP", act: 6 },
-  { tipo: "programa", nombre: "Especialización en Atención Primaria de Salud", inst: "Universidade Federal de Serra Clara", pais: "Brasil", ciudad: "São Paulo", area: "Ciencias de la salud", nivel: "especializacion", mod: "virtual", idioma: "Portugués", dur: 12, ap: -30, ci: 21, ini: 60, mat: 9000, vida: 0, otros: 300, mon: "BRL", fin: "parcial", cob: "40 % de descuento en la matrícula", financ: "Universidade Federal de Serra Clara", ent: "DINES", act: 40 },
-  { tipo: "programa_con_beca", nombre: "Doctorado en Migración y Desarrollo con beca", inst: "Hogeschool Veldmeer", pais: "Países Bajos", ciudad: "Ámsterdam", area: "Ciencias sociales", nivel: "doctorado", mod: "presencial", idioma: "Inglés", dur: 48, ap: -150, ci: -60, ini: 10, mat: 2300, vida: 1300, otros: 2500, mon: "EUR", fin: "integral", cob: "Salario de investigador doctoral y seguro", financ: "Hogeschool Veldmeer", ent: "ORAE", act: 160 },
-  { tipo: "programa", nombre: "Especialización en Inteligencia Artificial Aplicada", inst: "Universidad Nacional de Seoryeong", pais: "Corea del Sur", ciudad: "Busan", area: "Ingeniería y tecnología", nivel: "especializacion", mod: "virtual", idioma: "Inglés", dur: 6, ap: -14, ci: 27, ini: 80, mat: 6000000, vida: 0, otros: 0, mon: "KRW", fin: "ninguno", ent: "UHOR", act: 14 },
-  { tipo: "beca", nombre: "Beca de Maestría en Educación Inclusiva", inst: "Universidad de Kitahara", pais: "Japón", ciudad: "Tokio", area: "Educación", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 24, ap: -40, ci: 38, ini: 150, mat: 820000, vida: 140000, otros: 180000, mon: "JPY", fin: "integral", cob: "Matrícula, asignación mensual y pasajes", financ: "Fondo Nacional de Becas de Posgrado", ent: "FONABEP", act: 50 },
-  { tipo: "programa", nombre: "Especialización en Proyectos de Inversión Pública", inst: "Universidad de Los Aromos", pais: "Chile", ciudad: "Concepción", area: "Gestión pública y políticas", nivel: "especializacion", mod: "semipresencial", idioma: "Español", dur: 8, ap: 10, ci: 40, ini: 120, mat: 2800000, vida: 600000, otros: 200000, mon: "CLP", fin: "parcial", cob: "Media beca para servidores públicos", financ: "Dirección Nacional de Educación Superior", ent: "DINES", act: 20 },
-  { tipo: "programa", nombre: "Máster en Economía Circular", inst: "Université de Beaucastel", pais: "Francia", ciudad: "París", area: "Medio ambiente y sostenibilidad", nivel: "maestria", mod: "presencial", idioma: "Francés", dur: 24, ap: -55, ci: 32, ini: 170, mat: 4500, vida: 1150, otros: 1600, mon: "EUR", fin: "ninguno", ent: "UHOR", act: 100 },
-  { tipo: "beca", nombre: "Beca de Doctorado en Ingeniería Sísmica", inst: "Universidad Autónoma de Tlalcoyan", pais: "México", ciudad: "Puebla", area: "Ingeniería y tecnología", nivel: "doctorado", mod: "presencial", idioma: "Español", dur: 48, ap: -3, ci: 80, ini: 300, mat: 60000, vida: 15000, otros: 10000, mon: "MXN", fin: "integral", cob: "Matrícula, manutención y seguro médico", financ: "Programa de Cooperación Científica México–Perú (ficticio)", ent: "ORAE", act: 3, nueva: true },
-  { tipo: "beca", nombre: "Beca para Maestría en Educación y Tecnologías", inst: "Universidad de Valdemora", pais: "España", ciudad: "Valencia", area: "Educación", nivel: "maestria", mod: "semipresencial", idioma: "Español", dur: 18, ap: -3, ci: 33, ini: 210, mat: 7000, vida: 1000, otros: 1200, mon: "EUR", fin: "integral", cob: "Matrícula, pasajes para la fase presencial y asignación mensual", financ: "Fondo Nacional de Becas de Posgrado", ent: "FONABEP", act: 3, nueva: true, dest: true },
-  { tipo: "programa", nombre: "Especialización en Comercio Internacional", inst: "Maplewood University", pais: "Canadá", ciudad: "Vancouver", area: "Economía y negocios", nivel: "especializacion", mod: "virtual", idioma: "Inglés", dur: 10, ap: 25, ci: 85, ini: 200, mat: 9000, vida: 0, otros: 200, mon: "CAD", fin: "ninguno", ent: "UHOR", act: 25 },
-  { tipo: "programa_con_beca", nombre: "Maestría en Políticas Sociales con beca parcial", inst: "Universidad de Puerto Albar", pais: "Argentina", ciudad: "Rosario", area: "Ciencias sociales", nivel: "maestria", mod: "semipresencial", idioma: "Español", dur: 24, ap: -22, ci: 27, ini: 160, mat: 8000, vida: 600, otros: 500, mon: "USD", fin: "parcial", cob: "50 % de la matrícula", financ: "Dirección Nacional de Educación Superior", ent: "DINES", act: 22 },
-  { tipo: "beca", nombre: "Beca de Maestría en Conservación del Patrimonio", inst: "Hochschule Lindenfeld", pais: "Alemania", ciudad: "Múnich", area: "Artes y humanidades", nivel: "maestria", mod: "presencial", idioma: "Alemán", dur: 24, ap: 40, ci: 110, ini: 360, mat: 600, vida: 1050, otros: 2000, mon: "EUR", fin: "integral", cob: "Curso de alemán, manutención, seguro y pasajes", financ: "Agencia de Intercambio Académico Lindenfeld (ficticia)", ent: "ORAE", act: 3, nueva: true },
-  { tipo: "beca", nombre: "Crédito Educativo para Maestría en Agronegocios", inst: "Universidade Federal de Serra Clara", pais: "Brasil", ciudad: "Porto Alegre", area: "Economía y negocios", nivel: "maestria", mod: "presencial", idioma: "Portugués", dur: 24, ap: -20, ci: 50, ini: 130, mat: 30000, vida: 3000, otros: 2000, mon: "BRL", fin: "credito", cob: "Préstamo de hasta 30 000 USD", financ: "Fondo Nacional de Becas de Posgrado", ent: "FONABEP", act: 70 , incompleta: true },
+  { tipo: "beca", nombre: "Beca de Cooperación Iberoamericana en Innovación Educativa", inst: "Universidad de Valdemora", pais: "España", ciudad: "Madrid", area: "Educación", nivel: "maestria", mod: "presencial", idioma: "Español", dur: 12, ap: -30, ci: 25, ini: 200, mat: 9800, vida: 1100, otros: 1500, mon: "EUR", fin: "integral", cob: "Matrícula, pasajes, seguro médico y asignación mensual de 1 100 EUR", financ: "Fondo de Cooperación Iberoamericana (ficticio)", ent: "MRE", act: 20, dest: true },
+  { tipo: "programa", nombre: "Maestría en Gestión Educativa Rural", inst: "Universidad de Los Aromos", pais: "Chile", ciudad: "Valparaíso", area: "Educación", nivel: "maestria", mod: "semipresencial", idioma: "Español", dur: 18, ap: -45, ci: 23, ini: 120, mat: 6500000, vida: 650000, otros: 400000, mon: "CLP", fin: "parcial", cob: "50 % de la matrícula para egresados de universidades públicas de regiones", financ: "Universidad de Los Aromos", ent: "ORI-UML", act: 40 },
+  { tipo: "beca", nombre: "Beca Nacional de Posgrado en Pedagogía e Interculturalidad", inst: "Universidad Autónoma de Tlalcoyan", pais: "México", ciudad: "Puebla", area: "Educación", nivel: "maestria", mod: "presencial", idioma: "Español", dur: 24, ap: -10, ci: 40, ini: 220, mat: 90000, vida: 14000, otros: 12000, mon: "MXN", fin: "integral", cob: "Matrícula, manutención mensual, pasajes y seguro médico", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "PRONABEC", act: 10, dest: true },
+  { tipo: "programa_con_beca", nombre: "Doctorado en Energías Renovables con beca de investigación", inst: "Hochschule Lindenfeld", pais: "Alemania", ciudad: "Bremen", area: "Ingeniería y tecnología", nivel: "doctorado", mod: "presencial", idioma: "Inglés", dur: 36, ap: -20, ci: 24, ini: 250, mat: 900, vida: 1050, otros: 2500, mon: "EUR", fin: "integral", cob: "Asignación mensual de 1 300 EUR, seguro de salud y pasajes", financ: "Agencia de Intercambio Académico Lindenfeld (ficticia)", ent: "PRONABEC", act: 15, dest: true },
+  { tipo: "programa", nombre: "Maestría en Ciencia de Datos", inst: "Maplewood University", pais: "Canadá", ciudad: "Toronto", area: "Ingeniería y tecnología", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 20, ap: -60, ci: 22, ini: 150, mat: 38000, vida: 1800, otros: 3000, mon: "CAD", fin: "ninguno", ent: "ORI-UDM", act: 70 },
+  { tipo: "beca", nombre: "Beca de Excelencia en Gestión del Agua", inst: "Hogeschool Veldmeer", pais: "Países Bajos", ciudad: "Utrecht", area: "Medio ambiente y sostenibilidad", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 12, ap: -5, ci: 55, ini: 230, mat: 18000, vida: 1200, otros: 2000, mon: "EUR", fin: "integral", cob: "Matrícula completa, manutención, seguro y pasajes", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "PRONABEC", act: 5, dest: true },
+  { tipo: "beca", nombre: "Beca de Gobierno para Investigación en Robótica", inst: "Universidad de Kitahara", pais: "Japón", ciudad: "Osaka", area: "Ingeniería y tecnología", nivel: "doctorado", mod: "presencial", idioma: "Inglés", dur: 42, ap: 15, ci: 75, ini: 330, mat: 535800, vida: 144000, otros: 150000, mon: "JPY", fin: "integral", cob: "Matrícula, asignación mensual y pasajes de ida y vuelta", financ: "Programa de Becas de Cooperación Japón–Perú (ficticio)", ent: "MRE", act: 30 },
+  { tipo: "programa", nombre: "Maestría en Economía del Desarrollo", inst: "Ashmoor University", pais: "Reino Unido", ciudad: "Mánchester", area: "Economía y negocios", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 12, ap: -90, ci: -10, ini: 60, mat: 24000, vida: 1300, otros: 2500, mon: "GBP", fin: "ninguno", ent: "ORI-UML", act: 100 },
+  { tipo: "beca", nombre: "Crédito Educativo para Maestría en Políticas Públicas", inst: "Ashmoor University", pais: "Reino Unido", ciudad: "Londres", area: "Gestión pública y políticas", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 12, ap: -15, ci: 28, ini: 180, mat: 26000, vida: 1500, otros: 3000, mon: "GBP", fin: "credito", cob: "Préstamo de hasta 40 000 USD con periodo de gracia de 12 meses", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "PRONABEC", act: 25 },
+  { tipo: "beca", nombre: "Beca de Movilidad en Estudios Latinoamericanos", inst: "Université de Beaucastel", pais: "Francia", ciudad: "Lyon", area: "Ciencias sociales", nivel: "maestria", mod: "presencial", idioma: "Francés", dur: 24, ap: 20, ci: 90, ini: 300, mat: 3800, vida: 950, otros: 1200, mon: "EUR", fin: "integral", cob: "Matrícula, alojamiento universitario y asignación mensual", financ: "Programa Franco-Andino de Becas (ficticio)", ent: "MRE", act: 12 },
+  { tipo: "programa", nombre: "Especialización en Salud Pública Digital", inst: "Universidad de Valdemora", pais: "España", ciudad: "Madrid", area: "Ciencias de la salud", nivel: "especializacion", mod: "virtual", idioma: "Español", dur: 9, ap: -40, ci: 35, ini: 90, mat: 4200, vida: 0, otros: 150, mon: "EUR", fin: "parcial", cob: "25 % de descuento para profesionales de salud del sector público", financ: "Universidad de Valdemora", ent: "ORI-UDM", act: 50 },
+  { tipo: "beca", nombre: "Beca de Doctorado en Ecología Amazónica", inst: "Universidade Federal de Serra Clara", pais: "Brasil", ciudad: "Manaos", area: "Medio ambiente y sostenibilidad", nivel: "doctorado", mod: "presencial", idioma: "Portugués", dur: 48, ap: -25, ci: 26, ini: 140, mat: 0, vida: 3500, otros: 2500, mon: "BRL", fin: "integral", cob: "Asignación mensual de investigación y seguro de salud", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "PRONABEC", act: 18 },
+  { tipo: "programa", nombre: "Especialización en Gobierno Digital", inst: "Universidad de Puerto Albar", pais: "Argentina", ciudad: "Buenos Aires", area: "Gestión pública y políticas", nivel: "especializacion", mod: "virtual", idioma: "Español", dur: 12, ap: -50, ci: 29, ini: 70, mat: 2400, vida: 0, otros: 100, mon: "USD", fin: "ninguno", ent: "ORI-UML", act: 35 },
+  { tipo: "programa_con_beca", nombre: "Maestría en Ciudades Inteligentes con beca completa", inst: "Universidad Nacional de Seoryeong", pais: "Corea del Sur", ciudad: "Seúl", area: "Ingeniería y tecnología", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 24, ap: 5, ci: 60, ini: 280, mat: 9000000, vida: 1200000, otros: 2000000, mon: "KRW", fin: "integral", cob: "Matrícula, curso de coreano, manutención y pasajes", financ: "Programa de Becas Corea–Andes (ficticio)", ent: "PRONABEC", act: 8 },
+  { tipo: "programa", nombre: "Maestría en Salud Global", inst: "Coralbay University", pais: "Australia", ciudad: "Brisbane", area: "Ciencias de la salud", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 24, ap: -120, ci: -30, ini: 30, mat: 70000, vida: 2200, otros: 6000, mon: "AUD", fin: "ninguno", ent: "ORI-UDM", act: 130 },
+  { tipo: "beca", nombre: "Beca de Doctorado en Estudios Andinos", inst: "Universidad de Los Aromos", pais: "Chile", ciudad: "Santiago", area: "Ciencias sociales", nivel: "doctorado", mod: "presencial", idioma: "Español", dur: 48, ap: -35, ci: 45, ini: 240, mat: 5000000, vida: 800000, otros: 500000, mon: "CLP", fin: "integral", cob: "Matrícula, manutención y seguro de salud", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "PRONABEC", act: 22 },
+  { tipo: "programa", nombre: "Maestría en Finanzas Sostenibles", inst: "Universidad Autónoma de Tlalcoyan", pais: "México", ciudad: "Ciudad de México", area: "Economía y negocios", nivel: "maestria", mod: "semipresencial", idioma: "Español", dur: 24, ap: -40, ci: 45, ini: 120, mat: 140000, vida: 16000, otros: 8000, mon: "MXN", fin: "parcial", cob: "30 % de la matrícula por rendimiento académico", financ: "Universidad Autónoma de Tlalcoyan", ent: "ORI-UML", act: 60 , incompleta: true },
+  { tipo: "beca", nombre: "Beca de Investigación en Patrimonio Cultural", inst: "Universidad de Valdemora", pais: "España", ciudad: "Sevilla", area: "Artes y humanidades", nivel: "doctorado", mod: "presencial", idioma: "Español", dur: 36, ap: -12, ci: 30, ini: 210, mat: 2500, vida: 1000, otros: 1500, mon: "EUR", fin: "integral", cob: "Contrato predoctoral con asignación mensual y matrícula", financ: "Fondo de Cooperación Iberoamericana (ficticio)", ent: "MRE", act: 14 },
+  { tipo: "programa_con_beca", nombre: "Especialización en Didáctica del Francés", inst: "Université de Beaucastel", pais: "Francia", ciudad: "Burdeos", area: "Educación", nivel: "especializacion", mod: "semipresencial", idioma: "Francés", dur: 10, ap: -8, ci: 31, ini: 100, mat: 3000, vida: 900, otros: 800, mon: "EUR", fin: "parcial", cob: "Matrícula y pasajes para la fase presencial", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "ORI-UDM", act: 9 },
+  { tipo: "programa", nombre: "Maestría en Administración Pública Internacional", inst: "Hochschule Lindenfeld", pais: "Alemania", ciudad: "Berlín", area: "Gestión pública y políticas", nivel: "maestria", mod: "presencial", idioma: "Alemán", dur: 24, ap: 30, ci: 100, ini: 330, mat: 1200, vida: 1000, otros: 2200, mon: "EUR", fin: "ninguno", ent: "ORI-UML", act: 45 },
+  { tipo: "beca", nombre: "Crédito para Doctorado en Epidemiología", inst: "Maplewood University", pais: "Canadá", ciudad: "Montreal", area: "Ciencias de la salud", nivel: "doctorado", mod: "presencial", idioma: "Inglés", dur: 48, ap: -18, ci: 50, ini: 260, mat: 22000, vida: 1700, otros: 3500, mon: "CAD", fin: "credito", cob: "Préstamo de hasta 60 000 USD con tasa preferencial", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "PRONABEC", act: 30 },
+  { tipo: "beca", nombre: "Beca de Maestría en Gestión Cultural", inst: "Universidad de Puerto Albar", pais: "Argentina", ciudad: "Córdoba", area: "Artes y humanidades", nivel: "maestria", mod: "presencial", idioma: "Español", dur: 24, ap: -100, ci: -40, ini: 20, mat: 6000, vida: 700, otros: 500, mon: "USD", fin: "integral", cob: "Matrícula y manutención", financ: "Programa de Cooperación Cultural Sur–Sur (ficticio)", ent: "MRE", act: 95 },
+  { tipo: "programa", nombre: "Máster en Dirección Pública y Gobernanza", inst: "Universidad de Valdemora", pais: "España", ciudad: "Barcelona", area: "Gestión pública y políticas", nivel: "maestria", mod: "presencial", idioma: "Español", dur: 12, ap: -20, ci: 65, ini: 250, mat: 11000, vida: 1200, otros: 1800, mon: "EUR", fin: "ninguno", ent: "ORI-UDM", act: 28 },
+  { tipo: "beca", nombre: "Beca de Doctorado en Ciencias del Clima", inst: "Coralbay University", pais: "Australia", ciudad: "Perth", area: "Medio ambiente y sostenibilidad", nivel: "doctorado", mod: "presencial", idioma: "Inglés", dur: 42, ap: 45, ci: 120, ini: 400, mat: 45000, vida: 2300, otros: 5000, mon: "AUD", fin: "integral", cob: "Matrícula, manutención, seguro de salud y pasajes", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "PRONABEC", act: 6 },
+  { tipo: "programa", nombre: "Especialización en Atención Primaria de Salud", inst: "Universidade Federal de Serra Clara", pais: "Brasil", ciudad: "São Paulo", area: "Ciencias de la salud", nivel: "especializacion", mod: "virtual", idioma: "Portugués", dur: 12, ap: -30, ci: 21, ini: 60, mat: 9000, vida: 0, otros: 300, mon: "BRL", fin: "parcial", cob: "40 % de descuento en la matrícula", financ: "Universidade Federal de Serra Clara", ent: "ORI-UML", act: 40 },
+  { tipo: "programa_con_beca", nombre: "Doctorado en Migración y Desarrollo con beca", inst: "Hogeschool Veldmeer", pais: "Países Bajos", ciudad: "Ámsterdam", area: "Ciencias sociales", nivel: "doctorado", mod: "presencial", idioma: "Inglés", dur: 48, ap: -150, ci: -60, ini: 10, mat: 2300, vida: 1300, otros: 2500, mon: "EUR", fin: "integral", cob: "Salario de investigador doctoral y seguro", financ: "Hogeschool Veldmeer", ent: "PRONABEC", act: 160 },
+  { tipo: "programa", nombre: "Especialización en Inteligencia Artificial Aplicada", inst: "Universidad Nacional de Seoryeong", pais: "Corea del Sur", ciudad: "Busan", area: "Ingeniería y tecnología", nivel: "especializacion", mod: "virtual", idioma: "Inglés", dur: 6, ap: -14, ci: 27, ini: 80, mat: 6000000, vida: 0, otros: 0, mon: "KRW", fin: "ninguno", ent: "ORI-UDM", act: 14 },
+  { tipo: "beca", nombre: "Beca de Maestría en Educación Inclusiva", inst: "Universidad de Kitahara", pais: "Japón", ciudad: "Tokio", area: "Educación", nivel: "maestria", mod: "presencial", idioma: "Inglés", dur: 24, ap: -40, ci: 38, ini: 150, mat: 820000, vida: 140000, otros: 180000, mon: "JPY", fin: "integral", cob: "Matrícula, asignación mensual y pasajes", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "PRONABEC", act: 50 },
+  { tipo: "programa", nombre: "Especialización en Proyectos de Inversión Pública", inst: "Universidad de Los Aromos", pais: "Chile", ciudad: "Concepción", area: "Gestión pública y políticas", nivel: "especializacion", mod: "semipresencial", idioma: "Español", dur: 8, ap: 10, ci: 40, ini: 120, mat: 2800000, vida: 600000, otros: 200000, mon: "CLP", fin: "parcial", cob: "Media beca para servidores públicos", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "ORI-UML", act: 20 },
+  { tipo: "programa", nombre: "Máster en Economía Circular", inst: "Université de Beaucastel", pais: "Francia", ciudad: "París", area: "Medio ambiente y sostenibilidad", nivel: "maestria", mod: "presencial", idioma: "Francés", dur: 24, ap: -55, ci: 32, ini: 170, mat: 4500, vida: 1150, otros: 1600, mon: "EUR", fin: "ninguno", ent: "ORI-UDM", act: 100 },
+  { tipo: "beca", nombre: "Beca de Doctorado en Ingeniería Sísmica", inst: "Universidad Autónoma de Tlalcoyan", pais: "México", ciudad: "Puebla", area: "Ingeniería y tecnología", nivel: "doctorado", mod: "presencial", idioma: "Español", dur: 48, ap: -3, ci: 80, ini: 300, mat: 60000, vida: 15000, otros: 10000, mon: "MXN", fin: "integral", cob: "Matrícula, manutención y seguro médico", financ: "Programa de Cooperación Científica México–Perú (ficticio)", ent: "MRE", act: 3, nueva: true },
+  { tipo: "beca", nombre: "Beca para Maestría en Educación y Tecnologías", inst: "Universidad de Valdemora", pais: "España", ciudad: "Valencia", area: "Educación", nivel: "maestria", mod: "semipresencial", idioma: "Español", dur: 18, ap: -3, ci: 33, ini: 210, mat: 7000, vida: 1000, otros: 1200, mon: "EUR", fin: "integral", cob: "Matrícula, pasajes para la fase presencial y asignación mensual", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "PRONABEC", act: 3, nueva: true, dest: true },
+  { tipo: "programa", nombre: "Especialización en Comercio Internacional", inst: "Maplewood University", pais: "Canadá", ciudad: "Vancouver", area: "Economía y negocios", nivel: "especializacion", mod: "virtual", idioma: "Inglés", dur: 10, ap: 25, ci: 85, ini: 200, mat: 9000, vida: 0, otros: 200, mon: "CAD", fin: "ninguno", ent: "ORI-UML", act: 25 },
+  { tipo: "programa_con_beca", nombre: "Maestría en Políticas Sociales con beca parcial", inst: "Universidad de Puerto Albar", pais: "Argentina", ciudad: "Rosario", area: "Ciencias sociales", nivel: "maestria", mod: "semipresencial", idioma: "Español", dur: 24, ap: -22, ci: 27, ini: 160, mat: 8000, vida: 600, otros: 500, mon: "USD", fin: "parcial", cob: "50 % de la matrícula", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "ORI-UDM", act: 22 },
+  { tipo: "beca", nombre: "Beca de Maestría en Conservación del Patrimonio", inst: "Hochschule Lindenfeld", pais: "Alemania", ciudad: "Múnich", area: "Artes y humanidades", nivel: "maestria", mod: "presencial", idioma: "Alemán", dur: 24, ap: 40, ci: 110, ini: 360, mat: 600, vida: 1050, otros: 2000, mon: "EUR", fin: "integral", cob: "Curso de alemán, manutención, seguro y pasajes", financ: "Agencia de Intercambio Académico Lindenfeld (ficticia)", ent: "MRE", act: 3, nueva: true },
+  { tipo: "beca", nombre: "Crédito Educativo para Maestría en Agronegocios", inst: "Universidade Federal de Serra Clara", pais: "Brasil", ciudad: "Porto Alegre", area: "Economía y negocios", nivel: "maestria", mod: "presencial", idioma: "Portugués", dur: 24, ap: -20, ci: 50, ini: 130, mat: 30000, vida: 3000, otros: 2000, mon: "BRL", fin: "credito", cob: "Préstamo de hasta 30 000 USD", financ: "Programa Nacional de Becas y Crédito Educativo (PRONABEC)", ent: "PRONABEC", act: 70 , incompleta: true },
 ];
 
 /** Requisitos de la ficha, derivados del nivel, idioma, modalidad y financiamiento. */
@@ -297,13 +303,14 @@ export function otrosCostosDetalle(o: Op): string {
 export const CLAVE_PRUEBA = "Prototipo2026!";
 
 export const PERSONAL = [
-  { email: "admin@ventanilla.test", nombre: "Administración de la Ventanilla", rol: "admin", entidad: "DINES" },
-  { email: "orientador@ventanilla.test", nombre: "Carmen Villanueva (orientadora)", rol: "orientador", entidad: "DINES" },
-  { email: "gestor.orae@ventanilla.test", nombre: "Gestor ORAE", rol: "gestor", entidad: "ORAE" },
-  { email: "gestor.fonabep@ventanilla.test", nombre: "Gestora FONABEP", rol: "gestor", entidad: "FONABEP" },
-  { email: "gestor.sugrat@ventanilla.test", nombre: "Gestor SUGRAT", rol: "gestor", entidad: "SUGRAT" },
-  { email: "gestor.uhor@ventanilla.test", nombre: "Gestora Red Horizonte", rol: "gestor", entidad: "UHOR" },
-  { email: "gestor.dines@ventanilla.test", nombre: "Gestor DINES", rol: "gestor", entidad: "DINES" },
+  { email: "admin@ventanilla.test", nombre: "Administración de Talento sin Fronteras", rol: "admin", entidad: "MINEDU" },
+  { email: "orientador@ventanilla.test", nombre: "Carmen Villanueva (orientadora)", rol: "orientador", entidad: "MINEDU" },
+  { email: "gestor.mre@ventanilla.test", nombre: "Gestor MRE", rol: "gestor", entidad: "MRE" },
+  { email: "gestor.pronabec@ventanilla.test", nombre: "Gestora PRONABEC", rol: "gestor", entidad: "PRONABEC" },
+  { email: "gestor.sunedu@ventanilla.test", nombre: "Gestor SUNEDU", rol: "gestor", entidad: "SUNEDU" },
+  { email: "gestor.minedu@ventanilla.test", nombre: "Gestora MINEDU", rol: "gestor", entidad: "MINEDU" },
+  { email: "gestor.uml@ventanilla.test", nombre: "Gestor ORI Universidad Metropolitana de Lima", rol: "gestor", entidad: "ORI-UML" },
+  { email: "gestor.udm@ventanilla.test", nombre: "Gestora ORI Universidad del Misti", rol: "gestor", entidad: "ORI-UDM" },
 ] as const;
 
 type PerfilSemilla = {

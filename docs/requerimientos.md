@@ -111,7 +111,7 @@ La ficha estándar es el formato común de información que alimenta el catálog
 
 - Entre 30 y 40 oportunidades ficticias, distribuidas en al menos 8 países, 6 áreas de estudio y los tres niveles, con convocatorias abiertas, próximas y cerradas respecto de la fecha actual. Las fechas se calibran para que en las revisiones del jurado (4 y 20 de noviembre) predominen las convocatorias abiertas.
 - Entre 6 y 8 trámites con nombres genéricos, entidades responsables reales y valores referenciales.
-- Cinco entidades proveedoras ficticias, que representen el rol de cada tipo de entidad real.
+- Entidades proveedoras: las entidades públicas reales según su rol (Ministerio de Relaciones Exteriores, PRONABEC, MINEDU como administradora y SUNEDU) y oficinas de relaciones internacionales de universidades peruanas ficticias. Las oportunidades, becas y universidades son ficticias (ver `docs/decisiones.md`, D43).
 - Tres usuarios de prueba con perfiles distintos, entre ellos una titulada de una universidad de región sin redes de contacto académico, coherente con la escena 1 del storyboard.
 - Un control para simular la fecha actual, que permita demostrar las alertas de vencimiento.
 

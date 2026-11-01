@@ -203,7 +203,15 @@ export default async function FichaOportunidad({ params }: Params) {
       <Seccion titulo="Fuente y actualización">
         <Datos
           filas={[
-            ["Entidad proveedora", `${o.entidad.nombre} (${o.entidad.sigla})`],
+            [
+              "Entidad proveedora",
+              <span key="e">
+                {o.entidad.nombre} ({o.entidad.sigla})
+                <span className="block text-sm text-suave">
+                  Ficha de ejemplo con datos ficticios: no es una convocatoria real de esta entidad.
+                </span>
+              </span>,
+            ],
             ["Última actualización", formatearFecha(o.actualizadoEn)],
             ["Responsable de la actualización", o.responsableActualizacion],
             [

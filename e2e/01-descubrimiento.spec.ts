@@ -10,7 +10,7 @@ test("la página de inicio reúne oportunidades de varias fuentes y muestra el b
   await expect(page.getByRole("heading", { name: "Convocatorias próximas a cerrar" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Oportunidades destacadas" })).toBeVisible();
   const entidades = page.getByRole("region", { name: "Entidades que publican información" }).getByRole("listitem");
-  await expect(entidades).toHaveCount(5);
+  await expect(entidades).toHaveCount(6);
   // Cada entidad enlaza a sus oportunidades o a sus trámites (D41).
   for (let i = 0; i < (await entidades.count()); i++) {
     await expect(entidades.nth(i).getByRole("link", { name: /^Ver sus \d+ (oportunidad|trámite)/ }).first()).toBeVisible();

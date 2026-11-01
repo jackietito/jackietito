@@ -94,6 +94,8 @@ export function TarjetaOportunidad({ o, hoy, children, nivelTitulo = "h3" }: Pro
       <p className={`text-sm font-semibold ${urgente ? "text-peligro" : "text-texto"}`}>{textoPlazo(o, hoy)}</p>
       <p className="mt-auto text-xs text-suave">
         Fuente: {o.entidad.nombre} ({o.entidad.sigla}) · Actualizada el {formatearFechaCorta(o.actualizadoEn)}
+        {/* Las entidades son reales, pero las oportunidades son ficticias (D43). */}
+        <span className="block">Ficha de ejemplo con datos ficticios</span>
       </p>
       {children}
     </article>

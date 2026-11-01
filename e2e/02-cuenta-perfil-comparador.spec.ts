@@ -97,7 +97,7 @@ test("las páginas personales piden ingresar y respetan el rol", async ({ page }
 
 test("cada rol del personal ve sus enlaces", async ({ page }) => {
   const casos = [
-    ["gestor.fonabep@ventanilla.test", "/gestion", "Gestión de contenidos"],
+    ["gestor.pronabec@ventanilla.test", "/gestion", "Gestión de contenidos"],
     ["orientador@ventanilla.test", "/bandeja", "Bandeja de consultas"],
     ["admin@ventanilla.test", "/admin", "Tablero de indicadores"],
   ] as const;
@@ -118,6 +118,8 @@ test("una ciudadana guarda una oportunidad y la ve en su panel", async ({ page }
   await page.goto("/catalogo?q=Gestión Educativa Rural");
   await page.getByRole("link", { name: "Maestría en Gestión Educativa Rural" }).click();
   const guardar = page.getByRole("button", { name: /^Guardar: Maestría en Gestión Educativa Rural/ });
+  // Espera a que la página sea interactiva antes de pulsar (el botón guarda sin recargar).
+  await page.waitForLoadState("networkidle");
   await guardar.click();
   await expect(page.getByText("Guardaste la oportunidad en tu panel.")).toBeVisible();
   await expect(page.getByRole("button", { name: /^Guardada: Maestría en Gestión Educativa Rural/ })).toBeVisible();

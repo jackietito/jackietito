@@ -44,7 +44,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             <p>
               <strong>Talento sin Fronteras</strong> · Encuentra, compara y prepara tu posgrado en el exterior. Prototipo académico del Programa de Gobernabilidad e
               Innovación Pública PUCP–CAF.
-              Todo el contenido es ficticio. Las entidades, instituciones y enlaces son ilustrativos.
+              Las oportunidades, becas, universidades y enlaces son ficticios. Las entidades públicas se mencionan
+              solo como ejemplo de quién publicaría cada información.
             </p>
             <p>
               Talento sin Fronteras informa y deriva: no recibe postulaciones ni realiza trámites. Los plazos y costos de

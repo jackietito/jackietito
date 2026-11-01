@@ -47,7 +47,7 @@ npm run dev        # http://localhost:3000
 
 `npm run db:seed` borra y vuelve a cargar todos los datos ficticios en cualquier momento. Las fechas de las convocatorias se calculan a partir del día de carga, de modo que siempre hay convocatorias abiertas, próximas y cerradas.
 
-Contenido: 36 oportunidades (13 países, 8 áreas, 3 niveles), 7 trámites, 5 entidades proveedoras ficticias, 3 ciudadanos de prueba, 9 ciudadanos de población simulada y el personal de cada rol.
+Contenido: 36 oportunidades ficticias (13 países, 8 áreas, 3 niveles), 8 trámites, 6 entidades proveedoras (4 públicas reales y 2 universidades ficticias), 3 ciudadanos de prueba, 9 ciudadanos de población simulada y el personal de cada rol.
 
 ### Usuarios de prueba
 
@@ -58,11 +58,12 @@ Todas las cuentas usan la contraseña **`Prototipo2026!`**. Se ingresa desde **I
 | Ciudadana | `rosa@ventanilla.test` | Titulada de una universidad de Ayacucho, sin redes de contacto académico (escena 1 del storyboard). Busca maestría en Educación y necesita financiamiento. |
 | Ciudadano | `diego@ventanilla.test` | Ingeniero de Lima que busca doctorado en inglés; ya tiene una ruta con avances. |
 | Ciudadana | `lucia@ventanilla.test` | Profesional de Arequipa que busca una especialización virtual en gestión pública. |
-| Gestor | `gestor.orae@ventanilla.test` | Oficina de Relaciones Académicas Exteriores (rol de cancillería) |
-| Gestora | `gestor.fonabep@ventanilla.test` | Fondo Nacional de Becas de Posgrado (rol de programa de becas) |
-| Gestor | `gestor.sugrat@ventanilla.test` | Superintendencia de Grados y Títulos (rol de regulador) |
-| Gestora | `gestor.uhor@ventanilla.test` | Red Universitaria Horizonte (rol de universidades) |
-| Gestor | `gestor.dines@ventanilla.test` | Dirección Nacional de Educación Superior (entidad administradora) |
+| Gestor | `gestor.mre@ventanilla.test` | Ministerio de Relaciones Exteriores: becas de cooperación, apostilla y traducción |
+| Gestora | `gestor.pronabec@ventanilla.test` | PRONABEC: becas propias y de cooperación internacional |
+| Gestor | `gestor.sunedu@ventanilla.test` | SUNEDU: trámites de grados y títulos (no publica oportunidades) |
+| Gestora | `gestor.minedu@ventanilla.test` | MINEDU, entidad administradora: trámites generales (no publica oportunidades) |
+| Gestor | `gestor.uml@ventanilla.test` | Oficina de Relaciones Internacionales, Universidad Metropolitana de Lima (ficticia) |
+| Gestora | `gestor.udm@ventanilla.test` | Oficina de Relaciones Internacionales, Universidad del Misti (ficticia) |
 | Orientadora | `orientador@ventanilla.test` | Atiende la bandeja de consultas |
 | Administrador | `admin@ventanilla.test` | Tablero de indicadores, reporte por entidad y fecha simulada |
 
@@ -101,7 +102,7 @@ Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Cr
 
 | Requerimiento | Dónde | Cómo |
 |---|---|---|
-| RF16 Gestión de contenidos | `/gestion` | Con `gestor.fonabep@ventanilla.test`: crea una ficha con «Nueva ficha» (prueba guardarla incompleta), edítala, despublícala. Completa la cobertura de la ficha marcada «Incompleta». Con `gestor.uhor@ventanilla.test`, usa «Confirmar que sigue vigente» en una ficha desactualizada. |
+| RF16 Gestión de contenidos | `/gestion` | Con `gestor.pronabec@ventanilla.test`: crea una ficha con «Nueva ficha» (prueba guardarla incompleta), edítala, despublícala. Completa la cobertura de la ficha marcada «Incompleta». Con `gestor.udm@ventanilla.test`, usa «Confirmar que sigue vigente» en una ficha desactualizada. |
 | RF17 Tablero de indicadores | `/admin` | Con `admin@ventanilla.test`: los cuatro indicadores, la tabla por región y la tabla por entidad. Cambian al publicar o completar fichas, al generar rutas o al responder encuestas. |
 | RF18 Reporte a entidades | `/reporte` | Con el administrador, elige una entidad; con un gestor, ves el de tu entidad. |
 | Criterio de aceptación | `/gestion` y `/admin` | Mira el indicador 1 como administrador, crea o completa una ficha como gestor y vuelve al tablero: el número cambia. |
@@ -201,7 +202,8 @@ e2e/                   pruebas de Playwright
 
 ## Avisos
 
-- Todo el contenido es ficticio. Las entidades proveedoras, instituciones, oportunidades, personas y enlaces son inventados; los enlaces oficiales apuntan a `example.org`.
+- Las oportunidades, becas, programas, universidades (peruanas y extranjeras), personas y enlaces son inventados; los enlaces oficiales apuntan a `example.org`. Cada ficha se identifica como «Ficha de ejemplo con datos ficticios».
+- Las entidades proveedoras públicas (Ministerio de Relaciones Exteriores, PRONABEC, MINEDU y SUNEDU) son reales y se mencionan solo como ejemplo de quién publicaría cada información (decisión D43).
 - Excepción: las entidades peruanas ante las que se hacen los trámites (SUNEDU, Cancillería, Policía Nacional, Poder Judicial) se nombran con su nombre real; sus plazos y costos son referenciales y deben verificarse en el sitio oficial de cada entidad (decisiones D36 y D42).
 - No se usan logotipos, marcas ni la identidad gráfica de gob.pe ni de ninguna entidad real.
 - No hay integraciones reales con sistemas del Estado ni con la Plataforma de Interoperabilidad del Estado (PIDE). La información externa ingresa por el módulo de gestión de contenidos.
