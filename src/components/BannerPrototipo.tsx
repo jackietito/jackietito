@@ -6,10 +6,8 @@ export function BannerPrototipo({ fechaSimulada }: { fechaSimulada?: string }) {
       aria-label="Aviso de prototipo"
       className="sticky top-0 z-50 border-b-2 border-amber-500 bg-amber-100 px-4 py-2 text-center text-sm text-amber-950"
     >
-      <strong className="font-bold">Prototipo académico – datos ficticios</strong>
-      <span className="hidden sm:inline">
-        {" "}· No es un servicio oficial. Las postulaciones y trámites se realizan en los canales de cada entidad.
-      </span>
+      {/* En mayúsculas por estilo (el texto sigue en minúsculas para los lectores de pantalla). */}
+      <strong className="font-bold uppercase tracking-wide">Prototipo académico – datos ficticios · No es un servicio oficial.</strong>
       {fechaSimulada && <span className="block font-semibold sm:inline"> · Fecha simulada: {fechaSimulada}</span>}
     </div>
   );

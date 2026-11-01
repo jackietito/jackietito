@@ -45,7 +45,7 @@ test("el banner sigue visible al desplazarse", async ({ page }) => {
 
 test("el catálogo lista oportunidades con su fuente y fecha de actualización", async ({ page }) => {
   await page.goto("/catalogo");
-  await expect(page.getByRole("status")).toHaveText("36 oportunidades encontradas");
+  await expect(page.getByRole("status")).toHaveText("47 oportunidades encontradas");
   const primera = page.getByRole("article").first();
   await expect(primera).toContainText("Fuente:");
   await expect(primera).toContainText("Actualizada el");
@@ -65,7 +65,7 @@ test("filtra por país, estado y texto libre", async ({ page }) => {
   for (let i = 0; i < n; i++) await expect(tarjetas.nth(i)).toContainText("España");
 
   await page.getByRole("link", { name: /País: España/ }).click();
-  await expect(page.getByRole("status")).toHaveText("36 oportunidades encontradas");
+  await expect(page.getByRole("status")).toHaveText("47 oportunidades encontradas");
 
   await page.goto("/catalogo?estado=cerrada");
   const cerradas = page.getByRole("article");

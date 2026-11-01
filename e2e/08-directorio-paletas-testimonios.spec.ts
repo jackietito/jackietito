@@ -63,12 +63,14 @@ test("testimonios: ilustrativos rotulados y reales solo con autorización y apro
   await page.getByLabel(/Autorizo publicar mi comentario/).check();
   await page.getByRole("button", { name: "Enviar encuesta" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("¡Gracias por tu opinión!");
+  await expect(page.getByText(/Recibimos tu autorización para publicar tu comentario/)).toBeVisible();
   // Aún no aparece: falta la aprobación.
   await page.goto("/");
   await expect(page.getByText(comentario)).toHaveCount(0);
   await salir(page);
 
   await ingresar(page, "admin@ventanilla.test");
+  await expect(page.getByText(/esperando tu aprobación/)).toBeVisible();
   const pendiente = page.getByRole("region", { name: /Testimonios por aprobar/ }).getByRole("listitem").filter({ hasText: comentario });
   await expect(pendiente).toContainText("Persona de Arequipa");
   await pendiente.getByRole("button", { name: /^Aprobar/ }).click();

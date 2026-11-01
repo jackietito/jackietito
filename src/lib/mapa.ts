@@ -18,6 +18,7 @@ export type Continente = "América del Norte" | "América del Sur" | "Europa" | 
  */
 export const PAISES_MAPA: Record<string, { iso: string; continente: Continente; burbuja: [number, number]; ancla?: [number, number] }> = {
   "Canadá": { iso: "124", continente: "América del Norte", burbuja: [-100, 58] },
+  "Estados Unidos": { iso: "840", continente: "América del Norte", burbuja: [-98, 39] },
   "México": { iso: "484", continente: "América del Norte", burbuja: [-102, 23] },
   "Brasil": { iso: "076", continente: "América del Sur", burbuja: [-52, -10] },
   "Chile": { iso: "152", continente: "América del Sur", burbuja: [-86, -36], ancla: [-71, -33] },

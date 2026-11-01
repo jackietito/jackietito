@@ -28,9 +28,12 @@ export const DIRECTORIO: Contacto[] = [
   {
     nombre: "Superintendencia Nacional de Educación Superior Universitaria",
     sigla: "SUNEDU",
-    paraQue: "Registro Nacional de Grados y Títulos y constancia de inscripción del grado.",
+    paraQue: "Registro Nacional de Grados y Títulos y constancia de verificación de firma.",
     sitio: { texto: "gob.pe/sunedu", url: "https://www.gob.pe/sunedu" },
-    otros: [{ texto: "Solicitudes en línea de la SUNEDU", url: "https://enlinea.sunedu.gob.pe/" }],
+    otros: [
+      { texto: "Solicitudes en línea de la SUNEDU", url: "https://enlinea.sunedu.gob.pe/" },
+      { texto: "Pago del trámite en Pagalo.pe", url: "https://pagalo.pe/" },
+    ],
   },
   {
     nombre: "Ministerio de Educación",

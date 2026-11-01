@@ -47,7 +47,7 @@ npm run dev        # http://localhost:3000
 
 `npm run db:seed` borra y vuelve a cargar todos los datos ficticios en cualquier momento. Las fechas de las convocatorias se calculan a partir del día de carga, de modo que siempre hay convocatorias abiertas, próximas y cerradas.
 
-Contenido: 36 oportunidades ficticias (13 países, 8 áreas, 3 niveles), 8 trámites, 6 entidades proveedoras (4 públicas reales y 2 universidades ficticias), 3 ciudadanos de prueba, 9 ciudadanos de población simulada y el personal de cada rol.
+Contenido: 47 oportunidades ficticias (14 países, incluido Estados Unidos; 8 áreas, 3 niveles), 8 trámites, 6 entidades proveedoras (4 públicas reales y 2 universidades ficticias), 3 ciudadanos de prueba, 9 ciudadanos de población simulada y el personal de cada rol.
 
 ### Usuarios de prueba
 
@@ -114,10 +114,10 @@ Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Cr
 | Con y sin beca; costo opcional | «Mi perfil» | Marca «Con beca o crédito» y «Sin beca»; deja «¿Cuánto podrías pagar?» en «Sin límite». |
 | Semáforo y correo simulado | «Alertas» | Con `rosa@ventanilla.test`: el aviso de vencimiento lleva color y texto; abre «Ver el correo que te enviaríamos». |
 | Compartir | Ficha de una oportunidad | Botones de WhatsApp, Facebook, LinkedIn, X y «Copiar enlace». |
-| Mapa mundial | Catálogo → «Ver en el mapa mundial» | Toca un país o un continente para filtrar el catálogo. |
+| Mapa mundial | Catálogo → «Ver en el mapa mundial» | Usa los mismos filtros que la lista; toca un país o un continente para ver esas oportunidades en la lista. |
 | Directorio y financiamiento | «Orientación» | Sitios oficiales de las entidades de trámites y programas de becas reales (verificados el 1/11/2026). |
 | Tonalidades | `/admin` | Con `admin@ventanilla.test`, elige otra paleta en «Tonalidades de la plataforma». |
-| Testimonios | Encuesta, `/admin` e inicio | Responde la encuesta autorizando publicar tu comentario; apruébalo como administrador y míralo en «Experiencias». |
+| Testimonios | Encuesta, `/admin` e inicio | Responde la encuesta, escribe un comentario y autoriza publicarlo. Luego ingresa como `admin@ventanilla.test`, apruébalo en «Testimonios por aprobar» y míralo en «Experiencias» del inicio. |
 
 ## Pruebas
 

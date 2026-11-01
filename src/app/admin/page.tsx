@@ -67,6 +67,12 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
     <div className="space-y-8">
       <div>
         <h1 className="titulo-pagina">Tablero de indicadores</h1>
+        {pendientes.length > 0 && (
+          <p className="mt-3 rounded-lg border border-alerta bg-alerta-claro p-3 font-semibold text-alerta">
+            Hay {pendientes.length} {pendientes.length === 1 ? "testimonio esperando" : "testimonios esperando"} tu aprobación.{" "}
+            <a href="#testimonios" className="underline">Revisarlos</a>
+          </p>
+        )}
         <p className="mt-2 max-w-3xl text-suave">
           Indicadores de la matriz de formulación al {formatearFecha(hoy)}{simulada ? " (fecha simulada)" : ""}. Se calculan
           en el momento con los datos del prototipo.

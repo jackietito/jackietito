@@ -119,7 +119,9 @@ export async function enviarEncuesta(_: EstadoFormulario, fd: FormData): Promise
   const previa = await prisma.encuesta.findFirst({ where: { usuarioId: uid, oportunidadId } });
   if (previa) await prisma.encuesta.update({ where: { id: previa.id }, data: datos });
   else await prisma.encuesta.create({ data: { ...datos, usuarioId: uid, oportunidadId } });
-  redirect("/encuesta?gracias=1");
+  // Dice a la persona en qué quedó su testimonio (D50).
+  const testimonio = fd.get("publicar") !== "si" ? "" : datos.publicacion === "pendiente" ? "&testimonio=pendiente" : "&testimonio=sin-comentario";
+  redirect(`/encuesta?gracias=1${testimonio}`);
 }
 
 export async function cambiarFechaSimulada(fd: FormData) {

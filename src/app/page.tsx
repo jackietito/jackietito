@@ -120,7 +120,10 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
       </section>
 
       <section aria-labelledby="titulo-testimonios">
-        <h2 id="titulo-testimonios" className="titulo-seccion mb-4">Experiencias</h2>
+        <h2 id="titulo-testimonios" className="titulo-seccion">Experiencias</h2>
+        <p className="mb-4 mt-1 text-sm text-suave">
+          Los testimonios reales vienen de la encuesta, con autorización de sus autores, y se publican después de que el equipo los revisa.
+        </p>
         <ul className="grid gap-4 md:grid-cols-3">
           {testimonios.map((x, i) => (
             <li key={i}>

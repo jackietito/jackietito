@@ -70,6 +70,7 @@ export const PAISES = [
   "Chile",
   "Corea del Sur",
   "España",
+  "Estados Unidos",
   "Francia",
   "Japón",
   "México",

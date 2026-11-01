@@ -6,8 +6,8 @@ import { FormEncuesta } from "@/components/FormulariosSeguimiento";
 
 export const metadata: Metadata = { title: "Encuesta de satisfacción" };
 
-export default async function Encuesta({ searchParams }: { searchParams: Promise<{ gracias?: string; oportunidad?: string }> }) {
-  const { gracias, oportunidad } = await searchParams;
+export default async function Encuesta({ searchParams }: { searchParams: Promise<{ gracias?: string; oportunidad?: string; testimonio?: string }> }) {
+  const { gracias, oportunidad, testimonio } = await searchParams;
   const u = await exigirRol(["ciudadano"], "/encuesta");
   const [guardadas, respondidas] = await Promise.all([
     prisma.guardada.findMany({ where: { usuarioId: u.id }, include: { oportunidad: true } }),
@@ -21,6 +21,18 @@ export default async function Encuesta({ searchParams }: { searchParams: Promise
         <p role="status" className="rounded-lg border border-exito bg-exito-claro p-3 font-semibold text-exito">
           Guardamos tus respuestas. Nos ayudan a mejorar la información de Talento sin Fronteras.
         </p>
+        {testimonio === "pendiente" && (
+          <p className="rounded-lg border border-marca bg-marca-clara p-3 text-marca-oscura">
+            Recibimos tu autorización para publicar tu comentario. El equipo de Talento sin Fronteras lo revisará y, cuando lo
+            apruebe, aparecerá en «Experiencias» en la página de inicio, solo con tu región.
+          </p>
+        )}
+        {testimonio === "sin-comentario" && (
+          <p className="rounded-lg border border-alerta bg-alerta-claro p-3 text-alerta">
+            Marcaste que autorizas publicar tu comentario, pero no escribiste ninguno. Si quieres compartir tu experiencia,{" "}
+            <Link href="/encuesta" className="enlace">responde de nuevo</Link> y escribe un comentario.
+          </p>
+        )}
         <p>
           Puedes volver a <Link href="/panel" className="enlace">tu panel</Link> o{" "}
           <Link href="/encuesta" className="enlace">responder sobre otra oportunidad</Link>.
