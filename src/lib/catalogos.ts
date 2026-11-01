@@ -119,7 +119,7 @@ export const TEMAS_ORIENTACION = [
   "Requisitos y documentos",
   "Trámites",
   "Idiomas",
-  "Uso de la Ventanilla",
+  "Uso de Talento sin Fronteras",
 ] as const;
 
 /** Dimensiones de la encuesta de satisfacción (RF15), escala 1 a 5. */

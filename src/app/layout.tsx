@@ -7,11 +7,11 @@ import { formatearFecha } from "@/lib/fechas";
 
 export const metadata: Metadata = {
   title: {
-    default: "Ventanilla de Posgrado – Prototipo",
-    template: "%s · Ventanilla de Posgrado – Prototipo",
+    default: "Talento sin Fronteras – Prototipo",
+    template: "%s · Talento sin Fronteras – Prototipo",
   },
   description:
-    "Prototipo académico de una ventanilla digital que reúne oportunidades de posgrado y becas en el exterior. Datos ficticios.",
+    "Talento sin Fronteras: encuentra, compara y prepara tu posgrado en el exterior. Prototipo académico con datos ficticios.",
   robots: { index: false, follow: false },
 };
 
@@ -42,11 +42,12 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <footer className="mt-12 border-t border-borde bg-white">
           <div className="mx-auto max-w-6xl space-y-2 px-4 py-6 text-sm text-suave">
             <p>
-              <strong>Prototipo académico</strong> del Programa de Gobernabilidad e Innovación Pública PUCP–CAF.
+              <strong>Talento sin Fronteras</strong> · Encuentra, compara y prepara tu posgrado en el exterior. Prototipo académico del Programa de Gobernabilidad e
+              Innovación Pública PUCP–CAF.
               Todo el contenido es ficticio. Las entidades, instituciones y enlaces son ilustrativos.
             </p>
             <p>
-              La Ventanilla informa y deriva: no recibe postulaciones ni realiza trámites. Los plazos y costos de
+              Talento sin Fronteras informa y deriva: no recibe postulaciones ni realiza trámites. Los plazos y costos de
               trámites son ilustrativos, no oficiales.
             </p>
             <p>

@@ -80,7 +80,7 @@ export async function sembrar(db: PrismaClient, hoy: Date) {
         institucion: o.inst,
         pais: o.pais,
         ciudad: o.ciudad,
-        descripcion: `${o.nombre} de ${o.inst} (${o.ciudad}, ${o.pais}). Ficha ilustrativa elaborada con datos ficticios para el prototipo de la Ventanilla.`,
+        descripcion: `${o.nombre} de ${o.inst} (${o.ciudad}, ${o.pais}). Ficha ilustrativa elaborada con datos ficticios para el prototipo Talento sin Fronteras.`,
         area: o.area,
         nivel: o.nivel,
         modalidad: o.mod,

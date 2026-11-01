@@ -173,7 +173,7 @@ export default async function Panel() {
       </section>
 
       <section aria-labelledby="titulo-opinion" className="tarjeta space-y-2 border-marca bg-marca-clara">
-        <h2 id="titulo-opinion" className="titulo-seccion">¿Te está sirviendo la Ventanilla?</h2>
+        <h2 id="titulo-opinion" className="titulo-seccion">¿Te está sirviendo Talento sin Fronteras?</h2>
         <p>Responde una encuesta corta sobre la claridad y utilidad de la información.</p>
         <Link href="/encuesta" className="btn-primario">Responder la encuesta</Link>
       </section>

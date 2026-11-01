@@ -103,3 +103,9 @@ Los indicadores 2 y 3 se desagregan por la región del perfil; los 1 y 4, tambi�
 **D38. Varias modalidades e idiomas en el perfil (RF03, RF05).** El perfil admite una o varias modalidades y uno o varios idiomas, guardados como los países: valores separados por «|» en las columnas `modalidad` e `idioma` (sin cambiar el tipo de columna, para no migrar datos). Para las recomendaciones, el criterio coincide si la modalidad o el idioma de la ficha está entre los elegidos.
 
 **D39. Filtros con varias opciones (RF04).** País, área, nivel, modalidad, idioma y tipo de financiamiento se eligen con grupos plegables de casillas; en la URL se repite el parámetro (`?pais=Chile&pais=España`). Dentro de un filtro basta con coincidir con una de las opciones; entre filtros distintos se exigen todos. Cada opción elegida aparece como una etiqueta que se quita por separado. Estado, costo máximo y fechas siguen siendo de una sola opción.
+
+## Identidad, trámites y entidades reales
+
+**D40. Identidad del prototipo.** El prototipo se llama **Talento sin Fronteras**, con el lema «Encuentra, compara y prepara tu posgrado en el exterior». El nombre y el lema aparecen en el título de las páginas, el encabezado, el pie, la guía de uso y el README, y reemplazan las menciones a «la Ventanilla» en la interfaz. «Ventanilla Digital de Oportunidades de Posgrado en el Exterior» se conserva solo como descripción del servicio en la guía. Los documentos de trabajo (`docs/`) mantienen el nombre del servicio con que se formuló el proyecto.
+
+**D41. Enlaces de cada entidad en la página de inicio.** Cada entidad enlaza a lo que publica: sus oportunidades en el catálogo (filtro `?entidad=SIGLA`, que reemplaza la búsqueda por texto) y/o sus trámites en el mapa (`/tramites?entidad=SIGLA`). Así, una entidad que no publica oportunidades, como la responsable de los trámites de grados, también tiene su enlace.

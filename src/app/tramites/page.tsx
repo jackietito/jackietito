@@ -6,9 +6,11 @@ import { formatearMonto } from "@/lib/oportunidades";
 export const metadata: Metadata = { title: "Mapa de trámites" };
 
 /** Mapa de trámites nacionales (RF10): entidades responsables reales; plazos y costos ilustrativos (D36). */
-export default async function MapaTramites() {
+export default async function MapaTramites({ searchParams }: { searchParams: Promise<{ entidad?: string }> }) {
+  const { entidad: sigla } = await searchParams;
+  const entidad = sigla ? await prisma.entidad.findUnique({ where: { sigla } }) : null;
   const tramites = await prisma.tramite.findMany({
-    where: { publicado: true },
+    where: { publicado: true, ...(entidad ? { entidadId: entidad.id } : {}) },
     orderBy: { orden: "asc" },
     include: { entidad: true, _count: { select: { oportunidades: { where: { oportunidad: { publicada: true } } } } } },
   });
@@ -25,9 +27,16 @@ export default async function MapaTramites() {
         <p className="mt-2 max-w-3xl rounded-lg border border-alerta bg-alerta-claro p-3 text-alerta">
           Las entidades responsables son reales, pero los plazos y costos de esta página son{" "}
           <strong>ilustrativos y no oficiales</strong>: es un prototipo académico. Antes de hacer un trámite, consulta el
-          sitio oficial de cada entidad. La Ventanilla no realiza trámites.
+          sitio oficial de cada entidad. Talento sin Fronteras no realiza trámites.
         </p>
       </div>
+
+      {entidad && (
+        <p role="status" className="flex flex-wrap items-center gap-2">
+          <span>Trámites cuya información publica <strong>{entidad.nombre} ({entidad.sigla})</strong>.</span>
+          <Link href="/tramites" className="enlace">Ver todos los trámites</Link>
+        </p>
+      )}
 
       <ol className="space-y-4">
         {tramites.map((t, i) => (

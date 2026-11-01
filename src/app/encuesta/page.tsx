@@ -19,7 +19,7 @@ export default async function Encuesta({ searchParams }: { searchParams: Promise
       <div className="mx-auto max-w-2xl space-y-4">
         <h1 className="titulo-pagina">¡Gracias por tu opinión!</h1>
         <p role="status" className="rounded-lg border border-exito bg-exito-claro p-3 font-semibold text-exito">
-          Guardamos tus respuestas. Nos ayudan a mejorar la información de la Ventanilla.
+          Guardamos tus respuestas. Nos ayudan a mejorar la información de Talento sin Fronteras.
         </p>
         <p>
           Puedes volver a <Link href="/panel" className="enlace">tu panel</Link> o{" "}

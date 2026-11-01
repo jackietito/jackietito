@@ -11,7 +11,30 @@ test("la página de inicio reúne oportunidades de varias fuentes y muestra el b
   await expect(page.getByRole("heading", { name: "Oportunidades destacadas" })).toBeVisible();
   const entidades = page.getByRole("region", { name: "Entidades que publican información" }).getByRole("listitem");
   await expect(entidades).toHaveCount(5);
+  // Cada entidad enlaza a sus oportunidades o a sus trámites (D41).
+  for (let i = 0; i < (await entidades.count()); i++) {
+    await expect(entidades.nth(i).getByRole("link", { name: /^Ver sus \d+ (oportunidad|trámite)/ }).first()).toBeVisible();
+  }
   await revisarAccesibilidad(page);
+});
+
+test("los enlaces de las entidades llevan a su catálogo o a sus trámites", async ({ page }) => {
+  await page.goto("/");
+  const entidades = page.getByRole("region", { name: "Entidades que publican información" }).getByRole("listitem");
+  const conOportunidades = entidades.filter({ has: page.getByRole("link", { name: /oportunidad/ }) }).first();
+  const enlace = conOportunidades.getByRole("link", { name: /oportunidad/ });
+  const n = Number((await enlace.innerText()).match(/\d+/)![0]);
+  await enlace.click();
+  await expect(page).toHaveURL(/\/catalogo\?entidad=/);
+  await expect(page.getByRole("status")).toHaveText(n === 1 ? "1 oportunidad encontrada" : `${n} oportunidades encontradas`);
+
+  await page.goto("/");
+  const conTramites = entidades.filter({ has: page.getByRole("link", { name: /trámite/ }) }).first();
+  const enlaceT = conTramites.getByRole("link", { name: /trámite/ });
+  const m = Number((await enlaceT.innerText()).match(/\d+/)![0]);
+  await enlaceT.click();
+  await expect(page).toHaveURL(/\/tramites\?entidad=/);
+  await expect(page.getByRole("article")).toHaveCount(m);
 });
 
 test("el banner sigue visible al desplazarse", async ({ page }) => {
@@ -123,7 +146,7 @@ test("la guía visual de uso se abre desde el pie de página, con sus capturas",
   await page.goto("/");
   await page.getByRole("link", { name: /Guía de uso/ }).click();
   await expect(page).toHaveURL(/\/guia$/);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Tu posgrado en el exterior");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Encuentra, compara y prepara");
   await expect(page.getByRole("note")).toContainText("Prototipo académico – datos ficticios");
   const pasos = page.locator("section.paso");
   await expect(pasos).toHaveCount(6);
@@ -134,7 +157,7 @@ test("la guía visual de uso se abre desde el pie de página, con sus capturas",
     await imagenes.nth(i).scrollIntoViewIfNeeded();
     await expect.poll(() => imagenes.nth(i).evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
   }
-  await page.getByRole("link", { name: /Abrir la Ventanilla/ }).first().click();
+  await page.getByRole("link", { name: /Abrir Talento sin Fronteras/ }).first().click();
   await expect(page).toHaveURL(/\/$/);
 });
 

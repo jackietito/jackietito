@@ -43,8 +43,8 @@ export const PREGUNTAS_FRECUENTES: Record<Tema, { pregunta: string; respuesta: s
       respuesta: "El mapa de trámites muestra el orden sugerido: primero el idioma (es lo que más tarda), luego el diploma y el certificado de estudios, la constancia de grado, la apostilla y, si hace falta, la traducción oficial. Tu ruta calcula las fechas hacia atrás desde el cierre de la convocatoria.",
     },
     {
-      pregunta: "¿La Ventanilla hace los trámites por mí?",
-      respuesta: "No. La Ventanilla te informa y te deriva al canal oficial de cada entidad. Las entidades son reales, pero los plazos y costos que mostramos son ilustrativos, no oficiales.",
+      pregunta: "¿Talento sin Fronteras hace los trámites por mí?",
+      respuesta: "No. Talento sin Fronteras te informa y te deriva al canal oficial de cada entidad. Las entidades son reales, pero los plazos y costos que mostramos son ilustrativos, no oficiales.",
     },
   ],
   Idiomas: [
@@ -57,7 +57,7 @@ export const PREGUNTAS_FRECUENTES: Record<Tema, { pregunta: string; respuesta: s
       respuesta: "Te recomendamos empezar unos cuatro meses antes del cierre: las fechas de examen y la entrega de resultados pueden tardar varias semanas.",
     },
   ],
-  "Uso de la Ventanilla": [
+  "Uso de Talento sin Fronteras": [
     {
       pregunta: "¿Cómo recibo recomendaciones?",
       respuesta: "Crea una cuenta y completa tu perfil de intereses. En «Recomendaciones» verás las oportunidades que coinciden con tu perfil y en qué criterios.",

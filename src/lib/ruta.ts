@@ -51,7 +51,7 @@ export function construirRuta(
     titulo: "Postular en el canal oficial",
     entidad: oportunidad.institucion,
     descripcion:
-      "Con tus documentos listos, completa la postulación en el sitio oficial de la convocatoria. La Ventanilla no recibe postulaciones.",
+      "Con tus documentos listos, completa la postulación en el sitio oficial de la convocatoria. Talento sin Fronteras no recibe postulaciones.",
     documentos: ["Todos los documentos de tu checklist"],
     fechaRecomendada: sumarDias(oportunidad.fechaCierre, -DIAS_MARGEN_POSTULACION),
     plazoDias: null,

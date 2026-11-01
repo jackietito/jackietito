@@ -71,8 +71,8 @@ export async function Encabezado() {
     <header className="bg-marca-oscura text-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex flex-col leading-tight text-white no-underline">
-          <span className="text-lg font-bold">Ventanilla de Posgrado</span>
-          <span className="text-xs text-white/85">Oportunidades de estudio en el exterior</span>
+          <span className="text-lg font-bold">Talento sin Fronteras</span>
+          <span className="text-xs text-white/85">Encuentra, compara y prepara tu posgrado en el exterior</span>
         </Link>
 
         <div className="hidden xl:block">{sesion}</div>

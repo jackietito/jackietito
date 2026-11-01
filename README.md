@@ -1,9 +1,11 @@
-# Ventanilla Digital de Oportunidades de Posgrado en el Exterior
+# Talento sin Fronteras
+
+**Encuentra, compara y prepara tu posgrado en el exterior.**
 
 > **Prototipo académico – datos ficticios.**
 > Proyecto del Programa de Gobernabilidad e Innovación Pública PUCP–CAF (Grupo 2, Fase 4: Prototipar).
 
-En el Perú, la información sobre posgrados y becas en el exterior está dispersa entre varias entidades públicas y universidades. La Ventanilla reúne esa información en un punto único, permite compararla, ordena los trámites previos a la postulación y avisa a tiempo. **No reemplaza la postulación ni los trámites:** informa y deriva a los canales oficiales.
+En el Perú, la información sobre posgrados y becas en el exterior está dispersa entre varias entidades públicas y universidades. Talento sin Fronteras reúne esa información en un punto único, permite compararla, ordena los trámites previos a la postulación y avisa a tiempo. **No reemplaza la postulación ni los trámites:** informa y deriva a los canales oficiales.
 
 Este prototipo funcional sirve para validar la experiencia con usuarios en pruebas de usabilidad.
 

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Guía visual para usar la Ventanilla de Posgrado: seis pasos desde tu ciudad hasta tu posgrado en el exterior. Prototipo académico con datos ficticios.">
-<title>Guía de uso · Ventanilla de Posgrado – Prototipo</title>
+<meta name="description" content="Guía visual para usar Talento sin Fronteras: seis pasos desde tu ciudad hasta tu posgrado en el exterior. Prototipo académico con datos ficticios.">
+<title>Guía de uso · Talento sin Fronteras – Prototipo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
@@ -71,6 +71,8 @@ a { color: inherit; }
 .boton:hover { transform: translateY(-2px); }
 .boton-sol { background: var(--sol); color: #1d1600; }
 .boton-linea { border: 2px solid rgba(255,255,255,.7); color: #fff; }
+.servicio { margin-top: .8rem; font-size: .95rem; color: rgba(255,255,255,.8); max-width: 34rem; }
+.servicio b { color: #fff; }
 .datos { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; margin-top: 1.6rem; color: rgba(255,255,255,.85); font-size: .95rem; }
 .datos b { font-family: var(--display); font-size: 1.5rem; color: #fff; margin-right: .3rem; }
 
@@ -127,7 +129,7 @@ a { color: inherit; }
 .pantallas.dos .telefono { width: min(14.5rem, 48%); }
 .pantallas.dos .telefono:last-child { margin-top: 3rem; }
 
-/* Tú y la Ventanilla */
+/* Tú y Talento sin Fronteras */
 .reparto { padding-block: clamp(2.5rem, 6vw, 4rem); background: var(--superficie); border-top: 1px solid var(--borde); }
 .reparto h2 { font-size: clamp(1.7rem, 3.6vw, 2.4rem); color: var(--mar); }
 .columnas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.4rem; }
@@ -183,16 +185,17 @@ a { color: inherit; }
 </head>
 <body>
 
-<div class="aviso" role="note"><strong>Prototipo académico – datos ficticios</strong> · Guía de uso de la Ventanilla de Posgrado</div>
+<div class="aviso" role="note"><strong>Prototipo académico – datos ficticios</strong> · Guía de uso de Talento sin Fronteras</div>
 
 <header class="heroe">
   <div class="envoltura">
     <div>
-      <p class="etiqueta">Ventanilla de Posgrado · Guía rápida</p>
-      <h1>Tu posgrado en el exterior, <em>paso a paso</em> y en un solo lugar</h1>
-      <p class="bajada">Encuentra becas y programas de varias entidades, compáralos y prepara tus trámites con fechas claras. Desde tu celular y gratis.</p>
+      <p class="etiqueta">Talento sin Fronteras · Guía rápida</p>
+      <h1><em>Encuentra, compara y prepara</em> tu posgrado en el exterior</h1>
+      <p class="bajada">Becas y programas de varias entidades en un solo lugar, con tus trámites ordenados y fechas claras. Desde tu celular y gratis.</p>
+      <p class="servicio">Talento sin Fronteras es el prototipo de la <b>Ventanilla Digital de Oportunidades de Posgrado en el Exterior</b>.</p>
       <div class="acciones">
-        <a class="boton boton-sol" href="/">Abrir la Ventanilla <span aria-hidden="true">→</span></a>
+        <a class="boton boton-sol" href="/">Abrir Talento sin Fronteras <span aria-hidden="true">→</span></a>
         <a class="boton boton-linea" href="#paso-1">Ver cómo funciona</a>
       </div>
       <p class="direccion">O escribe en tu navegador: <b>ventanilla-posgrado.vercel.app</b></p>
@@ -250,7 +253,7 @@ a { color: inherit; }
         <p class="dato">La etiqueta verde <b>«Convocatoria abierta»</b> te dice que todavía estás a tiempo de postular.</p>
       </div>
       <div class="pantallas dos">
-        <figure class="telefono"><img src="/guia/img/1-inicio.jpg" alt="Página de inicio de la Ventanilla con el buscador y el resumen: 36 oportunidades, 21 con convocatoria abierta" loading="lazy"><figcaption>Inicio</figcaption></figure>
+        <figure class="telefono"><img src="/guia/img/1-inicio.jpg" alt="Página de inicio de Talento sin Fronteras con el buscador y el resumen: 36 oportunidades, 21 con convocatoria abierta" loading="lazy"><figcaption>Inicio</figcaption></figure>
         <figure class="telefono"><img src="/guia/img/1-filtros.jpg" alt="Filtros del catálogo con casillas: Chile y España marcados en País" loading="lazy"><figcaption>Filtros del catálogo</figcaption></figure>
       </div>
     </div>
@@ -261,7 +264,7 @@ a { color: inherit; }
       <div class="texto">
         <p class="numero"><span>2</span><span class="etiqueta">Regístrate</span></p>
         <h2 id="t-2">Un minuto y solo tu correo</h2>
-        <p class="promesa">Cuéntanos qué quieres estudiar y la Ventanilla trabaja para ti.</p>
+        <p class="promesa">Cuéntanos qué quieres estudiar y Talento sin Fronteras trabaja para ti.</p>
         <span class="chip chip-cuenta">Aquí creas tu cuenta</span>
         <ul class="hazlo">
           <li><span class="icono" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><p>Pulsa <b>Crear cuenta</b>: correo y una contraseña de 8 caracteres o más.</p></li>
@@ -361,10 +364,10 @@ a { color: inherit; }
 
   <section class="reparto" aria-labelledby="t-reparto">
     <div class="envoltura">
-      <h2 id="t-reparto">La Ventanilla te prepara; tú das el último paso</h2>
+      <h2 id="t-reparto">Talento sin Fronteras te prepara; tú das el último paso</h2>
       <div class="columnas">
         <div class="columna ventanilla">
-          <h3>La Ventanilla hace por ti</h3>
+          <h3>Talento sin Fronteras hace por ti</h3>
           <ul>
             <li>Reúne becas y programas de varias entidades.</li>
             <li>Te recomienda, compara y ordena los trámites.</li>
@@ -400,10 +403,10 @@ a { color: inherit; }
   <div class="cierre">
     <div class="envoltura">
       <div>
-        <h2>Tu próxima parada: <em>la Ventanilla</em></h2>
-        <p>Abre la aplicación en tu celular, busca tu primera beca y guarda la que te guste. Cuando la elijas, la Ventanilla te arma la ruta.</p>
+        <h2>Tu próxima parada: <em>Talento sin Fronteras</em></h2>
+        <p>Abre la aplicación en tu celular, busca tu primera beca y guarda la que te guste. Cuando la elijas, te armamos la ruta.</p>
         <div class="acciones">
-          <a class="boton boton-sol" href="/">Abrir la Ventanilla <span aria-hidden="true">→</span></a>
+          <a class="boton boton-sol" href="/">Abrir Talento sin Fronteras <span aria-hidden="true">→</span></a>
         </div>
         <p class="direccion">O escribe en tu navegador: <b>ventanilla-posgrado.vercel.app</b></p>
       </div>

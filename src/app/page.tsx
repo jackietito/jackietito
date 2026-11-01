@@ -18,7 +18,10 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
   const hoy = await obtenerHoy();
   const [oportunidades, entidades] = await Promise.all([
     prisma.oportunidad.findMany({ where: { publicada: true }, include: { entidad: true } }),
-    prisma.entidad.findMany({ include: { _count: { select: { oportunidades: { where: { publicada: true } } } } }, orderBy: { nombre: "asc" } }),
+    prisma.entidad.findMany({
+      include: { _count: { select: { oportunidades: { where: { publicada: true } }, tramites: { where: { publicado: true } } } } },
+      orderBy: { nombre: "asc" },
+    }),
   ]);
 
   const abiertas = oportunidades.filter((o) => estadoConvocatoria(o, hoy) === "abierta");
@@ -99,7 +102,7 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
       </section>
 
       <section aria-labelledby="titulo-como">
-        <h2 id="titulo-como" className="titulo-seccion mb-4">¿Cómo te ayuda la Ventanilla?</h2>
+        <h2 id="titulo-como" className="titulo-seccion mb-4">¿Cómo te ayuda Talento sin Fronteras?</h2>
         <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {ETAPAS.map((e, i) => (
             <li key={e.titulo} className="tarjeta">
@@ -110,7 +113,7 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
           ))}
         </ol>
         <p className="mt-4 text-sm text-suave">
-          La Ventanilla informa y te deriva a los canales oficiales. La postulación y los trámites se realizan ante cada entidad.
+          Talento sin Fronteras informa y te deriva a los canales oficiales. La postulación y los trámites se realizan ante cada entidad.
         </p>
       </section>
 
@@ -123,13 +126,21 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
                 {e.nombre} <span className="text-suave">({e.sigla})</span>
               </h3>
               <p className="mt-1 text-sm text-suave">{e.descripcion}</p>
-              {e._count.oportunidades > 0 ? (
-                <Link href={`/catalogo?q=${e.sigla}`} className="enlace mt-2 inline-block text-sm">
-                  Ver sus {e._count.oportunidades} oportunidades
-                </Link>
-              ) : (
-                <p className="mt-2 text-sm text-suave">Publica trámites del mapa de trámites.</p>
-              )}
+              {/* Cada entidad enlaza a lo que publica: oportunidades del catálogo y/o trámites del mapa. */}
+              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                {e._count.oportunidades > 0 && (
+                  <Link href={`/catalogo?entidad=${e.sigla}`} className="enlace">
+                    Ver sus {e._count.oportunidades} {e._count.oportunidades === 1 ? "oportunidad" : "oportunidades"}
+                    <span className="sr-only"> de {e.sigla}</span>
+                  </Link>
+                )}
+                {e._count.tramites > 0 && (
+                  <Link href={`/tramites?entidad=${e.sigla}`} className="enlace">
+                    Ver sus {e._count.tramites} {e._count.tramites === 1 ? "trámite" : "trámites"}
+                    <span className="sr-only"> de {e.sigla}</span>
+                  </Link>
+                )}
+              </div>
             </li>
           ))}
         </ul>

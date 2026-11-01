@@ -72,6 +72,8 @@ export type FiltroMultiple = (typeof FILTROS_MULTIPLES)[number];
 
 type FiltrosSimples = {
   q?: string;
+  /** Sigla de la entidad proveedora */
+  entidad?: string;
   estado?: string;
   costoMax?: string;
   inicioDesde?: string;
@@ -81,7 +83,7 @@ type FiltrosSimples = {
 
 export type Filtros = FiltrosSimples & Partial<Record<FiltroMultiple, string[]>>;
 
-const CLAVES_SIMPLES: (keyof FiltrosSimples)[] = ["q", "estado", "costoMax", "inicioDesde", "inicioHasta", "orden"];
+const CLAVES_SIMPLES: (keyof FiltrosSimples)[] = ["q", "entidad", "estado", "costoMax", "inicioDesde", "inicioHasta", "orden"];
 
 export function leerFiltros(sp: Record<string, string | string[] | undefined>): Filtros {
   const f: Filtros = {};
@@ -136,6 +138,7 @@ export function filtrarOportunidades<T extends OportunidadConEntidad>(
       if (!terminos.every((t) => texto.includes(t))) return false;
     }
     // Dentro de un mismo filtro basta con coincidir con una opción; entre filtros, con todos.
+    if (f.entidad && o.entidad.sigla !== f.entidad) return false;
     const fuera = (valores: string[] | undefined, valor: string) => !!valores?.length && !valores.includes(valor);
     if (fuera(f.pais, o.pais)) return false;
     if (fuera(f.area, o.area)) return false;

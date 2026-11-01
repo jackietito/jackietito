@@ -26,6 +26,7 @@ type ClaveFiltro = Exclude<keyof Filtros, "orden">;
 
 const NOMBRES_FILTRO: Record<ClaveFiltro, string> = {
   q: "Texto",
+  entidad: "Entidad",
   pais: "País",
   area: "Área",
   nivel: "Nivel",
