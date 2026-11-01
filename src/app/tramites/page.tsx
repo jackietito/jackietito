@@ -5,7 +5,7 @@ import { formatearMonto } from "@/lib/oportunidades";
 
 export const metadata: Metadata = { title: "Mapa de trámites" };
 
-/** Mapa de trámites nacionales (RF10): vista general con entidad, plazo y costo referenciales. */
+/** Mapa de trámites nacionales (RF10): entidades responsables reales; plazos y costos ilustrativos (D36). */
 export default async function MapaTramites() {
   const tramites = await prisma.tramite.findMany({
     where: { publicado: true },
@@ -23,8 +23,9 @@ export default async function MapaTramites() {
           sugerido. No todos aplican a todas las convocatorias: la ruta de cada oportunidad incluye solo los que necesitas.
         </p>
         <p className="mt-2 max-w-3xl rounded-lg border border-alerta bg-alerta-claro p-3 text-alerta">
-          Los plazos y costos son <strong>referenciales</strong>. Confírmalos en el enlace oficial de cada entidad. La
-          Ventanilla no realiza trámites.
+          Las entidades responsables son reales, pero los plazos y costos de esta página son{" "}
+          <strong>ilustrativos y no oficiales</strong>: es un prototipo académico. Antes de hacer un trámite, consulta el
+          sitio oficial de cada entidad. La Ventanilla no realiza trámites.
         </p>
       </div>
 
@@ -45,8 +46,8 @@ export default async function MapaTramites() {
               </div>
               <p>{t.descripcion}</p>
               <dl className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-3">
-                <div><dt className="font-semibold text-suave">Plazo referencial</dt><dd>{t.plazoDias} días</dd></div>
-                <div><dt className="font-semibold text-suave">Costo referencial</dt><dd>{formatearMonto(t.costoReferencial, "PEN")}</dd></div>
+                <div><dt className="font-semibold text-suave">Plazo ilustrativo</dt><dd>{t.plazoDias} días</dd></div>
+                <div><dt className="font-semibold text-suave">Costo ilustrativo</dt><dd>{formatearMonto(t.costoReferencial, "PEN")}</dd></div>
                 <div><dt className="font-semibold text-suave">Cuándo empezar</dt><dd>{t.anticipacionDias} días antes del cierre</dd></div>
               </dl>
               <div>
@@ -57,11 +58,10 @@ export default async function MapaTramites() {
               </div>
               <div className="flex flex-wrap items-center justify-between gap-2 border-t border-borde pt-3 text-sm">
                 <span className="text-suave">
-                  Lo piden {t._count.oportunidades} {t._count.oportunidades === 1 ? "oportunidad" : "oportunidades"} del catálogo ·
-                  Información de {t.entidad.sigla}
+                  Lo piden {t._count.oportunidades} {t._count.oportunidades === 1 ? "oportunidad" : "oportunidades"} del catálogo
                 </span>
                 <a href={t.enlaceOficial} target="_blank" rel="noopener noreferrer" className="enlace">
-                  Enlace oficial<span className="sr-only"> de {t.nombre} (se abre en una pestaña nueva)</span> <span aria-hidden="true">↗</span>
+                  Enlace de ejemplo<span className="sr-only"> de {t.nombre} (se abre en una pestaña nueva)</span> <span aria-hidden="true">↗</span>
                 </a>
               </div>
             </article>
@@ -69,7 +69,7 @@ export default async function MapaTramites() {
         ))}
       </ol>
       <p className="text-sm text-suave">
-        Si hicieras todos los trámites, el costo referencial sumaría {formatearMonto(total, "PEN")}. Para ver los de una
+        Si hicieras todos los trámites, el costo ilustrativo sumaría {formatearMonto(total, "PEN")}. Para ver los de una
         oportunidad concreta, abre su ficha en el <Link href="/catalogo" className="enlace">catálogo</Link> y pulsa
         «Preparar mi postulación».
       </p>

@@ -32,7 +32,8 @@ test("el catálogo lista oportunidades con su fuente y fecha de actualización",
 test("filtra por país, estado y texto libre", async ({ page }) => {
   await page.goto("/catalogo");
   await abrirFiltros(page);
-  await page.getByLabel("País").selectOption("España");
+  await page.locator("summary", { hasText: /^País/ }).click();
+  await page.getByRole("group", { name: /^País/ }).getByLabel("España", { exact: true }).check();
   await page.getByRole("button", { name: "Aplicar filtros" }).click();
   await expect(page).toHaveURL(/pais=Espa/);
   const tarjetas = page.getByRole("article");
@@ -50,6 +51,51 @@ test("filtra por país, estado y texto libre", async ({ page }) => {
 
   await page.goto("/catalogo?q=ecologia%20amazonica");
   await expect(page.getByRole("status")).toHaveText("1 oportunidad encontrada");
+});
+
+test("filtra con varias opciones a la vez en país, nivel, modalidad, idioma y financiamiento", async ({ page }) => {
+  await page.goto("/catalogo");
+  await abrirFiltros(page);
+  await page.locator("summary", { hasText: /^País/ }).click();
+  const paises = page.getByRole("group", { name: /^País/ });
+  await paises.getByLabel("España", { exact: true }).check();
+  await paises.getByLabel("Chile", { exact: true }).check();
+  await page.locator("summary", { hasText: /^Nivel/ }).click();
+  const niveles = page.getByRole("group", { name: /^Nivel/ });
+  await niveles.getByLabel("Maestría", { exact: true }).check();
+  await niveles.getByLabel("Especialización", { exact: true }).check();
+  await page.getByRole("button", { name: "Aplicar filtros" }).click();
+  await expect(page).toHaveURL(/pais=Chile/);
+  await expect(page).toHaveURL(/pais=Espa/);
+
+  const aplicados = page.getByRole("list", { name: "Filtros aplicados" }).getByRole("listitem");
+  await expect(aplicados).toHaveCount(4);
+  const tarjetas = page.getByRole("article");
+  const n = await tarjetas.count();
+  expect(n).toBeGreaterThan(1);
+  for (let i = 0; i < n; i++) {
+    await expect(tarjetas.nth(i)).toContainText(/España|Chile/);
+    await expect(tarjetas.nth(i)).toContainText(/Maestría|Especialización/);
+  }
+  // Al volver, las casillas elegidas siguen marcadas y el grupo indica cuántas.
+  await abrirFiltros(page);
+  await expect(page.locator("summary", { hasText: /^País/ })).toContainText("2 elegidos");
+  await expect(paises.getByLabel("Chile", { exact: true })).toBeChecked();
+  await revisarAccesibilidad(page);
+
+  // Quitar una sola opción deja las demás.
+  await page.getByRole("link", { name: /País: Chile/ }).click();
+  await expect(aplicados).toHaveCount(3);
+  await expect(page).not.toHaveURL(/pais=Chile/);
+
+  await page.goto("/catalogo?modalidad=virtual&modalidad=semipresencial&idioma=Inglés&idioma=Francés&financiamiento=integral&financiamiento=parcial");
+  await expect(page.getByRole("list", { name: "Filtros aplicados" }).getByRole("listitem")).toHaveCount(6);
+  const otras = page.getByRole("article");
+  for (let i = 0; i < (await otras.count()); i++) {
+    await expect(otras.nth(i)).toContainText(/Virtual|Semipresencial/);
+    await expect(otras.nth(i)).toContainText(/Inglés|Francés/);
+    await expect(otras.nth(i)).toContainText(/Beca integral|Beca parcial/);
+  }
 });
 
 test("filtra por costo total, financiamiento y fecha de inicio", async ({ page }) => {

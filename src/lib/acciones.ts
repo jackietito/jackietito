@@ -95,8 +95,8 @@ export async function guardarPerfil(_: EstadoFormulario, fd: FormData): Promise<
     area: texto(fd, "area"),
     nivel: texto(fd, "nivel"),
     paises: fd.getAll("paises").map(String).filter((p) => (PAISES as readonly string[]).includes(p)),
-    modalidad: texto(fd, "modalidad"),
-    idioma: texto(fd, "idioma"),
+    modalidades: fd.getAll("modalidades").map(String).filter((m) => m in MODALIDADES),
+    idiomas: fd.getAll("idiomas").map(String).filter((i) => (IDIOMAS as readonly string[]).includes(i)),
     costoMaxUsd: texto(fd, "costoMaxUsd"),
     necesitaFinanciamiento: texto(fd, "necesitaFinanciamiento"),
     region: texto(fd, "region"),
@@ -106,8 +106,8 @@ export async function guardarPerfil(_: EstadoFormulario, fd: FormData): Promise<
   if (!(AREAS as readonly string[]).includes(v.area)) errores.area = "Elige el área que te interesa.";
   if (!(v.nivel in NIVELES)) errores.nivel = "Elige el nivel de estudios.";
   if (v.paises.length === 0) errores.paises = "Marca al menos un país de interés.";
-  if (!(v.modalidad in MODALIDADES)) errores.modalidad = "Elige una modalidad.";
-  if (!(IDIOMAS as readonly string[]).includes(v.idioma)) errores.idioma = "Elige un idioma.";
+  if (v.modalidades.length === 0) errores.modalidades = "Marca al menos una modalidad.";
+  if (v.idiomas.length === 0) errores.idiomas = "Marca al menos un idioma.";
   const costo = Number(v.costoMaxUsd);
   if (v.costoMaxUsd === "" || Number.isNaN(costo) || costo < 0) errores.costoMaxUsd = "Elige un rango de costo.";
   if (v.necesitaFinanciamiento !== "si" && v.necesitaFinanciamiento !== "no") {
@@ -122,8 +122,9 @@ export async function guardarPerfil(_: EstadoFormulario, fd: FormData): Promise<
     area: v.area,
     nivel: v.nivel,
     paises: v.paises.join("|"),
-    modalidad: v.modalidad,
-    idioma: v.idioma,
+    // Varias opciones separadas por "|", como los países.
+    modalidad: v.modalidades.join("|"),
+    idioma: v.idiomas.join("|"),
     costoMaxUsd: costo,
     necesitaFinanciamiento: v.necesitaFinanciamiento === "si",
     region: v.region,

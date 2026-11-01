@@ -66,14 +66,12 @@ export function fichaCompleta(o: Oportunidad & { requisitos: Requisito[] }): boo
 
 // ---------- Búsqueda y filtros (RF04) ----------
 
-export type Filtros = {
+/** Filtros que admiten varios valores a la vez (?pais=España&pais=Chile). */
+export const FILTROS_MULTIPLES = ["pais", "area", "nivel", "modalidad", "idioma", "financiamiento"] as const;
+export type FiltroMultiple = (typeof FILTROS_MULTIPLES)[number];
+
+type FiltrosSimples = {
   q?: string;
-  pais?: string;
-  area?: string;
-  nivel?: string;
-  modalidad?: string;
-  idioma?: string;
-  financiamiento?: string;
   estado?: string;
   costoMax?: string;
   inicioDesde?: string;
@@ -81,19 +79,31 @@ export type Filtros = {
   orden?: string;
 };
 
-export const CLAVES_FILTRO: (keyof Filtros)[] = [
-  "q", "pais", "area", "nivel", "modalidad", "idioma", "financiamiento", "estado",
-  "costoMax", "inicioDesde", "inicioHasta", "orden",
-];
+export type Filtros = FiltrosSimples & Partial<Record<FiltroMultiple, string[]>>;
+
+const CLAVES_SIMPLES: (keyof FiltrosSimples)[] = ["q", "estado", "costoMax", "inicioDesde", "inicioHasta", "orden"];
 
 export function leerFiltros(sp: Record<string, string | string[] | undefined>): Filtros {
   const f: Filtros = {};
-  for (const c of CLAVES_FILTRO) {
+  for (const c of CLAVES_SIMPLES) {
     const v = sp[c];
     const s = Array.isArray(v) ? v[0] : v;
     if (s && s.trim()) f[c] = s.trim();
   }
+  for (const c of FILTROS_MULTIPLES) {
+    const v = sp[c];
+    const lista = [...new Set((Array.isArray(v) ? v : v ? [v] : []).map((x) => x.trim()).filter(Boolean))];
+    if (lista.length) f[c] = lista;
+  }
   return f;
+}
+
+/** Filtros como parámetros de URL (los múltiples se repiten). */
+export function aConsulta(f: Filtros): URLSearchParams {
+  const p = new URLSearchParams();
+  for (const c of CLAVES_SIMPLES) if (f[c]) p.set(c, f[c]!);
+  for (const c of FILTROS_MULTIPLES) for (const v of f[c] ?? []) p.append(c, v);
+  return p;
 }
 
 /** Normaliza texto para buscar sin distinguir mayúsculas ni tildes. */
@@ -125,12 +135,14 @@ export function filtrarOportunidades<T extends OportunidadConEntidad>(
       );
       if (!terminos.every((t) => texto.includes(t))) return false;
     }
-    if (f.pais && o.pais !== f.pais) return false;
-    if (f.area && o.area !== f.area) return false;
-    if (f.nivel && o.nivel !== f.nivel) return false;
-    if (f.modalidad && o.modalidad !== f.modalidad) return false;
-    if (f.idioma && o.idioma !== f.idioma) return false;
-    if (f.financiamiento && o.financiamientoTipo !== f.financiamiento) return false;
+    // Dentro de un mismo filtro basta con coincidir con una opción; entre filtros, con todos.
+    const fuera = (valores: string[] | undefined, valor: string) => !!valores?.length && !valores.includes(valor);
+    if (fuera(f.pais, o.pais)) return false;
+    if (fuera(f.area, o.area)) return false;
+    if (fuera(f.nivel, o.nivel)) return false;
+    if (fuera(f.modalidad, o.modalidad)) return false;
+    if (fuera(f.idioma, o.idioma)) return false;
+    if (fuera(f.financiamiento, o.financiamientoTipo)) return false;
     if (f.estado && estadoConvocatoria(o, hoy) !== f.estado) return false;
     if (!Number.isNaN(costoMax) && costoMax > 0 && costoTotalUsd(o) > costoMax) return false;
     if (desde && o.fechaInicio < desde) return false;

@@ -12,10 +12,13 @@ test("el mapa de trámites muestra los trámites con entidad, plazo y costo refe
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Mapa de trámites");
   const tramites = page.getByRole("article");
   await expect(tramites).toHaveCount(7);
-  await expect(tramites.first()).toContainText("Plazo referencial");
-  await expect(tramites.first()).toContainText("Costo referencial");
+  await expect(tramites.first()).toContainText("Plazo ilustrativo");
+  await expect(tramites.first()).toContainText("Costo ilustrativo");
   await expect(tramites.first()).toContainText("Ante:");
-  await expect(page.getByText(/Los plazos y costos son/)).toBeVisible();
+  // Las entidades peruanas responsables se nombran con su nombre real (D36).
+  await expect(page.getByRole("article").filter({ hasText: "Apostillar documentos académicos" })).toContainText("Ministerio de Relaciones Exteriores (Cancillería)");
+  await expect(page.getByRole("article").filter({ hasText: "Obtener constancia de inscripción del grado" })).toContainText("SUNEDU");
+  await expect(page.getByText(/ilustrativos y no oficiales/)).toBeVisible();
   await revisarAccesibilidad(page);
 });
 

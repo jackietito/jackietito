@@ -44,7 +44,7 @@ export const PREGUNTAS_FRECUENTES: Record<Tema, { pregunta: string; respuesta: s
     },
     {
       pregunta: "¿La Ventanilla hace los trámites por mí?",
-      respuesta: "No. La Ventanilla te informa y te deriva al canal oficial de cada entidad. Los plazos y costos que mostramos son referenciales.",
+      respuesta: "No. La Ventanilla te informa y te deriva al canal oficial de cada entidad. Las entidades son reales, pero los plazos y costos que mostramos son ilustrativos, no oficiales.",
     },
   ],
   Idiomas: [

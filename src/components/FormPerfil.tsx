@@ -6,7 +6,7 @@ import { AREAS, IDIOMAS, MODALIDADES, NIVELES, PAISES, REGIONES } from "@/lib/ca
 import { BotonEnviar, CampoTexto, MensajeError, ResumenErrores, ariaCampo } from "./formulario";
 
 export type ValoresPerfil = {
-  area: string; nivel: string; paises: string[]; modalidad: string; idioma: string;
+  area: string; nivel: string; paises: string[]; modalidades: string[]; idiomas: string[];
   costoMaxUsd: string; necesitaFinanciamiento: string; region: string; universidadOrigen: string;
 };
 
@@ -34,6 +34,27 @@ function Selector({ id, etiqueta, valor, opciones, error }: {
   );
 }
 
+/** Grupo de casillas para elegir una o varias opciones. */
+function Casillas({ id, titulo, opciones, marcadas, error, columnas = "sm:grid-cols-3" }: {
+  id: string; titulo: string; opciones: [string, string][]; marcadas: string[]; error?: string; columnas?: string;
+}) {
+  return (
+    <fieldset className="tarjeta" {...ariaCampo(id, error)}>
+      <legend className="titulo-seccion px-1">{titulo}</legend>
+      <p className="mb-3 text-sm text-suave">Marca todas las que quieras.</p>
+      <div id={id} tabIndex={-1} className={`grid grid-cols-1 gap-1 ${columnas}`}>
+        {opciones.map(([valor, texto], i) => (
+          <div key={valor} className="flex min-h-11 items-center gap-3">
+            <input id={`${id}-${i}`} type="checkbox" name={id} value={valor} defaultChecked={marcadas.includes(valor)} className="h-6 w-6 accent-marca" />
+            <label htmlFor={`${id}-${i}`}>{texto}</label>
+          </div>
+        ))}
+      </div>
+      <MensajeError id={id} texto={error} />
+    </fieldset>
+  );
+}
+
 const pares = (m: Record<string, string>) => Object.entries(m) as [string, string][];
 const lista = (l: readonly string[]) => l.map((x) => [x, x] as [string, string]);
 
@@ -55,23 +76,12 @@ export function FormPerfil({ inicial }: { inicial: ValoresPerfil }) {
         <legend className="titulo-seccion px-1">Qué quieres estudiar</legend>
         <Selector id="area" etiqueta="Área de estudio" valor={v.area} opciones={lista(AREAS)} error={e.area} />
         <Selector id="nivel" etiqueta="Nivel" valor={v.nivel} opciones={pares(NIVELES)} error={e.nivel} />
-        <Selector id="modalidad" etiqueta="Modalidad" valor={v.modalidad} opciones={pares(MODALIDADES)} error={e.modalidad} />
-        <Selector id="idioma" etiqueta="Idioma en que quieres estudiar" valor={v.idioma} opciones={lista(IDIOMAS)} error={e.idioma} />
       </fieldset>
 
-      <fieldset className="tarjeta" {...ariaCampo("paises", e.paises)}>
-        <legend className="titulo-seccion px-1">Países de interés</legend>
-        <p className="mb-3 text-sm text-suave">Marca todos los que quieras.</p>
-        <div id="paises" tabIndex={-1} className="grid grid-cols-1 gap-1 sm:grid-cols-2 md:grid-cols-3">
-          {PAISES.map((p, i) => (
-            <div key={p} className="flex min-h-11 items-center gap-3">
-              <input id={`pais-${i}`} type="checkbox" name="paises" value={p} defaultChecked={v.paises.includes(p)} className="h-6 w-6 accent-marca" />
-              <label htmlFor={`pais-${i}`}>{p}</label>
-            </div>
-          ))}
-        </div>
-        <MensajeError id="paises" texto={e.paises} />
-      </fieldset>
+      <Casillas id="modalidades" titulo="Modalidades que te interesan" opciones={pares(MODALIDADES)} marcadas={v.modalidades} error={e.modalidades} />
+      <Casillas id="idiomas" titulo="Idiomas en que quieres estudiar" opciones={lista(IDIOMAS)} marcadas={v.idiomas} error={e.idiomas} />
+
+      <Casillas id="paises" titulo="Países de interés" opciones={lista(PAISES)} marcadas={v.paises} error={e.paises} columnas="sm:grid-cols-2 md:grid-cols-3" />
 
       <fieldset className="tarjeta space-y-4">
         <legend className="titulo-seccion px-1">Costos y financiamiento</legend>

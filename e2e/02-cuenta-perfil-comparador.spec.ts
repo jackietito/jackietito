@@ -29,8 +29,13 @@ test("una persona se registra con consentimiento, define su perfil y recibe reco
 
   await page.getByLabel("Área de estudio").selectOption("Educación");
   await page.getByLabel("Nivel").selectOption("maestria");
-  await page.getByLabel("Modalidad").selectOption("presencial");
-  await page.getByLabel("Idioma en que quieres estudiar").selectOption("Español");
+  // Modalidades e idiomas admiten varias opciones.
+  const modalidades = page.getByRole("group", { name: "Modalidades que te interesan" });
+  await modalidades.getByLabel("Presencial", { exact: true }).check();
+  await modalidades.getByLabel("Virtual", { exact: true }).check();
+  const idiomas = page.getByRole("group", { name: "Idiomas en que quieres estudiar" });
+  await idiomas.getByLabel("Español", { exact: true }).check();
+  await idiomas.getByLabel("Inglés", { exact: true }).check();
   await page.getByLabel("España").check();
   await page.getByLabel("Chile").check();
   await page.getByLabel("¿Cuánto podrías pagar en total?").selectOption("30000");
@@ -51,6 +56,8 @@ test("una persona se registra con consentimiento, define su perfil y recibe reco
   await page.goto("/perfil");
   await expect(page.getByLabel("Región donde vives")).toHaveValue("Puno");
   await expect(page.getByLabel("España")).toBeChecked();
+  await expect(page.getByRole("group", { name: "Modalidades que te interesan" }).getByLabel("Virtual", { exact: true })).toBeChecked();
+  await expect(page.getByRole("group", { name: "Idiomas en que quieres estudiar" }).getByLabel("Inglés", { exact: true })).toBeChecked();
 });
 
 test("ingreso con contraseña incorrecta y correcta; el encabezado cambia según la sesión", async ({ page }) => {

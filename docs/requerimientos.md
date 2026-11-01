@@ -24,7 +24,7 @@ El problema público que atiende es el limitado acceso a información sobre opor
 
 - La postulación a programas o becas, ni la ejecución de trámites. La Ventanilla informa y deriva a los canales oficiales de cada entidad.
 - Integración real con la PIDE ni con sistemas de MRE, MINEDU, SUNEDU, PRONABEC o universidades. Las integraciones se simulan con datos de prueba.
-- Información real de convocatorias. Todo el contenido es ficticio o ilustrativo y se identifica como tal.
+- Información real de convocatorias. Todo el contenido es ficticio o ilustrativo y se identifica como tal. Excepción: las entidades peruanas ante las que se realizan los trámites nacionales se nombran con su nombre real, con plazos y costos ilustrativos, sin logotipos ni enlaces a sus sitios (ver `docs/decisiones.md`, D36).
 
 ## 3. Usuarios y roles
 
@@ -46,8 +46,8 @@ Cada requerimiento indica la etapa del blueprint y la oportunidad de innovación
 
 ### Etapa 2 — Revisión y contacto (OI 1)
 
-- **RF03. Registro y perfil de intereses.** El usuario registra área de estudio, nivel, países de interés, modalidad, idioma, rango de costo, necesidad de financiamiento, región de residencia y universidad de origen. El registro solicita consentimiento para el tratamiento de datos personales.
-- **RF04. Buscador con filtros.** Filtros por país, área, nivel, modalidad, costo total, tipo de financiamiento, idioma, fecha de inicio y estado de la convocatoria (abierta, próxima, cerrada). Búsqueda por texto libre.
+- **RF03. Registro y perfil de intereses.** El usuario registra área de estudio, nivel, países de interés, modalidades e idiomas (uno o varios de cada uno), rango de costo, necesidad de financiamiento, región de residencia y universidad de origen. El registro solicita consentimiento para el tratamiento de datos personales.
+- **RF04. Buscador con filtros.** Filtros por país, área, nivel, modalidad, costo total, tipo de financiamiento, idioma, fecha de inicio y estado de la convocatoria (abierta, próxima, cerrada). País, área, nivel, modalidad, idioma y tipo de financiamiento admiten una o varias opciones a la vez. Búsqueda por texto libre.
 - **RF05. Recomendaciones por perfil.** Listado de oportunidades que coinciden con el perfil registrado, con indicación de los criterios coincidentes.
 
 ### Etapa 3 — Comparación y decisión (OI 1)
@@ -109,8 +109,8 @@ La ficha estándar es el formato común de información que alimenta el catálog
 
 ## 8. Datos de prueba
 
-- Entre 30 y 40 oportunidades ficticias, distribuidas en al menos 8 países, 6 áreas de estudio y los tres niveles, con convocatorias abiertas, próximas y cerradas respecto de la fecha actual.
-- Entre 6 y 8 trámites con nombres genéricos y valores referenciales.
+- Entre 30 y 40 oportunidades ficticias, distribuidas en al menos 8 países, 6 áreas de estudio y los tres niveles, con convocatorias abiertas, próximas y cerradas respecto de la fecha actual. Las fechas se calibran para que en las revisiones del jurado (4 y 20 de noviembre) predominen las convocatorias abiertas.
+- Entre 6 y 8 trámites con nombres genéricos, entidades responsables reales y valores ilustrativos.
 - Cinco entidades proveedoras ficticias, que representen el rol de cada tipo de entidad real.
 - Tres usuarios de prueba con perfiles distintos, entre ellos una titulada de una universidad de región sin redes de contacto académico, coherente con la escena 1 del storyboard.
 - Un control para simular la fecha actual, que permita demostrar las alertas de vencimiento.

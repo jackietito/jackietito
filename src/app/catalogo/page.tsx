@@ -11,7 +11,7 @@ import {
   NIVELES,
   etiqueta,
 } from "@/lib/catalogos";
-import { filtrarOportunidades, leerFiltros, type Filtros } from "@/lib/oportunidades";
+import { FILTROS_MULTIPLES, aConsulta, filtrarOportunidades, leerFiltros, type FiltroMultiple, type Filtros } from "@/lib/oportunidades";
 import { formatearFechaCorta, desdeISO } from "@/lib/fechas";
 import { TarjetaOportunidad } from "@/components/oportunidad";
 import { PanelPlegable } from "@/components/PanelPlegable";
@@ -22,7 +22,9 @@ export const metadata: Metadata = { title: "Catálogo de oportunidades" };
 
 const COSTOS = [5000, 10000, 20000, 40000, 60000, 100000];
 
-const NOMBRES_FILTRO: Partial<Record<keyof Filtros, string>> = {
+type ClaveFiltro = Exclude<keyof Filtros, "orden">;
+
+const NOMBRES_FILTRO: Record<ClaveFiltro, string> = {
   q: "Texto",
   pais: "País",
   area: "Área",
@@ -36,7 +38,7 @@ const NOMBRES_FILTRO: Partial<Record<keyof Filtros, string>> = {
   inicioHasta: "Inicio hasta",
 };
 
-function valorLegible(clave: keyof Filtros, valor: string): string {
+function valorLegible(clave: ClaveFiltro, valor: string): string {
   switch (clave) {
     case "nivel": return etiqueta(NIVELES, valor);
     case "modalidad": return etiqueta(MODALIDADES, valor);
@@ -52,11 +54,40 @@ function valorLegible(clave: keyof Filtros, valor: string): string {
   }
 }
 
-function urlSin(f: Filtros, clave: keyof Filtros): string {
-  const p = new URLSearchParams();
-  for (const [k, v] of Object.entries(f)) if (k !== clave && v) p.set(k, v);
-  const s = p.toString();
+/** URL del catálogo sin un filtro (o sin una de las opciones de un filtro múltiple). */
+function urlSin(f: Filtros, clave: ClaveFiltro, valor: string): string {
+  const copia: Filtros = { ...f };
+  if ((FILTROS_MULTIPLES as readonly string[]).includes(clave)) {
+    const c = clave as FiltroMultiple;
+    copia[c] = (f[c] ?? []).filter((v) => v !== valor);
+  } else {
+    delete copia[clave as Exclude<ClaveFiltro, FiltroMultiple>];
+  }
+  const s = aConsulta(copia).toString();
   return s ? `/catalogo?${s}` : "/catalogo";
+}
+
+/** Grupo plegable de casillas para elegir una o varias opciones de un filtro. */
+function GrupoCasillas({ id, titulo, opciones, marcadas }: {
+  id: FiltroMultiple; titulo: string; opciones: [string, string][]; marcadas: string[];
+}) {
+  return (
+    <details open={marcadas.length > 0} className="rounded-lg border border-gray-400">
+      <summary className="flex min-h-11 cursor-pointer items-center justify-between px-3 font-semibold">
+        <span>{titulo}</span>
+        <span className="text-sm font-normal text-suave">{marcadas.length ? `${marcadas.length} elegido${marcadas.length === 1 ? "" : "s"}` : "Todos"}</span>
+      </summary>
+      <fieldset className="border-t border-borde px-3 pb-2 pt-1">
+        <legend className="sr-only">{titulo}: elige una o varias opciones</legend>
+        {opciones.map(([v, texto], i) => (
+          <div key={v} className="flex min-h-10 items-center gap-3">
+            <input id={`${id}-${i}`} type="checkbox" name={id} value={v} defaultChecked={marcadas.includes(v)} className="h-5 w-5 accent-marca" />
+            <label htmlFor={`${id}-${i}`}>{texto}</label>
+          </div>
+        ))}
+      </fieldset>
+    </details>
+  );
 }
 
 function Selector({
@@ -88,11 +119,15 @@ export default async function Catalogo({
     prisma.oportunidad.findMany({ where: { publicada: true }, include: { entidad: true } }),
     contextoAcciones(),
   ]);
-  const consulta = new URLSearchParams(filtros as Record<string, string>).toString();
+  const consulta = aConsulta(filtros).toString();
   const volver = consulta ? `/catalogo?${consulta}` : "/catalogo";
   const resultados = filtrarOportunidades(todas, filtros, hoy);
   const paises = [...new Set(todas.map((o) => o.pais))].sort((a, b) => a.localeCompare(b, "es"));
-  const activos = (Object.keys(NOMBRES_FILTRO) as (keyof Filtros)[]).filter((k) => filtros[k]);
+  // Una etiqueta por cada opción elegida, para poder quitarlas de a una.
+  const activos = (Object.keys(NOMBRES_FILTRO) as ClaveFiltro[]).flatMap((k) => {
+    const v = filtros[k];
+    return (Array.isArray(v) ? v : v ? [v] : []).map((valor) => ({ clave: k, valor }));
+  });
   const pares = <T extends Record<string, string>>(m: T) => Object.entries(m) as [string, string][];
 
   return (
@@ -115,12 +150,12 @@ export default async function Catalogo({
                 <input id="q" name="q" type="search" defaultValue={filtros.q} className="campo" placeholder="Nombre, institución, ciudad…" />
               </div>
               <Selector id="estado" etiquetaTexto="Estado de la convocatoria" valor={filtros.estado} opciones={pares(ESTADOS)} todos="Todos los estados" />
-              <Selector id="pais" etiquetaTexto="País" valor={filtros.pais} opciones={paises.map((p) => [p, p])} todos="Todos los países" />
-              <Selector id="area" etiquetaTexto="Área de estudio" valor={filtros.area} opciones={AREAS.map((a) => [a, a])} todos="Todas las áreas" />
-              <Selector id="nivel" etiquetaTexto="Nivel" valor={filtros.nivel} opciones={pares(NIVELES)} todos="Todos los niveles" />
-              <Selector id="modalidad" etiquetaTexto="Modalidad" valor={filtros.modalidad} opciones={pares(MODALIDADES)} todos="Todas las modalidades" />
-              <Selector id="idioma" etiquetaTexto="Idioma" valor={filtros.idioma} opciones={IDIOMAS.map((i) => [i, i])} todos="Todos los idiomas" />
-              <Selector id="financiamiento" etiquetaTexto="Tipo de financiamiento" valor={filtros.financiamiento} opciones={pares(FINANCIAMIENTOS)} todos="Cualquier financiamiento" />
+              <GrupoCasillas id="pais" titulo="País" opciones={paises.map((p) => [p, p])} marcadas={filtros.pais ?? []} />
+              <GrupoCasillas id="area" titulo="Área de estudio" opciones={AREAS.map((a) => [a, a])} marcadas={filtros.area ?? []} />
+              <GrupoCasillas id="nivel" titulo="Nivel" opciones={pares(NIVELES)} marcadas={filtros.nivel ?? []} />
+              <GrupoCasillas id="modalidad" titulo="Modalidad" opciones={pares(MODALIDADES)} marcadas={filtros.modalidad ?? []} />
+              <GrupoCasillas id="idioma" titulo="Idioma" opciones={IDIOMAS.map((i) => [i, i])} marcadas={filtros.idioma ?? []} />
+              <GrupoCasillas id="financiamiento" titulo="Tipo de financiamiento" opciones={pares(FINANCIAMIENTOS)} marcadas={filtros.financiamiento ?? []} />
               <div>
                 <Selector
                   id="costoMax"
@@ -166,13 +201,13 @@ export default async function Catalogo({
 
           {activos.length > 0 && (
             <ul className="flex flex-wrap gap-2" aria-label="Filtros aplicados">
-              {activos.map((k) => (
-                <li key={k}>
+              {activos.map(({ clave: k, valor }) => (
+                <li key={`${k}-${valor}`}>
                   <Link
-                    href={urlSin(filtros, k)}
+                    href={urlSin(filtros, k, valor)}
                     className="inline-flex min-h-9 items-center gap-1 rounded-full border border-marca bg-marca-clara px-3 text-sm text-marca-oscura hover:bg-white"
                   >
-                    <span>{NOMBRES_FILTRO[k]}: {valorLegible(k, filtros[k]!)}</span>
+                    <span>{NOMBRES_FILTRO[k]}: {valorLegible(k, valor)}</span>
                     <span aria-hidden="true">✕</span>
                     <span className="sr-only">(quitar filtro)</span>
                   </Link>

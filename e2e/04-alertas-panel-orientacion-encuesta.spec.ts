@@ -35,7 +35,7 @@ test("la ciudadana recibe alertas de vencimiento y de nuevas oportunidades, con 
 
 test("con la fecha simulada, la alerta pasa al umbral de 7 días", async ({ page, browser }) => {
   await ingresar(page, "admin@ventanilla.test");
-  await page.getByLabel("Nueva fecha").fill(enDias(14));
+  await page.getByLabel("Nueva fecha").fill(enDias(20));
   await page.getByRole("button", { name: "Usar esta fecha" }).click();
   await expect(page.getByRole("status")).toContainText("Actualizamos la fecha");
   try {

@@ -26,7 +26,7 @@ export default async function EditarTramite({ params }: { params: Promise<{ id: 
     <div className="mx-auto max-w-4xl space-y-4">
       <nav aria-label="Ruta de navegación" className="text-sm"><Link href="/gestion#tramites" className="enlace">← Volver a gestión de contenidos</Link></nav>
       <h1 className="titulo-pagina">{id === "nuevo" ? "Nuevo trámite" : `Editar trámite: ${inicial.nombre}`}</h1>
-      <p className="text-suave">Plazos y costos son referenciales y así se muestran a los ciudadanos.</p>
+      <p className="text-suave">Las entidades responsables se nombran con su nombre real; los plazos y costos se muestran a los ciudadanos como ilustrativos, no oficiales.</p>
       <FormTramite inicial={inicial} />
     </div>
   );

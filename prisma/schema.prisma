@@ -162,7 +162,9 @@ model Perfil {
   nivel                  String
   /// Países separados por "|"
   paises                 String
+  /// Modalidades separadas por "|" (una o varias)
   modalidad              String
+  /// Idiomas separados por "|" (uno o varios)
   idioma                 String
   /// Costo total máximo en USD referenciales (0 = sin límite)
   costoMaxUsd            Float

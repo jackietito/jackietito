@@ -141,7 +141,7 @@ export default async function Ruta({ params, searchParams }: Params) {
         <section aria-labelledby="titulo-pasos" className="space-y-3">
           <h2 id="titulo-pasos" className="titulo-seccion">Ruta paso a paso</h2>
           <p className="text-sm text-suave">
-            Las fechas se calculan hacia atrás desde el cierre de la convocatoria ({formatearFecha(o.fechaCierre)}). Plazos y costos referenciales.
+            Las fechas se calculan hacia atrás desde el cierre de la convocatoria ({formatearFecha(o.fechaCierre)}). Plazos y costos ilustrativos, no oficiales.
           </p>
           <ol className="space-y-3">
             {pasos.map((p) => {
@@ -168,7 +168,7 @@ export default async function Ruta({ params, searchParams }: Params) {
                         <dd>{formatearFecha(p.fechaRecomendada)}</dd>
                       </div>
                       {p.plazoDias !== null && (
-                        <div><dt className="font-semibold text-suave">Plazo y costo referenciales</dt>
+                        <div><dt className="font-semibold text-suave">Plazo y costo ilustrativos</dt>
                           <dd>{p.plazoDias} días · {formatearMonto(p.costoReferencial ?? 0, "PEN")}</dd></div>
                       )}
                     </dl>
@@ -182,7 +182,7 @@ export default async function Ruta({ params, searchParams }: Params) {
                         <SelectorEstadoTramite avanceId={avance.id} estado={avance.estado} tramite={p.titulo} />
                       ) : <span />}
                       <a href={p.enlace} target="_blank" rel="noopener noreferrer" className="enlace text-sm">
-                        {p.tipo === "postulacion" ? "Ir a la convocatoria oficial" : "Enlace oficial"}
+                        {p.tipo === "postulacion" ? "Ir a la convocatoria oficial" : "Enlace de ejemplo"}
                         <span className="sr-only"> de {p.titulo} (se abre en una pestaña nueva)</span> <span aria-hidden="true">↗</span>
                       </a>
                     </div>

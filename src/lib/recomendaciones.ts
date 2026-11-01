@@ -12,8 +12,19 @@ export type Criterio = (typeof CRITERIOS)[number];
 /** Mínimo de criterios coincidentes para recomendar una ficha (decisión D17). */
 export const MINIMO_COINCIDENCIAS = 4;
 
+/** Los campos del perfil con varias opciones se guardan separados por "|". */
+const lista = (s: string) => s.split("|").filter(Boolean);
+
 export function paisesDePerfil(p: Pick<Perfil, "paises">): string[] {
-  return p.paises.split("|").filter(Boolean);
+  return lista(p.paises);
+}
+
+export function modalidadesDePerfil(p: Pick<Perfil, "modalidad">): string[] {
+  return lista(p.modalidad);
+}
+
+export function idiomasDePerfil(p: Pick<Perfil, "idioma">): string[] {
+  return lista(p.idioma);
 }
 
 /** Texto en lenguaje claro de cada criterio coincidente. */
@@ -22,7 +33,7 @@ export function textoCriterio(c: Criterio, o: Oportunidad): string {
     case "area": return `Área: ${o.area}`;
     case "nivel": return "Nivel que buscas";
     case "pais": return `País de interés: ${o.pais}`;
-    case "modalidad": return "Modalidad que prefieres";
+    case "modalidad": return "Modalidad que te interesa";
     case "idioma": return `Idioma: ${o.idioma}`;
     case "costo": return "Dentro de tu presupuesto";
     case "financiamiento": return "Ofrece financiamiento";
@@ -39,8 +50,8 @@ export function criteriosCoincidentes(p: Perfil, o: Oportunidad): Criterio[] {
   if (p.area === o.area) res.push("area");
   if (p.nivel === o.nivel) res.push("nivel");
   if (paisesDePerfil(p).includes(o.pais)) res.push("pais");
-  if (p.modalidad === o.modalidad) res.push("modalidad");
-  if (p.idioma === o.idioma) res.push("idioma");
+  if (modalidadesDePerfil(p).includes(o.modalidad)) res.push("modalidad");
+  if (idiomasDePerfil(p).includes(o.idioma)) res.push("idioma");
   if (p.costoMaxUsd <= 0 || costoTotalUsd(o) <= p.costoMaxUsd) res.push("costo");
   // Si no necesita financiamiento, el criterio no se cuenta ni resta.
   if (p.necesitaFinanciamiento && o.financiamientoTipo !== "ninguno") res.push("financiamiento");

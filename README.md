@@ -179,6 +179,8 @@ El proyecto de Vercel tiene dos dominios en **Settings → Domains**: `ventanill
 
 ### Restablecer los datos entre sesiones de prueba
 
+> **Antes de las revisiones del jurado (4 y 20 de noviembre):** restablece los datos entre el 1 y el 3 de noviembre. Las fechas de las convocatorias se calculan desde el día de la carga y están calibradas para que en ambas revisiones predominen las convocatorias abiertas (decisión D37).
+
 Ingresa como `admin@ventanilla.test`, ve a **Tablero de indicadores** (`/admin`) y, al final de la página, usa **Restablecer los datos de prueba**: marca la casilla de confirmación y escribe la contraseña de `CLAVE_RESTABLECER`. Se borran todas las cuentas, rutas, consultas, encuestas y fichas creadas o editadas, y se vuelven a cargar los datos ficticios con fechas calculadas desde ese día. No se puede deshacer.
 
 ## Estructura
@@ -197,6 +199,7 @@ e2e/                   pruebas de Playwright
 
 ## Avisos
 
-- Todo el contenido es ficticio. Las entidades, instituciones, personas y enlaces son inventados; los enlaces oficiales apuntan a `example.org`.
+- Todo el contenido es ficticio. Las entidades proveedoras, instituciones, oportunidades, personas y enlaces son inventados; los enlaces oficiales apuntan a `example.org`.
+- Excepción: las entidades peruanas ante las que se hacen los trámites (SUNEDU, Cancillería, Policía Nacional, Poder Judicial) se nombran con su nombre real, pero sus plazos y costos son ilustrativos, no oficiales (decisión D36).
 - No se usan logotipos, marcas ni la identidad gráfica de gob.pe ni de ninguna entidad real.
 - No hay integraciones reales con sistemas del Estado ni con la Plataforma de Interoperabilidad del Estado (PIDE). La información externa ingresa por el módulo de gestión de contenidos.

@@ -131,7 +131,7 @@ export async function sembrar(db: PrismaClient, hoy: Date) {
     usuario[p.email] = u.id;
   }
   for (const c of [...CIUDADANOS, ...POBLACION_SIMULADA]) {
-    const { email, paises, ...perfil } = c;
+    const { email, paises, modalidades, idiomas, ...perfil } = c;
     const u = await db.usuario.create({
       data: {
         email,
@@ -139,7 +139,15 @@ export async function sembrar(db: PrismaClient, hoy: Date) {
         rol: "ciudadano",
         creadoEn: d(-30),
         consentimientoEn: d(-30),
-        perfil: { create: { ...perfil, paises: paises.join("|"), actualizadoEn: d(-30) } },
+        perfil: {
+          create: {
+            ...perfil,
+            paises: paises.join("|"),
+            modalidad: modalidades.join("|"),
+            idioma: idiomas.join("|"),
+            actualizadoEn: d(-30),
+          },
+        },
       },
     });
     usuario[email] = u.id;
