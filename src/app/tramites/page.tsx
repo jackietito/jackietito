@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
-import { textoCosto, textoCostoTotal, textoPlazo } from "@/lib/tramites";
+import { enlacesTramite, textoCosto, textoCostoTotal, textoPlazo } from "@/lib/tramites";
 
 export const metadata: Metadata = { title: "Mapa de trámites" };
 
@@ -68,10 +68,26 @@ export default async function MapaTramites({ searchParams }: { searchParams: Pro
                 <span className="text-suave">
                   Lo piden {t._count.oportunidades} {t._count.oportunidades === 1 ? "oportunidad" : "oportunidades"} del catálogo
                 </span>
-                <a href={t.enlaceOficial} target="_blank" rel="noopener noreferrer" className="enlace">
-                  Enlace de ejemplo<span className="sr-only"> de {t.nombre} (se abre en una pestaña nueva)</span> <span aria-hidden="true">↗</span>
-                </a>
+                {enlacesTramite(t).length === 0 && (
+                  <a href={t.enlaceOficial} target="_blank" rel="noopener noreferrer" className="enlace">
+                    Enlace de ejemplo<span className="sr-only"> de {t.nombre} (se abre en una pestaña nueva)</span> <span aria-hidden="true">↗</span>
+                  </a>
+                )}
               </div>
+              {enlacesTramite(t).length > 0 && (
+                <div className="rounded-lg bg-marca-clara p-3">
+                  <h3 className="text-sm font-semibold text-marca-oscura">Enlaces oficiales</h3>
+                  <ul className="mt-1 space-y-1 text-sm">
+                    {enlacesTramite(t).map((e) => (
+                      <li key={e.url}>
+                        <a href={e.url} target="_blank" rel="noopener noreferrer" className="enlace break-words">
+                          {e.texto}<span className="sr-only"> (sitio oficial, se abre en una pestaña nueva)</span> <span aria-hidden="true">↗</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </article>
           </li>
         ))}

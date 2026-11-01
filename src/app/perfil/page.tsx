@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { exigirRol } from "@/lib/auth";
 import { formatearFecha } from "@/lib/fechas";
-import { idiomasDePerfil, modalidadesDePerfil, paisesDePerfil } from "@/lib/recomendaciones";
+import { idiomasAcreditados, idiomasDePerfil, modalidadesDePerfil, paisesDePerfil } from "@/lib/recomendaciones";
 import { FormPerfil } from "@/components/FormPerfil";
 
 export const metadata: Metadata = { title: "Mi perfil" };
@@ -30,6 +30,7 @@ export default async function Perfil({ searchParams }: { searchParams: Promise<{
           paises: p ? paisesDePerfil(p) : [],
           modalidades: p ? modalidadesDePerfil(p) : [],
           idiomas: p ? idiomasDePerfil(p) : [],
+          idiomasAcreditados: idiomasAcreditados(p),
           costoMaxUsd: p ? String(p.costoMaxUsd) : "",
           financiamiento: p ? [...(p.necesitaFinanciamiento ? ["con"] : []), ...(p.buscaSinBeca ? ["sin"] : [])] : [],
           region: p?.region ?? "",

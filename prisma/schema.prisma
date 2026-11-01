@@ -114,6 +114,10 @@ model Tramite {
   /// Precisión del costo, o el costo en palabras si no hay monto (p. ej. «Según el TUPA de tu universidad»)
   costoNota          String               @default("")
   enlaceOficial      String
+  /// Enlaces oficiales del trámite, uno por línea: «texto | https://…» (D56). Si hay, reemplazan al enlace de ejemplo.
+  enlaces            String               @default("")
+  /// Marca de tipo para reglas de la ruta: "idioma" = examen de idioma (D57)
+  tipo               String               @default("")
   /// Orden sugerido en la ruta paso a paso
   orden              Int
   /// Días antes del cierre de la convocatoria en que se recomienda iniciar el trámite
@@ -171,6 +175,8 @@ model Perfil {
   modalidad              String
   /// Idiomas separados por "|" (uno o varios)
   idioma                 String
+  /// Idiomas que la persona ya acredita con un certificado vigente, separados por "|" (D57)
+  idiomasAcreditados     String   @default("")
   /// Costo total máximo en USD referenciales (0 = sin límite)
   costoMaxUsd            Float
   /// Busca oportunidades con beca o crédito

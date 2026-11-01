@@ -175,9 +175,14 @@ export async function guardarTramite(_: EstadoFormulario, fd: FormData): Promise
   const orden = numero(t("orden"), e, "orden", "el orden en la ruta", true);
   const anticipacionDias = numero(t("anticipacionDias"), e, "anticipacionDias", "la anticipación en días", true);
   if (!URL_OFICIAL.test(t("enlaceOficial"))) e.enlaceOficial = "Escribe el enlace oficial completo, que empiece con https://";
+  const lineasEnlaces = t("enlaces").split("\n").map((l) => l.trim()).filter(Boolean);
+  if (lineasEnlaces.some((l) => { const [texto, url] = l.split("|").map((x) => x.trim()); return !texto || !URL_OFICIAL.test(url ?? ""); })) {
+    e.enlaces = "Cada enlace va en una línea con la forma «texto | https://…».";
+  }
   if (Object.keys(e).length) return { errores: e, valores };
 
   const datos = {
+    enlaces: lineasEnlaces.join("\n"),
     nombre: t("nombre"), entidadResponsable: t("entidadResponsable"), descripcion: t("descripcion"),
     documentos: t("documentos").split("\n").map((d) => d.trim()).filter(Boolean).join("\n"),
     plazoDias, plazoTexto: t("plazoTexto"), costoReferencial, costoNota: t("costoNota"),

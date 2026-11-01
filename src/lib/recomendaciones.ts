@@ -27,6 +27,11 @@ export function idiomasDePerfil(p: Pick<Perfil, "idioma">): string[] {
   return lista(p.idioma);
 }
 
+/** Idiomas que la persona acredita con certificado (D57). Sin perfil, ninguno. */
+export function idiomasAcreditados(p: Pick<Perfil, "idiomasAcreditados"> | null | undefined): string[] {
+  return p ? lista(p.idiomasAcreditados) : [];
+}
+
 /** Texto en lenguaje claro de cada criterio coincidente. */
 export function textoCriterio(c: Criterio, o: Oportunidad): string {
   switch (c) {

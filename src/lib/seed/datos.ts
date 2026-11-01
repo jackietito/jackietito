@@ -52,6 +52,19 @@ export type SiglaEntidad = (typeof ENTIDADES)[number]["sigla"];
 // real (D36) y los plazos y costos son referenciales (D42): deben verificarse en el
 // sitio oficial de cada entidad. Los enlaces apuntan a example.org. `entidad` es la
 // entidad proveedora que mantiene la ficha del trámite en el prototipo.
+/** Enlaces oficiales reales de algunos trámites (D56), uno por línea: «texto | URL». */
+export const ENLACES_TRAMITES = {
+  constancia: [
+    "Hacer el trámite en línea en la SUNEDU | https://enlinea.sunedu.gob.pe/",
+    "Pagar S/ 13.10 en Pagalo.pe | https://pagalo.pe/",
+    "Más información en gob.pe | https://www.gob.pe/490-constancia-de-verificacion-de-firmas-para-grados-y-titulos-o-documentos-academicos-bachiller-titulo-segunda-especialidad-maestro-o-doctor",
+  ].join("\n"),
+  apostilla: [
+    "Hacer el trámite en línea en Cancillería | https://serviciosalciudadano.rree.gob.pe/psc_webapp/",
+    "Más información en gob.pe | https://www.gob.pe/37288-apostilla-y-legalizacion",
+  ].join("\n"),
+};
+
 export const TRAMITES = [
   {
     clave: "idioma",
@@ -65,6 +78,7 @@ export const TRAMITES = [
     plazoTexto: "",
     costoReferencial: null,
     costoNota: "Según el examen elegido (TOEFL, IELTS u otro)",
+    tipo: "idioma",
     orden: 1,
     anticipacionDias: 120,
   },
@@ -110,6 +124,7 @@ export const TRAMITES = [
     plazoTexto: "Consulta el plazo vigente en el sitio de la SUNEDU",
     costoReferencial: 13.1,
     costoNota: "pago en Pagalo.pe",
+    enlaces: ENLACES_TRAMITES.constancia,
     orden: 4,
     anticipacionDias: 70,
   },
@@ -125,6 +140,7 @@ export const TRAMITES = [
     plazoTexto: "",
     costoReferencial: 0,
     costoNota: "para peruanos: certificado de estudios, título o grado académico, presencial o digital",
+    enlaces: ENLACES_TRAMITES.apostilla,
     orden: 5,
     anticipacionDias: 55,
   },

@@ -9,6 +9,8 @@ import { ESTADOS_TRAMITE, etiqueta } from "@/lib/catalogos";
 import { diasEntre, formatearFecha, formatearFechaCorta, textoDias } from "@/lib/fechas";
 import { estadoConvocatoria } from "@/lib/oportunidades";
 import { construirRuta, porcentaje } from "@/lib/ruta";
+import { tramitesDeLaRuta } from "@/lib/tramites";
+import { idiomasAcreditados } from "@/lib/recomendaciones";
 import { EtiquetaEstado, textoPlazo } from "@/components/oportunidad";
 import { AccionesOportunidad } from "@/components/BotonesOportunidad";
 
@@ -49,6 +51,7 @@ export default async function Panel() {
     contextoAcciones(),
   ]);
 
+  const acreditados = idiomasAcreditados(u.perfil);
   // Próximas fechas: cierres de las guardadas y pasos pendientes de las rutas.
   const fechas: Fecha[] = [];
   for (const g of guardadas) {
@@ -56,7 +59,7 @@ export default async function Panel() {
     if (estadoConvocatoria(o, hoy) === "cerrada") continue;
     fechas.push({ fecha: o.fechaCierre, que: "Cierre de la convocatoria", oportunidad: o.nombre, enlace: `/oportunidades/${o.id}` });
     if (!g.rutaGeneradaEn) continue;
-    for (const p of construirRuta(o, o.tramites.map((t) => t.tramite))) {
+    for (const p of construirRuta(o, tramitesDeLaRuta(o.tramites.map((t) => t.tramite), o.idioma, acreditados))) {
       const avance = o.avances.find((a) => a.tramiteId === p.tramiteId);
       if (avance?.estado === "completado") continue;
       fechas.push({ fecha: p.fechaRecomendada, que: p.tipo === "postulacion" ? "Postular en el canal oficial" : `Empezar: ${p.titulo}`, oportunidad: o.nombre, enlace: `/ruta/${o.id}` });
@@ -112,7 +115,7 @@ export default async function Panel() {
               const hechos = o.checklist.filter((i) => i.completado).length;
               const pct = porcentaje(hechos, o.checklist.length);
               const estado = estadoConvocatoria(o, hoy);
-              const tramites = o.tramites.map((t) => t.tramite).sort((a, b) => a.orden - b.orden);
+              const tramites = tramitesDeLaRuta(o.tramites.map((t) => t.tramite), o.idioma, acreditados).sort((a, b) => a.orden - b.orden);
               return (
                 <li key={o.id}>
                   <article aria-labelledby={`g-${o.id}`} className="tarjeta flex h-full flex-col gap-3">

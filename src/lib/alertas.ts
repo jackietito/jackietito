@@ -5,7 +5,8 @@ import type { PrismaClient } from "@prisma/client";
 import { UMBRALES_ALERTA } from "./catalogos";
 import { diasEntre, formatearFecha, sumarDias, textoDias } from "./fechas";
 import { estadoConvocatoria } from "./oportunidades";
-import { recomendar } from "./recomendaciones";
+import { idiomasAcreditados, recomendar } from "./recomendaciones";
+import { tramitesDeLaRuta } from "./tramites";
 
 /** Una oportunidad es «nueva» si se publicó en los últimos días indicados. */
 export const DIAS_OPORTUNIDAD_NUEVA = 14;
@@ -58,7 +59,7 @@ export async function sincronizarAlertas(db: PrismaClient, usuarioId: string, ho
     }
     // Trámites de la ruta cuya fecha recomendada se acerca o ya pasó.
     if (g.rutaGeneradaEn) {
-      for (const { tramite: t } of o.tramites) {
+      for (const t of tramitesDeLaRuta(o.tramites.map((x) => x.tramite), o.idioma, idiomasAcreditados(u.perfil))) {
         const avance = u.avances.find((a) => a.oportunidadId === o.id && a.tramiteId === t.id);
         if (!avance || avance.estado === "completado") continue;
         const fecha = sumarDias(o.fechaCierre, -t.anticipacionDias);

@@ -1,7 +1,7 @@
 // Ruta paso a paso (RF09) y checklist personalizado (RF11).
 import type { PrismaClient, Tramite } from "@prisma/client";
 import { sumarDias } from "./fechas";
-import { textoCosto, textoPlazo } from "./tramites";
+import { enlacesTramite, textoCosto, textoPlazo, type EnlaceTramite } from "./tramites";
 
 /** Días antes del cierre recomendados para enviar la postulación en el canal oficial. */
 export const DIAS_MARGEN_POSTULACION = 7;
@@ -19,6 +19,8 @@ export type PasoRuta = {
   plazo: string | null;
   costo: string | null;
   enlace: string;
+  /** Enlaces oficiales del trámite; si hay, reemplazan al enlace de ejemplo */
+  enlaces: EnlaceTramite[];
   tramiteId: string | null;
 };
 
@@ -45,6 +47,7 @@ export function construirRuta(
       plazo: textoPlazo(t),
       costo: textoCosto(t),
       enlace: t.enlaceOficial,
+      enlaces: enlacesTramite(t),
       tramiteId: t.id,
     }));
   pasos.push({
@@ -59,6 +62,7 @@ export function construirRuta(
     plazo: null,
     costo: null,
     enlace: oportunidad.enlaceOficial,
+    enlaces: [],
     tramiteId: null,
   });
   return pasos;

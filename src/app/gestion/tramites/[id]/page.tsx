@@ -19,7 +19,7 @@ export default async function EditarTramite({ params }: { params: Promise<{ id: 
       id: t.id, nombre: t.nombre, entidadResponsable: t.entidadResponsable, descripcion: t.descripcion,
       documentos: t.documentos, plazoDias: String(t.plazoDias), plazoTexto: t.plazoTexto,
       costoReferencial: t.costoReferencial === null ? "" : String(t.costoReferencial), costoNota: t.costoNota,
-      orden: String(t.orden), anticipacionDias: String(t.anticipacionDias), enlaceOficial: t.enlaceOficial,
+      orden: String(t.orden), anticipacionDias: String(t.anticipacionDias), enlaceOficial: t.enlaceOficial, enlaces: t.enlaces,
       publicado: t.publicado ? "si" : "no",
     };
   }

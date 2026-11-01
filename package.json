@@ -13,7 +13,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:reset": "npm run db:provider && prisma db push --skip-generate && prisma generate && npm run db:seed",
     "setup": "npm run db:reset",
-    "vercel-build": "node scripts/prisma-provider.mjs && prisma generate && prisma db push --skip-generate && tsx prisma/seed.ts --si-vacia && next build",
+    "vercel-build": "node scripts/prisma-provider.mjs && prisma generate && prisma db push --skip-generate && tsx prisma/seed.ts --si-vacia && tsx prisma/actualizar-datos.ts && next build",
     "test:e2e": "playwright test",
     "neon:env": "neon env pull --file .env.neon",
     "neon:setup": "node scripts/con-neon.mjs \"node scripts/prisma-provider.mjs && prisma generate && prisma db push --skip-generate && tsx prisma/seed.ts\"",

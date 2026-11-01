@@ -118,6 +118,8 @@ Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Cr
 | Directorio y financiamiento | «Orientación» | Sitios oficiales de las entidades de trámites y programas de becas reales (verificados el 1/11/2026). |
 | Tonalidades | `/admin` | Con `admin@ventanilla.test`, elige otra paleta en «Tonalidades de la plataforma». |
 | Testimonios | Encuesta, `/admin` e inicio | Responde la encuesta, escribe un comentario y autoriza publicarlo. Luego ingresa como `admin@ventanilla.test`, apruébalo en «Testimonios por aprobar» y míralo en «Experiencias» del inicio. |
+| Enlaces oficiales de trámites | «Trámites» y la ruta | La constancia de verificación de firma (SUNEDU) y la apostilla (Cancillería) enlazan a sus servicios en línea, al pago y a su página en gob.pe. |
+| Examen de idioma | «Mi perfil» y la ruta | Marca «Inglés» en «Idiomas que ya acreditas»: la ruta de una oportunidad en inglés ya no incluye el examen. |
 
 ## Pruebas
 

@@ -6,7 +6,7 @@ import { AREAS, IDIOMAS, MODALIDADES, NIVELES, PAISES, REGIONES } from "@/lib/ca
 import { BotonEnviar, CampoTexto, MensajeError, ResumenErrores, ariaCampo } from "./formulario";
 
 export type ValoresPerfil = {
-  area: string; nivel: string; paises: string[]; modalidades: string[]; idiomas: string[];
+  area: string; nivel: string; paises: string[]; modalidades: string[]; idiomas: string[]; idiomasAcreditados: string[];
   costoMaxUsd: string; financiamiento: string[]; region: string; universidadOrigen: string;
 };
 
@@ -34,13 +34,13 @@ function Selector({ id, etiqueta, valor, opciones, error }: {
 }
 
 /** Grupo de casillas para elegir una o varias opciones. */
-function Casillas({ id, titulo, opciones, marcadas, error, columnas = "sm:grid-cols-3" }: {
-  id: string; titulo: string; opciones: [string, string][]; marcadas: string[]; error?: string; columnas?: string;
+function Casillas({ id, titulo, opciones, marcadas, error, columnas = "sm:grid-cols-3", ayuda = "Marca todas las que quieras." }: {
+  id: string; titulo: string; opciones: [string, string][]; marcadas: string[]; error?: string; columnas?: string; ayuda?: string;
 }) {
   return (
     <fieldset className="tarjeta" {...ariaCampo(id, error)}>
       <legend className="titulo-seccion px-1">{titulo}</legend>
-      <p className="mb-3 text-sm text-suave">Marca todas las que quieras.</p>
+      <p className="mb-3 text-sm text-suave">{ayuda}</p>
       <div id={id} tabIndex={-1} className={`grid grid-cols-1 gap-1 ${columnas}`}>
         {opciones.map(([valor, texto], i) => (
           <div key={valor} className="flex min-h-11 items-center gap-3">
@@ -79,6 +79,9 @@ export function FormPerfil({ inicial }: { inicial: ValoresPerfil }) {
 
       <Casillas id="modalidades" titulo="Modalidades que te interesan" opciones={pares(MODALIDADES)} marcadas={v.modalidades} error={e.modalidades} />
       <Casillas id="idiomas" titulo="Idiomas en que quieres estudiar" opciones={lista(IDIOMAS)} marcadas={v.idiomas} error={e.idiomas} />
+      <Casillas id="idiomasAcreditados" titulo="Idiomas que ya acreditas con un certificado vigente"
+        ayuda="Opcional. Si acreditas el idioma en que se dicta una oportunidad, tu ruta no incluirá el examen de idioma."
+        opciones={lista(IDIOMAS.filter((i) => i !== "Español"))} marcadas={v.idiomasAcreditados} />
 
       <Casillas id="paises" titulo="Países de interés" opciones={lista(PAISES)} marcadas={v.paises} error={e.paises} columnas="sm:grid-cols-2 md:grid-cols-3" />
 

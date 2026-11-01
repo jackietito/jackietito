@@ -97,6 +97,7 @@ export async function guardarPerfil(_: EstadoFormulario, fd: FormData): Promise<
     paises: fd.getAll("paises").map(String).filter((p) => (PAISES as readonly string[]).includes(p)),
     modalidades: fd.getAll("modalidades").map(String).filter((m) => m in MODALIDADES),
     idiomas: fd.getAll("idiomas").map(String).filter((i) => (IDIOMAS as readonly string[]).includes(i)),
+    idiomasAcreditados: fd.getAll("idiomasAcreditados").map(String).filter((i) => (IDIOMAS as readonly string[]).includes(i)),
     costoMaxUsd: texto(fd, "costoMaxUsd"),
     financiamiento: fd.getAll("financiamiento").map(String).filter((f) => f === "con" || f === "sin"),
     region: texto(fd, "region"),
@@ -124,6 +125,7 @@ export async function guardarPerfil(_: EstadoFormulario, fd: FormData): Promise<
     // Varias opciones separadas por "|", como los países.
     modalidad: v.modalidades.join("|"),
     idioma: v.idiomas.join("|"),
+    idiomasAcreditados: v.idiomasAcreditados.join("|"),
     costoMaxUsd: costo,
     necesitaFinanciamiento: v.financiamiento.includes("con"),
     buscaSinBeca: v.financiamiento.includes("sin"),

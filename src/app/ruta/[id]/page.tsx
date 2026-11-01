@@ -8,6 +8,8 @@ import { CATEGORIAS_REQUISITO, etiqueta } from "@/lib/catalogos";
 import { diasEntre, formatearFecha, textoDias } from "@/lib/fechas";
 import { estadoConvocatoria } from "@/lib/oportunidades";
 import { construirRuta, porcentaje, type PasoRuta } from "@/lib/ruta";
+import { tramitesDeLaRuta } from "@/lib/tramites";
+import { idiomasAcreditados } from "@/lib/recomendaciones";
 import { generarMiRuta } from "@/lib/acciones-ruta";
 import { EtiquetaEstado, textoPlazo } from "@/components/oportunidad";
 import { CasillaChecklist, SelectorEstadoTramite } from "@/components/ControlesRuta";
@@ -107,12 +109,17 @@ export default async function Ruta({ params, searchParams }: Params) {
     );
   }
 
-  const tramites = o.tramites.map((t) => t.tramite);
+  // El examen de idioma se omite si la persona acredita el idioma de la oportunidad (D57).
+  const acreditados = idiomasAcreditados(u.perfil);
+  const tramites = tramitesDeLaRuta(o.tramites.map((t) => t.tramite), o.idioma, acreditados);
+  const omiteIdioma = tramites.length < o.tramites.length;
   const pasos = construirRuta(o, tramites);
+  const idsRuta = new Set(tramites.map((t) => t.id));
+  const avancesRuta = avances.filter((a) => idsRuta.has(a.tramiteId));
   const avancePorTramite = new Map(avances.map((a) => [a.tramiteId, a]));
   const hechos = items.filter((i) => i.completado).length;
   const pctChecklist = porcentaje(hechos, items.length);
-  const tramitesHechos = avances.filter((a) => a.estado === "completado").length;
+  const tramitesHechos = avancesRuta.filter((a) => a.estado === "completado").length;
   const ordenRequisito = (i: (typeof items)[number]) => i.requisito?.orden ?? 999;
   const categorias = Object.keys(CATEGORIAS_REQUISITO).filter((c) => items.some((i) => i.categoria === c));
 
@@ -129,7 +136,7 @@ export default async function Ruta({ params, searchParams }: Params) {
         <h2 id="titulo-avance" className="titulo-seccion">Mi avance</h2>
         <Barra valor={pctChecklist} etiqueta="Checklist de requisitos y documentos" />
         <p aria-live="polite" className="text-sm text-suave">
-          Tienes {hechos} de {items.length} requisitos listos ({pctChecklist}%) y {tramitesHechos} de {avances.length} trámites completados.
+          Tienes {hechos} de {items.length} requisitos listos ({pctChecklist}%) y {tramitesHechos} de {avancesRuta.length} trámites completados.
         </p>
         <a href="#titulo-checklist" className="enlace text-sm lg:hidden">Ir a mi checklist</a>
         {estado === "cerrada" && (
@@ -140,6 +147,12 @@ export default async function Ruta({ params, searchParams }: Params) {
       <div className="grid gap-6 lg:grid-cols-[3fr_2fr]">
         <section aria-labelledby="titulo-pasos" className="space-y-3">
           <h2 id="titulo-pasos" className="titulo-seccion">Ruta paso a paso</h2>
+          {omiteIdioma && (
+            <p className="rounded-lg border border-exito bg-exito-claro p-3 text-sm text-exito">
+              No incluimos el examen de idioma porque en tu perfil indicaste que acreditas {o.idioma.toLowerCase()} con un certificado vigente.{" "}
+              <Link href="/perfil" className="underline">Cambiar mi perfil</Link>
+            </p>
+          )}
           <p className="text-sm text-suave">
             Las fechas se calculan hacia atrás desde el cierre de la convocatoria ({formatearFecha(o.fechaCierre)}). Plazos y costos referenciales: verifícalos en el sitio oficial de cada entidad.
           </p>
@@ -181,10 +194,22 @@ export default async function Ruta({ params, searchParams }: Params) {
                       {avance ? (
                         <SelectorEstadoTramite avanceId={avance.id} estado={avance.estado} tramite={p.titulo} />
                       ) : <span />}
-                      <a href={p.enlace} target="_blank" rel="noopener noreferrer" className="enlace text-sm">
-                        {p.tipo === "postulacion" ? "Ir a la convocatoria oficial" : "Enlace de ejemplo"}
-                        <span className="sr-only"> de {p.titulo} (se abre en una pestaña nueva)</span> <span aria-hidden="true">↗</span>
-                      </a>
+                      {p.enlaces.length ? (
+                        <ul className="space-y-1 text-sm" aria-label={`Enlaces oficiales de ${p.titulo}`}>
+                          {p.enlaces.map((e) => (
+                            <li key={e.url}>
+                              <a href={e.url} target="_blank" rel="noopener noreferrer" className="enlace">
+                                {e.texto}<span className="sr-only"> (sitio oficial, se abre en una pestaña nueva)</span> <span aria-hidden="true">↗</span>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <a href={p.enlace} target="_blank" rel="noopener noreferrer" className="enlace text-sm">
+                          {p.tipo === "postulacion" ? "Ir a la convocatoria oficial" : "Enlace de ejemplo"}
+                          <span className="sr-only"> de {p.titulo} (se abre en una pestaña nueva)</span> <span aria-hidden="true">↗</span>
+                        </a>
+                      )}
                     </div>
                   </article>
                 </li>

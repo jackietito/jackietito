@@ -166,7 +166,11 @@ export function FormTramite({ inicial }: { inicial: Valores }) {
         {C("costoNota", "Nota del costo (obligatoria si el costo está vacío)", { placeholder: "Por ejemplo: Según el TUPA de tu universidad" })}
         {C("orden", "Orden sugerido en la ruta", { type: "number", min: 0, inputMode: "numeric" })}
         {C("anticipacionDias", "Empezar cuántos días antes del cierre", { type: "number", min: 0, inputMode: "numeric" })}
-        <div className="sm:col-span-2">{C("enlaceOficial", "Enlace oficial", { type: "url", inputMode: "url", placeholder: "https://" })}</div>
+        <div className="sm:col-span-2">{C("enlaceOficial", "Enlace de referencia", { type: "url", inputMode: "url", placeholder: "https://" })}</div>
+        <div className="sm:col-span-2">
+          <Area id="enlaces" etiqueta="Enlaces oficiales (opcional)" valor={s(v, "enlaces")} error={e.enlaces} filas={3}
+            ayuda="Uno por línea, con el texto y el enlace separados por «|». Ejemplo: Hacer el trámite en línea | https://… Si hay, reemplazan al enlace de referencia." />
+        </div>
         <div className="flex items-center gap-3 sm:col-span-2">
           <input id="publicado" name="publicado" type="checkbox" value="si" defaultChecked={s(v, "publicado") !== "no"} className="h-6 w-6 accent-marca" />
           <label htmlFor="publicado" className="font-semibold">Publicar en el mapa de trámites</label>
