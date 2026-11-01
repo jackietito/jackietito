@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 import { obtenerHoy } from "@/lib/hoy";
 import { CATEGORIAS_REQUISITO, etiqueta } from "@/lib/catalogos";
 import { diasEntre, formatearFecha, textoDias } from "@/lib/fechas";
-import { estadoConvocatoria, formatearMonto } from "@/lib/oportunidades";
+import { estadoConvocatoria } from "@/lib/oportunidades";
 import { construirRuta, porcentaje, type PasoRuta } from "@/lib/ruta";
 import { generarMiRuta } from "@/lib/acciones-ruta";
 import { EtiquetaEstado, textoPlazo } from "@/components/oportunidad";
@@ -141,7 +141,7 @@ export default async function Ruta({ params, searchParams }: Params) {
         <section aria-labelledby="titulo-pasos" className="space-y-3">
           <h2 id="titulo-pasos" className="titulo-seccion">Ruta paso a paso</h2>
           <p className="text-sm text-suave">
-            Las fechas se calculan hacia atrás desde el cierre de la convocatoria ({formatearFecha(o.fechaCierre)}). Plazos y costos ilustrativos, no oficiales.
+            Las fechas se calculan hacia atrás desde el cierre de la convocatoria ({formatearFecha(o.fechaCierre)}). Plazos y costos referenciales: verifícalos en el sitio oficial de cada entidad.
           </p>
           <ol className="space-y-3">
             {pasos.map((p) => {
@@ -167,9 +167,9 @@ export default async function Ruta({ params, searchParams }: Params) {
                         <dt className="font-semibold text-suave">{p.tipo === "postulacion" ? "Postula antes del" : "Empieza a más tardar el"}</dt>
                         <dd>{formatearFecha(p.fechaRecomendada)}</dd>
                       </div>
-                      {p.plazoDias !== null && (
-                        <div><dt className="font-semibold text-suave">Plazo y costo ilustrativos</dt>
-                          <dd>{p.plazoDias} días · {formatearMonto(p.costoReferencial ?? 0, "PEN")}</dd></div>
+                      {p.plazo !== null && (
+                        <div><dt className="font-semibold text-suave">Plazo y costo referenciales</dt>
+                          <dd>{p.plazo} · {p.costo}</dd></div>
                       )}
                     </dl>
                     <p className="text-sm"><AvisoFecha paso={p} hoy={hoy} completado={completado} /></p>

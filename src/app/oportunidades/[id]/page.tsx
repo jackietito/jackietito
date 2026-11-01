@@ -13,6 +13,7 @@ import {
   etiqueta,
 } from "@/lib/catalogos";
 import { formatearFecha } from "@/lib/fechas";
+import { textoCosto, textoPlazo as plazoTramite } from "@/lib/tramites";
 import {
   costoTotal,
   costoTotalUsd,
@@ -184,7 +185,7 @@ export default async function FichaOportunidad({ params }: Params) {
 
       <Seccion titulo="Trámites nacionales asociados">
         <p className="mb-3 text-suave">
-          Trámites que normalmente debes hacer en el Perú antes de postular. Plazos y costos ilustrativos, no oficiales.{" "}
+          Trámites que normalmente debes hacer en el Perú antes de postular. Plazos y costos referenciales: verifícalos en el sitio oficial de cada entidad.{" "}
           <Link href="/tramites" className="enlace">Ver el mapa de trámites completo</Link>
         </p>
         <ol className="space-y-3">
@@ -192,7 +193,7 @@ export default async function FichaOportunidad({ params }: Params) {
             <li key={t.id} className="rounded-lg border border-borde p-3">
               <p className="font-bold">{t.nombre}</p>
               <p className="text-sm text-suave">
-                Ante: {t.entidadResponsable} · Plazo ilustrativo: {t.plazoDias} días · Costo ilustrativo: {formatearMonto(t.costoReferencial, "PEN")}
+                Ante: {t.entidadResponsable} · Plazo referencial: {plazoTramite(t)} · Costo referencial: {textoCosto(t)}
               </p>
             </li>
           ))}

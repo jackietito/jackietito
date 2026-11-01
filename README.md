@@ -202,6 +202,6 @@ e2e/                   pruebas de Playwright
 ## Avisos
 
 - Todo el contenido es ficticio. Las entidades proveedoras, instituciones, oportunidades, personas y enlaces son inventados; los enlaces oficiales apuntan a `example.org`.
-- Excepción: las entidades peruanas ante las que se hacen los trámites (SUNEDU, Cancillería, Policía Nacional, Poder Judicial) se nombran con su nombre real, pero sus plazos y costos son ilustrativos, no oficiales (decisión D36).
+- Excepción: las entidades peruanas ante las que se hacen los trámites (SUNEDU, Cancillería, Policía Nacional, Poder Judicial) se nombran con su nombre real; sus plazos y costos son referenciales y deben verificarse en el sitio oficial de cada entidad (decisiones D36 y D42).
 - No se usan logotipos, marcas ni la identidad gráfica de gob.pe ni de ninguna entidad real.
 - No hay integraciones reales con sistemas del Estado ni con la Plataforma de Interoperabilidad del Estado (PIDE). La información externa ingresa por el módulo de gestión de contenidos.

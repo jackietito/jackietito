@@ -43,9 +43,9 @@ export const ENTIDADES = [
 export type SiglaEntidad = (typeof ENTIDADES)[number]["sigla"];
 
 // Trámites nacionales (RF10). Las entidades responsables se nombran con su nombre
-// real (decisión D36); los plazos y costos son ilustrativos, no oficiales, y los
-// enlaces apuntan a example.org. La entidad proveedora (`entidad`) que mantiene
-// cada ficha de trámite sigue siendo ficticia.
+// real (D36) y los plazos y costos son referenciales (D42): deben verificarse en el
+// sitio oficial de cada entidad. Los enlaces apuntan a example.org. `entidad` es la
+// entidad proveedora que mantiene la ficha del trámite en el prototipo.
 export const TRAMITES = [
   {
     clave: "idioma",
@@ -56,7 +56,9 @@ export const TRAMITES = [
       "Acredita tu nivel del idioma en que se dicta el programa. Inscríbete con anticipación: las fechas de examen y la entrega de resultados pueden tardar varias semanas.",
     documentos: "Documento de identidad o pasaporte\nComprobante de pago del examen",
     plazoDias: 30,
-    costoReferencial: 950,
+    plazoTexto: "",
+    costoReferencial: null,
+    costoNota: "Según el examen elegido (TOEFL, IELTS u otro)",
     orden: 1,
     anticipacionDias: 120,
   },
@@ -69,7 +71,9 @@ export const TRAMITES = [
       "Pide en tu universidad una copia certificada de tu diploma de bachiller, título o maestría. Es la base para los demás trámites de certificación.",
     documentos: "Solicitud dirigida a la universidad\nDocumento de identidad\nComprobante de pago",
     plazoDias: 10,
-    costoReferencial: 90,
+    plazoTexto: "",
+    costoReferencial: null,
+    costoNota: "Según el TUPA de tu universidad",
     orden: 2,
     anticipacionDias: 90,
   },
@@ -82,7 +86,9 @@ export const TRAMITES = [
       "Documento con todas las asignaturas cursadas, calificaciones y créditos. Muchas convocatorias lo piden junto con el promedio ponderado.",
     documentos: "Solicitud dirigida a la universidad\nDocumento de identidad\nComprobante de pago",
     plazoDias: 10,
-    costoReferencial: 70,
+    plazoTexto: "",
+    costoReferencial: null,
+    costoNota: "Según el TUPA de tu universidad",
     orden: 3,
     anticipacionDias: 90,
   },
@@ -92,10 +98,12 @@ export const TRAMITES = [
     entidadResponsable: "Superintendencia Nacional de Educación Superior Universitaria (SUNEDU)",
     entidad: "SUGRAT",
     descripcion:
-      "Certifica que tu grado o título está inscrito en el Registro Nacional de Grados y Títulos. Se solicita en línea.",
+      "Certifica que tu grado o título está inscrito en el Registro Nacional de Grados y Títulos. Se solicita en línea y llega en PDF a tu correo.",
     documentos: "Documento de identidad\nDatos del grado o título",
-    plazoDias: 3,
-    costoReferencial: 15,
+    plazoDias: 1,
+    plazoTexto: "Aprox. 1 día hábil; llega en PDF a tu correo",
+    costoReferencial: 0,
+    costoNota: "en línea",
     orden: 4,
     anticipacionDias: 70,
   },
@@ -106,37 +114,57 @@ export const TRAMITES = [
     entidad: "ORAE",
     descripcion:
       "La apostilla da validez a tus documentos peruanos en los países que forman parte del Convenio de La Haya. Antes, verifica que las firmas de tu universidad estén registradas.",
-    documentos:
-      "Copia certificada del diploma\nCertificado de estudios\nComprobante de pago por cada documento",
+    documentos: "Copia certificada del diploma\nCertificado de estudios",
     plazoDias: 5,
-    costoReferencial: 35,
+    plazoTexto: "",
+    costoReferencial: 0,
+    costoNota: "trámite presencial y digital, para ciudadanos peruanos con documentos académicos",
     orden: 5,
     anticipacionDias: 55,
   },
   {
     clave: "traduccion",
     nombre: "Traducir oficialmente los documentos",
-    entidadResponsable: "Traductor público juramentado",
+    entidadResponsable: "Traductores públicos juramentados",
     entidad: "ORAE",
     descripcion:
-      "Si el programa se dicta en otro idioma, traduce el diploma, el certificado de estudios y la apostilla con un traductor público juramentado.",
+      "Si el programa se dicta en otro idioma, traduce el diploma, el certificado de estudios y la apostilla. La traducción oficial la realizan traductores públicos juramentados.",
     documentos: "Documentos apostillados\nDocumento de identidad",
     plazoDias: 7,
-    costoReferencial: 180,
+    plazoTexto: "",
+    costoReferencial: null,
+    costoNota: "Tarifa del traductor",
     orden: 6,
     anticipacionDias: 45,
   },
   {
-    clave: "antecedentes",
-    nombre: "Obtener certificado de antecedentes",
-    entidadResponsable: "Policía Nacional del Perú (antecedentes policiales) y Poder Judicial (antecedentes penales)",
+    clave: "penales",
+    nombre: "Obtener certificado de antecedentes penales",
+    entidadResponsable: "Poder Judicial",
     entidad: "DINES",
     descripcion:
-      "Algunas becas y visas de estudiante piden acreditar que no tienes antecedentes. Revisa su vigencia: suele ser de 3 a 6 meses.",
+      "Algunas becas y visas de estudiante piden acreditar que no tienes antecedentes penales. Revisa su vigencia: suele ser de 3 a 6 meses.",
     documentos: "Documento de identidad\nComprobante de pago",
-    plazoDias: 2,
-    costoReferencial: 55,
+    plazoDias: 0,
+    plazoTexto: "Descarga inmediata si no hay observaciones",
+    costoReferencial: 40.4,
+    costoNota: "",
     orden: 7,
+    anticipacionDias: 30,
+  },
+  {
+    clave: "policiales",
+    nombre: "Obtener certificado de antecedentes policiales",
+    entidadResponsable: "Policía Nacional del Perú",
+    entidad: "DINES",
+    descripcion:
+      "Algunas becas y visas de estudiante piden acreditar que no tienes antecedentes policiales. Pide el certificado para uso en el extranjero.",
+    documentos: "Documento de identidad\nComprobante de pago",
+    plazoDias: 1,
+    plazoTexto: "Entrega en 24 horas",
+    costoReferencial: 133.28,
+    costoNota: "para uso en el extranjero",
+    orden: 8,
     anticipacionDias: 30,
   },
 ] as const;
@@ -253,7 +281,7 @@ export function tramitesDe(o: Op): ClaveTramite[] {
   if (o.idioma !== "Español") t.push("idioma");
   t.push("diploma", "certificado", "constancia", "apostilla");
   if (o.idioma !== "Español") t.push("traduccion");
-  if (o.mod !== "virtual" && (o.fin === "integral" || o.fin === "credito")) t.push("antecedentes");
+  if (o.mod !== "virtual" && (o.fin === "integral" || o.fin === "credito")) t.push("penales", "policiales");
   return t;
 }
 

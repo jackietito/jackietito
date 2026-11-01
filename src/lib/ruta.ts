@@ -1,6 +1,7 @@
 // Ruta paso a paso (RF09) y checklist personalizado (RF11).
 import type { PrismaClient, Tramite } from "@prisma/client";
 import { sumarDias } from "./fechas";
+import { textoCosto, textoPlazo } from "./tramites";
 
 /** Días antes del cierre recomendados para enviar la postulación en el canal oficial. */
 export const DIAS_MARGEN_POSTULACION = 7;
@@ -14,8 +15,9 @@ export type PasoRuta = {
   documentos: string[];
   /** Fecha recomendada para iniciar el paso, calculada hacia atrás desde el cierre */
   fechaRecomendada: Date;
-  plazoDias: number | null;
-  costoReferencial: number | null;
+  /** Plazo y costo referenciales, ya en palabras (null en el paso de postulación) */
+  plazo: string | null;
+  costo: string | null;
   enlace: string;
   tramiteId: string | null;
 };
@@ -40,8 +42,8 @@ export function construirRuta(
       descripcion: t.descripcion,
       documentos: t.documentos.split("\n").map((d) => d.trim()).filter(Boolean),
       fechaRecomendada: sumarDias(oportunidad.fechaCierre, -t.anticipacionDias),
-      plazoDias: t.plazoDias,
-      costoReferencial: t.costoReferencial,
+      plazo: textoPlazo(t),
+      costo: textoCosto(t),
       enlace: t.enlaceOficial,
       tramiteId: t.id,
     }));
@@ -54,8 +56,8 @@ export function construirRuta(
       "Con tus documentos listos, completa la postulación en el sitio oficial de la convocatoria. Talento sin Fronteras no recibe postulaciones.",
     documentos: ["Todos los documentos de tu checklist"],
     fechaRecomendada: sumarDias(oportunidad.fechaCierre, -DIAS_MARGEN_POSTULACION),
-    plazoDias: null,
-    costoReferencial: null,
+    plazo: null,
+    costo: null,
     enlace: oportunidad.enlaceOficial,
     tramiteId: null,
   });

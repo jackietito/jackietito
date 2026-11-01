@@ -167,7 +167,11 @@ export async function guardarTramite(_: EstadoFormulario, fd: FormData): Promise
   if (!t("descripcion")) e.descripcion = "Escribe una descripción breve.";
   if (!t("documentos")) e.documentos = "Escribe al menos un documento (uno por línea).";
   const plazoDias = numero(t("plazoDias"), e, "plazoDias", "el plazo referencial en días", true);
-  const costoReferencial = numero(t("costoReferencial"), e, "costoReferencial", "el costo referencial");
+  // El costo puede no ser un monto fijo: entonces va vacío y se explica en la nota (D42).
+  const costoReferencial = t("costoReferencial") === "" ? null : numero(t("costoReferencial"), e, "costoReferencial", "el costo referencial");
+  if (costoReferencial === null && !t("costoNota")) {
+    e.costoNota = "Si el costo no es un monto fijo, explica de qué depende (por ejemplo, «Según el TUPA de tu universidad»).";
+  }
   const orden = numero(t("orden"), e, "orden", "el orden en la ruta", true);
   const anticipacionDias = numero(t("anticipacionDias"), e, "anticipacionDias", "la anticipación en días", true);
   if (!URL_OFICIAL.test(t("enlaceOficial"))) e.enlaceOficial = "Escribe el enlace oficial completo, que empiece con https://";
@@ -176,7 +180,8 @@ export async function guardarTramite(_: EstadoFormulario, fd: FormData): Promise
   const datos = {
     nombre: t("nombre"), entidadResponsable: t("entidadResponsable"), descripcion: t("descripcion"),
     documentos: t("documentos").split("\n").map((d) => d.trim()).filter(Boolean).join("\n"),
-    plazoDias, costoReferencial, orden, anticipacionDias, enlaceOficial: t("enlaceOficial"),
+    plazoDias, plazoTexto: t("plazoTexto"), costoReferencial, costoNota: t("costoNota"),
+    orden, anticipacionDias, enlaceOficial: t("enlaceOficial"),
     publicado: fd.get("publicado") === "si", actualizadoEn: await obtenerHoy(),
   };
   if (id) {

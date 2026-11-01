@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
-import { formatearMonto } from "@/lib/oportunidades";
+import { textoCosto, textoCostoTotal, textoPlazo } from "@/lib/tramites";
 
 export const metadata: Metadata = { title: "Mapa de trámites" };
 
-/** Mapa de trámites nacionales (RF10): entidades responsables reales; plazos y costos ilustrativos (D36). */
+/** Mapa de trámites nacionales (RF10): entidades responsables reales; plazos y costos referenciales (D36, D42). */
 export default async function MapaTramites({ searchParams }: { searchParams: Promise<{ entidad?: string }> }) {
   const { entidad: sigla } = await searchParams;
   const entidad = sigla ? await prisma.entidad.findUnique({ where: { sigla } }) : null;
@@ -14,7 +14,7 @@ export default async function MapaTramites({ searchParams }: { searchParams: Pro
     orderBy: { orden: "asc" },
     include: { entidad: true, _count: { select: { oportunidades: { where: { oportunidad: { publicada: true } } } } } },
   });
-  const total = tramites.reduce((s, t) => s + t.costoReferencial, 0);
+  const total = textoCostoTotal(tramites);
 
   return (
     <div className="space-y-6">
@@ -25,9 +25,8 @@ export default async function MapaTramites({ searchParams }: { searchParams: Pro
           sugerido. No todos aplican a todas las convocatorias: la ruta de cada oportunidad incluye solo los que necesitas.
         </p>
         <p className="mt-2 max-w-3xl rounded-lg border border-alerta bg-alerta-claro p-3 text-alerta">
-          Las entidades responsables son reales, pero los plazos y costos de esta página son{" "}
-          <strong>ilustrativos y no oficiales</strong>: es un prototipo académico. Antes de hacer un trámite, consulta el
-          sitio oficial de cada entidad. Talento sin Fronteras no realiza trámites.
+          Los plazos y costos son <strong>referenciales</strong>: antes de hacer un trámite, verifícalos en el sitio
+          oficial de cada entidad, porque pueden cambiar. Talento sin Fronteras no realiza trámites.
         </p>
       </div>
 
@@ -55,8 +54,8 @@ export default async function MapaTramites({ searchParams }: { searchParams: Pro
               </div>
               <p>{t.descripcion}</p>
               <dl className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-3">
-                <div><dt className="font-semibold text-suave">Plazo ilustrativo</dt><dd>{t.plazoDias} días</dd></div>
-                <div><dt className="font-semibold text-suave">Costo ilustrativo</dt><dd>{formatearMonto(t.costoReferencial, "PEN")}</dd></div>
+                <div><dt className="font-semibold text-suave">Plazo referencial</dt><dd>{textoPlazo(t)}</dd></div>
+                <div><dt className="font-semibold text-suave">Costo referencial</dt><dd>{textoCosto(t)}</dd></div>
                 <div><dt className="font-semibold text-suave">Cuándo empezar</dt><dd>{t.anticipacionDias} días antes del cierre</dd></div>
               </dl>
               <div>
@@ -78,7 +77,7 @@ export default async function MapaTramites({ searchParams }: { searchParams: Pro
         ))}
       </ol>
       <p className="text-sm text-suave">
-        Si hicieras todos los trámites, el costo ilustrativo sumaría {formatearMonto(total, "PEN")}. Para ver los de una
+        Si hicieras todos los trámites, el costo referencial sería {total}, sin contar los costos que dependen de tu universidad, del examen o del traductor. Para ver los de una
         oportunidad concreta, abre su ficha en el <Link href="/catalogo" className="enlace">catálogo</Link> y pulsa
         «Preparar mi postulación».
       </p>

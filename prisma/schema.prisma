@@ -107,7 +107,12 @@ model Tramite {
   /// Un documento por línea
   documentos         String
   plazoDias          Int
-  costoReferencial   Float
+  /// Plazo en palabras, cuando no basta el número de días (p. ej. «Entrega en 24 horas»)
+  plazoTexto         String               @default("")
+  /// Costo referencial en soles; null cuando no es un monto fijo (ver costoNota)
+  costoReferencial   Float?
+  /// Precisión del costo, o el costo en palabras si no hay monto (p. ej. «Según el TUPA de tu universidad»)
+  costoNota          String               @default("")
   enlaceOficial      String
   /// Orden sugerido en la ruta paso a paso
   orden              Int

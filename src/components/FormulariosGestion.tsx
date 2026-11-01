@@ -161,7 +161,9 @@ export function FormTramite({ inicial }: { inicial: Valores }) {
         <div className="sm:col-span-2"><Area id="descripcion" etiqueta="Descripción" valor={s(v, "descripcion")} error={e.descripcion} /></div>
         <div className="sm:col-span-2"><Area id="documentos" etiqueta="Documentos necesarios (uno por línea)" valor={s(v, "documentos")} error={e.documentos} /></div>
         {C("plazoDias", "Plazo referencial (días)", { type: "number", min: 0, inputMode: "numeric" })}
-        {C("costoReferencial", "Costo referencial (soles)", { type: "number", min: 0, step: "any", inputMode: "decimal" })}
+        {C("plazoTexto", "Plazo en palabras (opcional, reemplaza a los días)", { placeholder: "Por ejemplo: Entrega en 24 horas" })}
+        {C("costoReferencial", "Costo referencial en soles (vacío si no es un monto fijo; 0 si es gratuito)", { type: "number", min: 0, step: "any", inputMode: "decimal" })}
+        {C("costoNota", "Nota del costo (obligatoria si el costo está vacío)", { placeholder: "Por ejemplo: Según el TUPA de tu universidad" })}
         {C("orden", "Orden sugerido en la ruta", { type: "number", min: 0, inputMode: "numeric" })}
         {C("anticipacionDias", "Empezar cuántos días antes del cierre", { type: "number", min: 0, inputMode: "numeric" })}
         <div className="sm:col-span-2">{C("enlaceOficial", "Enlace oficial", { type: "url", inputMode: "url", placeholder: "https://" })}</div>

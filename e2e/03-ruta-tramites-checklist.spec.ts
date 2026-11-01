@@ -11,14 +11,29 @@ test("el mapa de trámites muestra los trámites con entidad, plazo y costo refe
   await navegacion(page).getByRole("link", { name: "Trámites" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Mapa de trámites");
   const tramites = page.getByRole("article");
-  await expect(tramites).toHaveCount(7);
-  await expect(tramites.first()).toContainText("Plazo ilustrativo");
-  await expect(tramites.first()).toContainText("Costo ilustrativo");
+  await expect(tramites).toHaveCount(8);
+  await expect(tramites.first()).toContainText("Plazo referencial");
+  await expect(tramites.first()).toContainText("Costo referencial");
   await expect(tramites.first()).toContainText("Ante:");
   // Las entidades peruanas responsables se nombran con su nombre real (D36).
   await expect(page.getByRole("article").filter({ hasText: "Apostillar documentos académicos" })).toContainText("Ministerio de Relaciones Exteriores (Cancillería)");
   await expect(page.getByRole("article").filter({ hasText: "Obtener constancia de inscripción del grado" })).toContainText("SUNEDU");
-  await expect(page.getByText(/ilustrativos y no oficiales/)).toBeVisible();
+  await expect(page.getByRole("main").getByText(/verifícalos en el sitio oficial/)).toBeVisible();
+  // Valores referenciales (D42): montos exactos, gratuitos y costos que no son un monto.
+  const tramite = (nombre: string) => page.getByRole("article").filter({ hasText: nombre });
+  await expect(tramite("Obtener certificado de antecedentes penales")).toContainText("Poder Judicial");
+  await expect(tramite("Obtener certificado de antecedentes penales")).toContainText("S/ 40.40");
+  await expect(tramite("Obtener certificado de antecedentes penales")).toContainText("Descarga inmediata si no hay observaciones");
+  await expect(tramite("Obtener certificado de antecedentes policiales")).toContainText("S/ 133.28 (para uso en el extranjero)");
+  await expect(tramite("Obtener certificado de antecedentes policiales")).toContainText("Entrega en 24 horas");
+  await expect(tramite("Apostillar documentos académicos")).toContainText("Gratuito");
+  await expect(tramite("Obtener constancia de inscripción del grado")).toContainText("Aprox. 1 día hábil");
+  await expect(tramite("Solicitar copia certificada del diploma de grado")).toContainText("Según el TUPA de tu universidad");
+  await expect(tramite("Rendir un examen internacional de idioma")).toContainText("Según el examen elegido (TOEFL, IELTS u otro)");
+  await expect(tramite("Traducir oficialmente los documentos")).toContainText("Traductores públicos juramentados");
+  await expect(tramite("Traducir oficialmente los documentos")).toContainText("Tarifa del traductor");
+  // Los costos que no son un monto no se suman: el total es «desde».
+  await expect(page.getByText(/el costo referencial sería desde S\/\s173\.68/)).toBeVisible();
   await revisarAccesibilidad(page);
 });
 

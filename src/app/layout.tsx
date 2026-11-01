@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             </p>
             <p>
               Talento sin Fronteras informa y deriva: no recibe postulaciones ni realiza trámites. Los plazos y costos de
-              trámites son ilustrativos, no oficiales.
+              trámites son referenciales: verifícalos en el sitio oficial de cada entidad.
             </p>
             <p>
               <a href="/guia" className="enlace">Guía de uso: tu ruta al posgrado en seis pasos</a>

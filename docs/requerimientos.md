@@ -24,7 +24,7 @@ El problema público que atiende es el limitado acceso a información sobre opor
 
 - La postulación a programas o becas, ni la ejecución de trámites. La Ventanilla informa y deriva a los canales oficiales de cada entidad.
 - Integración real con la PIDE ni con sistemas de MRE, MINEDU, SUNEDU, PRONABEC o universidades. Las integraciones se simulan con datos de prueba.
-- Información real de convocatorias. Todo el contenido es ficticio o ilustrativo y se identifica como tal. Excepción: las entidades peruanas ante las que se realizan los trámites nacionales se nombran con su nombre real, con plazos y costos ilustrativos, sin logotipos ni enlaces a sus sitios (ver `docs/decisiones.md`, D36).
+- Información real de convocatorias. Todo el contenido es ficticio o ilustrativo y se identifica como tal. Excepción: las entidades peruanas ante las que se realizan los trámites nacionales se nombran con su nombre real, con plazos y costos referenciales que deben verificarse en el sitio oficial de cada entidad, sin logotipos ni enlaces a sus sitios (ver `docs/decisiones.md`, D36 y D42).
 
 ## 3. Usuarios y roles
 
@@ -110,7 +110,7 @@ La ficha estándar es el formato común de información que alimenta el catálog
 ## 8. Datos de prueba
 
 - Entre 30 y 40 oportunidades ficticias, distribuidas en al menos 8 países, 6 áreas de estudio y los tres niveles, con convocatorias abiertas, próximas y cerradas respecto de la fecha actual. Las fechas se calibran para que en las revisiones del jurado (4 y 20 de noviembre) predominen las convocatorias abiertas.
-- Entre 6 y 8 trámites con nombres genéricos, entidades responsables reales y valores ilustrativos.
+- Entre 6 y 8 trámites con nombres genéricos, entidades responsables reales y valores referenciales.
 - Cinco entidades proveedoras ficticias, que representen el rol de cada tipo de entidad real.
 - Tres usuarios de prueba con perfiles distintos, entre ellos una titulada de una universidad de región sin redes de contacto académico, coherente con la escena 1 del storyboard.
 - Un control para simular la fecha actual, que permita demostrar las alertas de vencimiento.
