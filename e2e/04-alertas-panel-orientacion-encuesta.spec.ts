@@ -86,6 +86,17 @@ test("el panel de seguimiento muestra próximas fechas, avance del checklist y e
 test("consulta al orientador: preguntas frecuentes, derivación, respuesta y alerta", async ({ page }) => {
   await page.goto("/orientacion");
   await expect(page.getByRole("heading", { name: "Preguntas frecuentes" })).toBeVisible();
+  // Un solo chip «Financiamiento» (D64).
+  await expect(page.getByRole("navigation", { name: "Temas" }).getByRole("link", { name: "Financiamiento", exact: true })).toHaveCount(1);
+  // Búsqueda en vivo, sin tildes ni mayúsculas.
+  await page.waitForLoadState("networkidle");
+  const buscar = page.getByLabel("Busca tu duda");
+  await buscar.fill("APOSTILLA");
+  await expect(page.getByText(/^\d+ preguntas? encontradas?$/)).toBeVisible();
+  await expect(page.getByText("¿Qué es la apostilla y para qué sirve?")).toBeVisible();
+  await buscar.fill("zzzz");
+  await expect(page.getByText("No encontramos preguntas con «zzzz».")).toBeVisible();
+  await page.getByRole("button", { name: "Borrar la búsqueda" }).click();
   await page.getByText("¿Qué es la apostilla y para qué sirve?").click();
   await expect(page.getByText(/Convenio de La Haya/)).toBeVisible();
   await expect(page.getByRole("link", { name: "ingresa", exact: true })).toBeVisible();

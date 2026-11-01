@@ -48,7 +48,7 @@ test("una persona se registra con consentimiento, define su perfil y recibe reco
   await expect(page).toHaveURL(/\/recomendaciones/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Recomendaciones para ti");
   const primera = page.getByRole("article").first();
-  await expect(primera).toContainText("Coincide en 7 de 7 criterios");
+  await expect(primera).toContainText("Coincide en 7 de 7");
   await expect(primera.getByRole("list", { name: /Criterios coincidentes/ })).toContainText("Área: Educación");
   await revisarAccesibilidad(page);
 
@@ -64,7 +64,14 @@ test("una persona se registra con consentimiento, define su perfil y recibe reco
   await page.getByLabel(/¿Cuánto podrías pagar en total\?/).selectOption("");
   await page.getByRole("button", { name: "Guardar perfil y ver recomendaciones" }).click();
   await expect(page).toHaveURL(/\/recomendaciones/);
-  await expect(page.getByRole("article").first()).toContainText(/Coincide en \d de 6 criterios/);
+  await expect(page.getByRole("article").first()).toContainText(/Coincide en \d de 6/);
+  // Primero las 6 que más coinciden; el resto, en «Ver más» (D64).
+  const verMas = page.getByText(/^Ver más recomendaciones \(\d+\)/);
+  if (await verMas.count()) {
+    await expect(page.getByRole("article").filter({ visible: true })).toHaveCount(6);
+    await verMas.click();
+    expect(await page.getByRole("article").filter({ visible: true }).count()).toBeGreaterThan(6);
+  }
   await page.goto("/perfil");
   await expect(page.getByLabel("Con beca o crédito")).toBeChecked();
   await expect(page.getByLabel("Sin beca (con recursos propios)")).toBeChecked();
@@ -157,6 +164,17 @@ test("sin cuenta, el botón de guardar lleva a ingresar", async ({ page }) => {
 test("compara hasta tres fichas y resalta las diferencias", async ({ page }) => {
   await page.goto("/comparador");
   await expect(page.getByText("Aún no agregaste fichas al comparador.")).toBeVisible();
+  // Comparador vacío: 3 sugerencias con «Agregar al comparador» (D64).
+  const sugerencias = page.getByRole("region", { name: "Sugerencias para empezar" });
+  await expect(sugerencias.getByRole("article")).toHaveCount(3);
+  await expect(sugerencias.getByRole("button", { name: /^Agregar al comparador:/ })).toHaveCount(3);
+  await revisarAccesibilidad(page);
+  await page.waitForLoadState("networkidle");
+  await sugerencias.getByRole("button", { name: /^Agregar al comparador:/ }).first().click();
+  await expect(page.getByRole("table").getByRole("columnheader")).toHaveCount(2);
+  await expect(page.getByRole("region", { name: "Agrega otra para comparar" }).getByRole("article")).toHaveCount(2);
+  await page.getByRole("button", { name: "Vaciar el comparador" }).click();
+  await expect(page.getByText("Aún no agregaste fichas al comparador.")).toBeVisible();
 
   await page.goto("/catalogo");
   const tarjetas = page.getByRole("article");
@@ -176,6 +194,8 @@ test("compara hasta tres fichas y resalta las diferencias", async ({ page }) => 
   await expect(tabla.getByRole("rowheader", { name: /Costo total estimado/ })).toBeVisible();
   await expect(tabla.getByText("Diferente").first()).toBeVisible();
   await expect(tabla.getByText("Menor costo total")).toHaveCount(1);
+  // Lo mejor de cada fila, resaltado con texto (no solo color).
+  await expect(tabla.getByText("Cierre más lejano")).toHaveCount(1);
   await revisarAccesibilidad(page);
 
   // Quitar una ficha desde el comparador.

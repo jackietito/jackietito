@@ -6,8 +6,12 @@ import { prisma } from "@/lib/db";
 import { obtenerHoy } from "@/lib/hoy";
 import { contextoAcciones } from "@/lib/contexto";
 import { MINIMO_COINCIDENCIAS, recomendar, textoCriterio, totalCriterios } from "@/lib/recomendaciones";
+import { Check, ChevronDown, Sparkles } from "lucide-react";
 import { TarjetaOportunidad } from "@/components/oportunidad";
 import { AccionesOportunidad } from "@/components/BotonesOportunidad";
+
+/** Recomendaciones que se muestran de entrada; el resto, en «Ver más» (D64). */
+const PRIMERAS = 6;
 
 export const metadata: Metadata = { title: "Recomendaciones para ti" };
 
@@ -23,6 +27,31 @@ export default async function Recomendaciones({ searchParams }: { searchParams: 
   const recomendadas = recomendar(u.perfil, todas, hoy);
   const total = totalCriterios(u.perfil);
 
+  const lista = (grupo: typeof recomendadas) => (
+    <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {grupo.map(({ oportunidad: o, criterios }) => (
+        <li key={o.id}>
+          <TarjetaOportunidad o={o} hoy={hoy}>
+            <div className="rounded-[var(--radius-control)] bg-exito-claro p-3">
+              <p className="inline-flex items-center gap-1.5 font-bold text-exito">
+                <Sparkles aria-hidden="true" className="h-4 w-4" />Coincide en {criterios.length} de {total}
+              </p>
+              <ul className="mt-2 flex flex-wrap gap-1.5" aria-label={`Criterios coincidentes de ${o.nombre}`}>
+                {criterios.map((c) => (
+                  <li key={c} className="inline-flex items-center gap-1 rounded-full border border-exito bg-white px-2.5 py-1 text-xs font-semibold text-exito">
+                    <Check aria-hidden="true" className="h-3.5 w-3.5" />{textoCriterio(c, o)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <AccionesOportunidad id={o.id} nombre={o.nombre} rol={ctx.rol} guardada={ctx.guardadas.has(o.id)}
+              enComparador={ctx.comparar.has(o.id)} volver="/recomendaciones" />
+          </TarjetaOportunidad>
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
     <div className="space-y-6">
       {aviso === "guardado" && (
@@ -34,7 +63,7 @@ export default async function Recomendaciones({ searchParams }: { searchParams: 
         <h1 className="titulo-pagina">Recomendaciones para ti</h1>
         <p className="mt-2 max-w-3xl text-suave">
           Oportunidades abiertas o por abrir que coinciden en al menos {MINIMO_COINCIDENCIAS} de los {total} criterios
-          de tu perfil. Primero las que más coinciden.{" "}
+          de tu perfil. Primero las {PRIMERAS} que más coinciden.{" "}
           <Link href="/perfil" className="enlace">Cambiar mi perfil</Link>
         </p>
       </div>
@@ -42,28 +71,18 @@ export default async function Recomendaciones({ searchParams }: { searchParams: 
         {recomendadas.length === 1 ? "1 oportunidad recomendada" : `${recomendadas.length} oportunidades recomendadas`}
       </h2>
       {recomendadas.length ? (
-        <ul className="grid gap-4 md:grid-cols-2">
-          {recomendadas.map(({ oportunidad: o, criterios }) => (
-            <li key={o.id}>
-              <TarjetaOportunidad o={o} hoy={hoy}>
-                <div className="rounded-lg bg-exito-claro p-3">
-                  <p className="text-sm font-bold text-exito">
-                    Coincide en {criterios.length} de {total} criterios:
-                  </p>
-                  <ul className="mt-1 flex flex-wrap gap-1" aria-label={`Criterios coincidentes de ${o.nombre}`}>
-                    {criterios.map((c) => (
-                      <li key={c} className="rounded-full border border-exito bg-white px-2 py-0.5 text-xs font-semibold text-exito">
-                        <span aria-hidden="true">✓ </span>{textoCriterio(c, o)}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <AccionesOportunidad id={o.id} nombre={o.nombre} rol={ctx.rol} guardada={ctx.guardadas.has(o.id)}
-                  enComparador={ctx.comparar.has(o.id)} volver="/recomendaciones" />
-              </TarjetaOportunidad>
-            </li>
-          ))}
-        </ul>
+        <>
+          {lista(recomendadas.slice(0, PRIMERAS))}
+          {recomendadas.length > PRIMERAS && (
+            <details className="group">
+              <summary className="btn-secundario cursor-pointer list-none">
+                Ver más recomendaciones ({recomendadas.length - PRIMERAS})
+                <ChevronDown aria-hidden="true" className="h-4 w-4 transition-transform group-open:rotate-180" />
+              </summary>
+              <div className="mt-4">{lista(recomendadas.slice(PRIMERAS))}</div>
+            </details>
+          )}
+        </>
       ) : (
         <div className="tarjeta">
           <p className="font-semibold">Por ahora no hay oportunidades que coincidan con tu perfil.</p>

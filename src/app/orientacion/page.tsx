@@ -6,6 +6,7 @@ import { TEMAS_ORIENTACION } from "@/lib/catalogos";
 import { formatearFecha } from "@/lib/fechas";
 import { PREGUNTAS_FRECUENTES } from "@/lib/faq";
 import { DIRECTORIO, FECHA_VERIFICACION, FINANCIAMIENTO, type Contacto } from "@/lib/directorio";
+import { BuscadorFaq } from "@/components/BuscadorFaq";
 import { FormConsulta } from "@/components/FormulariosSeguimiento";
 
 export const metadata: Metadata = { title: "Orientación" };
@@ -54,7 +55,7 @@ export default async function Orientacion({ searchParams }: { searchParams: Prom
         <nav aria-label="Temas" className="mt-3">
           <ul className="flex flex-wrap gap-2">
             <li><a href="#directorio" className="inline-flex min-h-11 items-center rounded-full border border-marca bg-marca px-3 text-sm font-semibold text-white">Directorio oficial</a></li>
-            <li><a href="#financiamiento" className="inline-flex min-h-11 items-center rounded-full border border-marca bg-marca px-3 text-sm font-semibold text-white">Financiamiento</a></li>
+            <li><a href="#financiamiento" className="inline-flex min-h-11 items-center rounded-full border border-marca bg-marca px-3 text-sm font-semibold text-white">Dónde buscar becas</a></li>
             {TEMAS_ORIENTACION.map((t) => (
               <li key={t}><a href={`#${ancla(t)}`} className="inline-flex min-h-11 items-center rounded-full border border-marca bg-white px-3 text-sm font-semibold text-marca">{t}</a></li>
             ))}
@@ -64,17 +65,8 @@ export default async function Orientacion({ searchParams }: { searchParams: Prom
 
       <section aria-labelledby="titulo-faq" className="space-y-6">
         <h2 id="titulo-faq" className="titulo-seccion">Preguntas frecuentes</h2>
-        {TEMAS_ORIENTACION.map((t) => (
-          <section key={t} aria-labelledby={ancla(t)} className="space-y-2">
-            <h3 id={ancla(t)} className="text-lg font-bold">{t}</h3>
-            {PREGUNTAS_FRECUENTES[t].map((p) => (
-              <details key={p.pregunta} className="tarjeta">
-                <summary className="flex min-h-11 cursor-pointer items-center font-semibold text-marca-oscura">{p.pregunta}</summary>
-                <p className="mt-2">{p.respuesta}</p>
-              </details>
-            ))}
-          </section>
-        ))}
+        <BuscadorFaq temas={TEMAS_ORIENTACION.map((t) => [t, PREGUNTAS_FRECUENTES[t]])}
+          anclas={Object.fromEntries(TEMAS_ORIENTACION.map((t) => [t, ancla(t)]))} />
       </section>
 
       <section id="directorio" aria-labelledby="titulo-directorio" className="space-y-3">

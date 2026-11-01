@@ -44,12 +44,12 @@ export function BotonGuardar({ id, guardada, nombre }: { id: string; guardada: b
   );
 }
 
-export function BotonComparar({ id, enComparador, nombre, dentroDelComparador = false }: {
-  id: string; enComparador: boolean; nombre: string; dentroDelComparador?: boolean;
+export function BotonComparar({ id, enComparador, nombre, dentroDelComparador = false, textoAgregar = "Comparar" }: {
+  id: string; enComparador: boolean; nombre: string; dentroDelComparador?: boolean; textoAgregar?: string;
 }) {
   return (
     <Alternador accion={alternarComparar} id={id} activoInicial={enComparador} nombre={nombre}
-      textoActivo={dentroDelComparador ? "Quitar" : "En el comparador"} textoInactivo="Comparar"
+      textoActivo={dentroDelComparador ? "Quitar" : "En el comparador"} textoInactivo={textoAgregar}
       iconoActivo={dentroDelComparador ? "✕" : "✓"} iconoInactivo="+" />
   );
 }

@@ -84,7 +84,7 @@ Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Cr
 | Requerimiento | Dónde | Cómo |
 |---|---|---|
 | RF10 Mapa de trámites | `/tramites` (enlace «Trámites») | Revisa los 7 trámites con entidad, documentos, plazo y costo referenciales. |
-| RF09 Ruta paso a paso | Ficha → «Preparar mi postulación» | Ingresa como `rosa@ventanilla.test`, abre la *Beca de Cooperación Iberoamericana en Innovación Educativa* (en «Mi panel») y genera la ruta. Cada paso dice qué hacer, ante quién y desde qué fecha. |
+| RF09 Ruta paso a paso | Ficha → «Preparar mi postulación» | Ingresa como `rosa@ventanilla.test`, abre la *Beca de Cooperación Iberoamericana en Innovación Educativa* (en «Mi panel») y pulsa «Preparar mi postulación»: la ruta aparece al instante como línea de tiempo. Cada paso dice qué hacer, ante quién y desde qué fecha. |
 | RF11 Checklist | `/ruta/…` | Marca requisitos y mira cómo sube el porcentaje. Cambia el estado de un trámite a «En curso». |
 | Ruta con avances | «Mi panel» de `diego@ventanilla.test` | Ruta ya generada con 30 % del checklist listo y trámites en curso. |
 
@@ -120,6 +120,22 @@ Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Cr
 | Testimonios | Encuesta, `/admin` e inicio | Responde la encuesta, escribe un comentario y autoriza publicarlo. Luego ingresa como `admin@ventanilla.test`, apruébalo en «Testimonios por aprobar» y míralo en «Experiencias» del inicio. |
 | Enlaces oficiales de trámites | «Trámites» y la ruta | La constancia de verificación de firma (SUNEDU) y la apostilla (Cancillería) enlazan a sus servicios en línea, al pago y a su página en gob.pe. |
 | Examen de idioma | «Mi perfil» y la ruta | Marca «Inglés» en «Idiomas que ya acreditas»: la ruta de una oportunidad en inglés ya no incluye el examen. |
+
+### Qué probar del rediseño con enfoque ciudadano
+
+Conviene revisarlo en el celular (o con el navegador a 390 px de ancho).
+
+| Pantalla | Cómo |
+|---|---|
+| Tarjetas | Bandera, urgencia por color con texto (verde, ámbar, rojo), cobertura destacada y «Pagarías aprox.» en soles; el botón «i» muestra la fuente. |
+| Inicio | Responde las 3 preguntas del asistente («¿Qué quieres estudiar?», «¿Dónde?», «¿Necesitas beca?»): te lleva al catálogo ya filtrado. |
+| Catálogo | Toca los filtros rápidos (Becas integrales, Cierran pronto, En español, Virtual): la lista cambia sin pulsar «Aplicar». En el celular, «Filtros» abre una hoja inferior con «Ver N resultados». |
+| Ficha | Resumen fijo con el semáforo «¿Llego a tiempo?» y pestañas. Compara la *Beca Nacional de Posgrado en Pedagogía e Interculturalidad* (verde) con la *Maestría en Ciencia de Datos* (rojo, con 2 oportunidades similares que cierran después). |
+| Ruta | Con `diego@ventanilla.test`, «Mi panel» → «Ver mi ruta y checklist»: línea de tiempo, checklist al lado y barra de avance; los pasos vencidos dicen «Inicia hoy: aún llegas si lo completas antes del…». Con una cuenta nueva, «Preparar mi postulación» en la *Maestría en Ciencia de Datos* muestra «Esta convocatoria ya no es alcanzable: mira estas alternativas». |
+| Mi panel | Una tarjeta por oportunidad con avance, semáforo y próximo paso. |
+| Recomendaciones | Con `rosa@ventanilla.test`: las 6 que más coinciden («Coincide en 7 de 7», con los criterios como etiquetas) y el resto en «Ver más recomendaciones». |
+| Comparador | Vacío: 3 sugerencias con «Agregar al comparador». Lleno: en verde lo mejor de cada fila (menor costo, «Pagas menos», cierre más lejano, mayor cobertura). |
+| Orientación | Escribe en «Busca tu duda» (por ejemplo, «apostilla»): las preguntas se filtran mientras escribes. |
 
 ## Pruebas
 
