@@ -7,8 +7,9 @@ En el Perú, la información sobre posgrados y becas en el exterior está disper
 
 Este prototipo funcional sirve para validar la experiencia con usuarios en pruebas de usabilidad.
 
-**Versión publicada:** https://jackietito.vercel.app (Vercel + Neon). Se actualiza con cada cambio en `main`.
-**Guía de uso para ciudadanos:** [`/guia`](https://jackietito.vercel.app/guia), también enlazada en el pie de cada página.
+**Versión publicada:** https://ventanilla-posgrado.vercel.app (Vercel + Neon). Se actualiza con cada cambio en `main`. La dirección anterior, https://jackietito.vercel.app, sigue funcionando.
+
+**Guía de uso para ciudadanos:** https://ventanilla-posgrado.vercel.app/guia, también enlazada en el pie de cada página.
 
 - Requerimientos: [`docs/requerimientos.md`](docs/requerimientos.md)
 - Decisiones tomadas durante la construcción: [`docs/decisiones.md`](docs/decisiones.md)
@@ -171,6 +172,10 @@ npm run db:sqlite     # después de usar Neon: vuelve a generar el cliente de Pr
 5. Despliega. El build crea o actualiza las tablas y, si la base está vacía, carga los datos de prueba.
 
 Cada `git push` a la rama principal vuelve a desplegar la aplicación sin borrar los datos.
+
+### Dirección de la aplicación
+
+El proyecto de Vercel tiene dos dominios en **Settings → Domains**: `ventanilla-posgrado.vercel.app` (el que se comparte) y `jackietito.vercel.app` (el original, que se conserva para no romper enlaces ya enviados). Para agregar otro dominio, usa **Add Domain** en esa misma página.
 
 ### Restablecer los datos entre sesiones de prueba
 
