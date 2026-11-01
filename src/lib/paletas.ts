@@ -1,4 +1,4 @@
-// Tonalidades de la plataforma que puede elegir el administrador (D49). Son
+// Tonalidades de la plataforma que puede elegir el administrador (D49, D58: azul marino por defecto). Son
 // paletas cerradas con contraste AA verificado (texto blanco sobre el color
 // principal y color principal sobre su tono claro, ambos ≥ 5,8:1), para que el
 // cambio de colores no rompa la accesibilidad.
@@ -7,7 +7,8 @@ import { prisma } from "./db";
 export const CLAVE_PALETA = "paleta";
 
 export const PALETAS = {
-  turquesa: { nombre: "Turquesa (predeterminada)", marca: "#0b5563", oscura: "#073b45", clara: "#e6f2f4" },
+  marino: { nombre: "Azul marino (predeterminada)", marca: "#0f2d52", oscura: "#0b2341", clara: "#eef3fa" },
+  turquesa: { nombre: "Turquesa", marca: "#0b5563", oscura: "#073b45", clara: "#e6f2f4" },
   azul: { nombre: "Azul", marca: "#1d4ed8", oscura: "#172554", clara: "#e8eefc" },
   verde: { nombre: "Verde", marca: "#15603a", oscura: "#0c3b24", clara: "#e6f3ec" },
   morado: { nombre: "Morado", marca: "#5b2a86", oscura: "#36174f", clara: "#f1eaf8" },
@@ -17,7 +18,7 @@ export type ClavePaleta = keyof typeof PALETAS;
 
 export async function obtenerPaleta(): Promise<ClavePaleta> {
   const conf = await prisma.configuracion.findUnique({ where: { clave: CLAVE_PALETA } });
-  return conf && conf.valor in PALETAS ? (conf.valor as ClavePaleta) : "turquesa";
+  return conf && conf.valor in PALETAS ? (conf.valor as ClavePaleta) : "marino";
 }
 
 /** Variables CSS de la paleta, para el elemento raíz (sobrescriben las de globals.css). */

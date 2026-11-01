@@ -122,15 +122,17 @@ export async function sincronizarAlertas(db: PrismaClient, usuarioId: string, ho
 export type Semaforo = { nivel: "rojo" | "ambar" | "verde"; texto: string };
 
 /**
- * Color de semáforo de una alerta con fecha (D45): rojo cuando la fecha está más
- * próxima. Las alertas sin plazo (nueva oportunidad, respuesta) no llevan semáforo.
+ * Color de semáforo de una alerta con fecha (D45, con la escala de D58: rojo a 20
+ * días o menos, ámbar de 21 a 60): las alertas de vencimiento son a 30, 15 y 7 días,
+ * así que la de 30 es ámbar y las de 15 y 7, rojas. Las alertas sin plazo (nueva
+ * oportunidad, respuesta) no llevan semáforo.
  */
 export function semaforo(a: { tipo: string; clave: string; titulo: string }): Semaforo | null {
   if (a.tipo === "vencimiento") {
     const umbral = Number(a.clave.split("-")[1]);
     if (umbral <= 7) return { nivel: "rojo", texto: "Urgente: cierra en 7 días o menos" };
-    if (umbral <= 15) return { nivel: "ambar", texto: "Pronto: cierra en 15 días o menos" };
-    return { nivel: "verde", texto: "A tiempo: cierra en 30 días o menos" };
+    if (umbral <= 15) return { nivel: "rojo", texto: "Urgente: cierra en 15 días o menos" };
+    return { nivel: "ambar", texto: "Pronto: cierra en 30 días o menos" };
   }
   if (a.tipo === "tramite") {
     return a.titulo.startsWith("Trámite atrasado")

@@ -25,8 +25,8 @@ test("la ciudadana recibe alertas de vencimiento y de nuevas oportunidades, con 
   const venc = page.getByRole("article").filter({ hasText: "Beca de Cooperación Iberoamericana en Innovación Educativa" }).filter({ hasText: "Vencimiento" });
   await expect(venc).toBeVisible();
   await expect(venc).toContainText("También te lo enviamos por correo a rosa@ventanilla.test (envío simulado");
-  // Semáforo (D45): a 25 días del cierre corresponde verde, con texto además del color.
-  await expect(venc).toContainText("A tiempo: cierra en 30 días o menos");
+  // Semáforo (D45, D58): a 25 días del cierre corresponde ámbar, con texto además del color.
+  await expect(venc).toContainText("Pronto: cierra en 30 días o menos");
   // Vista previa del correo simulado.
   await venc.getByText("Ver el correo que te enviaríamos (simulado)").click();
   await expect(venc).toContainText("Talento sin Fronteras <avisos@ventanilla.test>");

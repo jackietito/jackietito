@@ -63,6 +63,10 @@ model Oportunidad {
   /// integral | parcial | credito | ninguno
   financiamientoTipo       String
   cobertura                String
+  /// Porcentaje de la matrícula que cubre el financiamiento, 0 a 100 (D59)
+  coberturaMatriculaPct    Int                  @default(0)
+  /// El financiamiento cubre la manutención (costo de vida) (D59)
+  cubreManutencion         Boolean              @default(false)
   entidadFinanciadora      String
   // Trazabilidad
   enlaceOficial            String

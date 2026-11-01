@@ -32,7 +32,7 @@ test("el administrador cambia las tonalidades de la plataforma", async ({ page }
   await ingresar(page, "admin@ventanilla.test");
   const seccion = page.getByRole("region", { name: "Tonalidades de la plataforma" });
   try {
-    await seccion.getByLabel(/^Azul/).check();
+    await seccion.getByLabel("Azul", { exact: true }).check();
     await seccion.getByRole("button", { name: "Aplicar tonalidad" }).click();
     await expect(page.getByRole("status")).toContainText("Actualizamos las tonalidades");
     await expect(page.locator("html")).toHaveAttribute("data-paleta", "azul");
@@ -41,9 +41,9 @@ test("el administrador cambia las tonalidades de la plataforma", async ({ page }
     await revisarAccesibilidad(page);
   } finally {
     await page.goto("/admin");
-    await page.getByRole("region", { name: "Tonalidades de la plataforma" }).getByLabel(/^Turquesa/).check();
+    await page.getByRole("region", { name: "Tonalidades de la plataforma" }).getByLabel(/^Azul marino/).check();
     await page.getByRole("region", { name: "Tonalidades de la plataforma" }).getByRole("button", { name: "Aplicar tonalidad" }).click();
-    await expect(page.locator("html")).toHaveAttribute("data-paleta", "turquesa");
+    await expect(page.locator("html")).toHaveAttribute("data-paleta", "marino");
   }
 });
 

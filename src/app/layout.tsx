@@ -1,4 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import "@fontsource/atkinson-hyperlegible/400.css";
+import "@fontsource/atkinson-hyperlegible/700.css";
+import "@fontsource-variable/bricolage-grotesque";
 import "./globals.css";
 import { BannerPrototipo } from "@/components/BannerPrototipo";
 import { Encabezado } from "@/components/Encabezado";

@@ -28,6 +28,7 @@ export default async function EditarOportunidad({ params }: { params: Promise<{ 
       fechaCierre: aISO(o.fechaCierre), costoMatricula: String(o.costoMatricula), costoVidaMensual: String(o.costoVidaMensual),
       otrosCostos: String(o.otrosCostos), otrosCostosDetalle: o.otrosCostosDetalle, moneda: o.moneda,
       financiamientoTipo: o.financiamientoTipo, cobertura: o.cobertura, entidadFinanciadora: o.entidadFinanciadora,
+      coberturaMatriculaPct: String(o.coberturaMatriculaPct), cubreManutencion: o.cubreManutencion ? "si" : "no",
       enlaceOficial: o.enlaceOficial, publicada: o.publicada ? "si" : "no",
       tramites: o.tramites.map((t) => t.tramiteId),
       ...Object.fromEntries(Object.keys(CATEGORIAS_REQUISITO).map((c) => [

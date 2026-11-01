@@ -46,6 +46,7 @@ export async function guardarOportunidad(_: EstadoFormulario, fd: FormData): Pro
   for (const [k, v] of fd.entries()) if (typeof v === "string" && !k.startsWith("$")) valores[k] = v;
   valores.tramites = fd.getAll("tramites").map(String);
   valores.publicada = fd.get("publicada") === "si" ? "si" : "no";
+  valores.cubreManutencion = fd.get("cubreManutencion") === "si" ? "si" : "no";
   const t = (k: string) => texto(fd, k);
   const e: Record<string, string> = {};
 
@@ -74,6 +75,9 @@ export async function guardarOportunidad(_: EstadoFormulario, fd: FormData): Pro
     e.cobertura = "Indica qué cubre el financiamiento.";
   }
   if (!URL_OFICIAL.test(t("enlaceOficial"))) e.enlaceOficial = "Escribe el enlace oficial completo, que empiece con https://";
+  // Cobertura estructurada para «Pagarías aprox.» (D59); vacío equivale a 0.
+  const coberturaMatriculaPct = t("coberturaMatriculaPct") === "" ? 0 : numero(t("coberturaMatriculaPct"), e, "coberturaMatriculaPct", "el porcentaje de matrícula cubierto", true);
+  if (!e.coberturaMatriculaPct && coberturaMatriculaPct > 100) e.coberturaMatriculaPct = "El porcentaje va de 0 a 100.";
 
   const requisitos = Object.keys(CATEGORIAS_REQUISITO).flatMap((c) =>
     t(`requisitos_${c}`).split("\n").map((r) => r.trim()).filter(Boolean).map((descripcion) => ({ categoria: c, descripcion })),
@@ -95,6 +99,7 @@ export async function guardarOportunidad(_: EstadoFormulario, fd: FormData): Pro
     duracionMeses, fechaInicio: fechaInicio!, fechaApertura: fechaApertura!, fechaCierre: fechaCierre!,
     costoMatricula, costoVidaMensual, otrosCostos, otrosCostosDetalle: t("otrosCostosDetalle"), moneda: t("moneda"),
     financiamientoTipo: t("financiamientoTipo"), cobertura: t("cobertura"), entidadFinanciadora: t("entidadFinanciadora"),
+    coberturaMatriculaPct, cubreManutencion: fd.get("cubreManutencion") === "si",
     enlaceOficial: t("enlaceOficial"), publicada: fd.get("publicada") === "si",
     actualizadoEn: hoy, responsableActualizacion: u.nombre ?? u.email,
   };

@@ -106,6 +106,11 @@ export function FormOportunidad({ inicial, tramites }: { inicial: Valores; trami
         <div className="sm:col-span-2">
           {C("cobertura", "Cobertura (obligatoria si hay financiamiento)")}
         </div>
+        {C("coberturaMatriculaPct", "% de la matrícula que cubre (0 a 100)", { type: "number", min: 0, max: 100, inputMode: "numeric" })}
+        <div className="flex items-center gap-3 self-end pb-2">
+          <input id="cubreManutencion" name="cubreManutencion" type="checkbox" value="si" defaultChecked={s(v, "cubreManutencion") === "si"} className="h-6 w-6 accent-marca" />
+          <label htmlFor="cubreManutencion" className="font-semibold">Cubre la manutención (costo de vida)</label>
+        </div>
       </Grupo>
 
       <fieldset className="tarjeta space-y-4">

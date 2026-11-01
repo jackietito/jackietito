@@ -14,6 +14,7 @@ import {
   POBLACION_SIMULADA,
   TRAMITES,
   otrosCostosDetalle,
+  coberturaDe,
   requisitosDe,
   tramitesDe,
 } from "./datos";
@@ -96,6 +97,7 @@ export async function sembrar(db: PrismaClient, hoy: Date) {
         moneda: o.mon,
         financiamientoTipo: o.fin,
         cobertura: o.incompleta ? "" : (o.cob ?? ""),
+        ...coberturaDe(o),
         entidadFinanciadora: o.financ ?? "",
         enlaceOficial: `https://example.org/convocatorias/${slug}`,
         destacada: o.dest ?? false,

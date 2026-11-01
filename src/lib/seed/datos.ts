@@ -277,6 +277,23 @@ export const OPORTUNIDADES: Op[] = [
 ];
 
 /** Requisitos de la ficha, derivados del nivel, idioma, modalidad y financiamiento. */
+/**
+ * Cobertura estructurada a partir del tipo de financiamiento y su descripción (D59):
+ * integral cubre matrícula y manutención; parcial, el porcentaje que indica el texto
+ * («Media beca» = 50 %, «Matrícula y pasajes» = 100 % de la matrícula); un crédito
+ * no reduce lo que se paga, porque se devuelve.
+ */
+export function coberturaDe(o: Op): { coberturaMatriculaPct: number; cubreManutencion: boolean } {
+  if (o.fin === "integral") return { coberturaMatriculaPct: 100, cubreManutencion: true };
+  if (o.fin !== "parcial") return { coberturaMatriculaPct: 0, cubreManutencion: false };
+  const texto = o.cob ?? "";
+  const pct = texto.match(/(\d+)\s*%/);
+  if (pct) return { coberturaMatriculaPct: Number(pct[1]), cubreManutencion: false };
+  if (/media beca/i.test(texto)) return { coberturaMatriculaPct: 50, cubreManutencion: false };
+  if (/^matr[ií]cula/i.test(texto)) return { coberturaMatriculaPct: 100, cubreManutencion: false };
+  return { coberturaMatriculaPct: 0, cubreManutencion: false };
+}
+
 export function requisitosDe(o: Op): { categoria: string; descripcion: string }[] {
   const r: { categoria: string; descripcion: string }[] = [];
   if (o.nivel === "doctorado") {

@@ -9,9 +9,9 @@ En el Perú, la información sobre posgrados y becas en el exterior está disper
 
 Este prototipo funcional sirve para validar la experiencia con usuarios en pruebas de usabilidad.
 
-**Versión publicada:** https://ventanilla-posgrado.vercel.app (Vercel + Neon). Se actualiza con cada cambio en `main`. La dirección anterior, https://jackietito.vercel.app, sigue funcionando.
+**Versión publicada:** https://talento-sinfronteras.vercel.app (Vercel + Neon). Se actualiza con cada cambio en `main`. Las direcciones anteriores (ventanilla-posgrado.vercel.app y jackietito.vercel.app) siguen funcionando.
 
-**Guía de uso para ciudadanos:** https://ventanilla-posgrado.vercel.app/guia, también enlazada en el pie de cada página.
+**Guía de uso para ciudadanos:** https://talento-sinfronteras.vercel.app/guia, también enlazada en el pie de cada página.
 
 - Requerimientos: [`docs/requerimientos.md`](docs/requerimientos.md)
 - Decisiones tomadas durante la construcción: [`docs/decisiones.md`](docs/decisiones.md)
@@ -192,7 +192,7 @@ Cada `git push` a la rama principal vuelve a desplegar la aplicación sin borrar
 
 ### Dirección de la aplicación
 
-El proyecto de Vercel tiene dos dominios en **Settings → Domains**: `ventanilla-posgrado.vercel.app` (el que se comparte) y `jackietito.vercel.app` (el original, que se conserva para no romper enlaces ya enviados). Para agregar otro dominio, usa **Add Domain** en esa misma página.
+El proyecto de Vercel tiene varios dominios en **Settings → Domains**: `talento-sinfronteras.vercel.app` (el que se comparte), `ventanilla-posgrado.vercel.app` y `jackietito.vercel.app` (anteriores, que se conservan para no romper enlaces ya enviados). Para agregar otro dominio, usa **Add Domain** en esa misma página.
 
 ### Restablecer los datos entre sesiones de prueba
 

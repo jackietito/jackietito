@@ -33,6 +33,50 @@ export function costoTotalUsd(o: Costos): number {
   return aUsd(costoTotal(o), o.moneda);
 }
 
+/**
+ * Lo que la persona pagaría de su bolsillo, en soles aproximados (D59): costo total
+ * menos lo que cubre el financiamiento. Una beca integral cubre también los otros
+ * costos (seguro, pasajes); un crédito no reduce el monto porque se devuelve.
+ */
+export function pagariasPen(
+  o: Costos & Pick<Oportunidad, "coberturaMatriculaPct" | "cubreManutencion" | "financiamientoTipo">,
+): number {
+  const matricula = o.costoMatricula * (1 - Math.min(100, Math.max(0, o.coberturaMatriculaPct)) / 100);
+  const vida = o.cubreManutencion ? 0 : o.costoVidaMensual * o.duracionMeses;
+  const otros = o.financiamientoTipo === "integral" ? 0 : o.otrosCostos;
+  const pen = aUsd(matricula + vida + otros, o.moneda) / TASAS_USD.PEN;
+  return Math.round(pen / 100) * 100;
+}
+
+/** Cobertura en pocas palabras, para destacarla en la tarjeta: un rótulo y el dato. */
+export function coberturaCorta(o: Pick<Oportunidad, "financiamientoTipo" | "coberturaMatriculaPct">): { rotulo: string; valor: string } {
+  switch (o.financiamientoTipo) {
+    case "integral": return { rotulo: "Financiamiento", valor: "Beca integral" };
+    case "parcial":
+      if (o.coberturaMatriculaPct >= 100) return { rotulo: "Beca parcial", valor: "Matrícula completa" };
+      return { rotulo: "Beca parcial", valor: o.coberturaMatriculaPct > 0 ? `${o.coberturaMatriculaPct} % de matrícula` : "Según la convocatoria" };
+    case "credito": return { rotulo: "Financiamiento", valor: "Crédito educativo" };
+    default: return { rotulo: "Financiamiento", valor: "Sin financiamiento" };
+  }
+}
+
+export type NivelUrgencia = "verde" | "ambar" | "rojo" | "gris";
+
+/** Días al cierre y su color (D58): verde más de 60, ámbar 21 a 60, rojo 20 o menos. */
+export function urgencia(o: Pick<Oportunidad, "fechaApertura" | "fechaCierre">, hoy: Date): {
+  nivel: NivelUrgencia; texto: string; estado: EstadoConvocatoria; dias: number;
+} {
+  const estado = estadoConvocatoria(o, hoy);
+  if (estado === "cerrada") return { nivel: "gris", texto: "Convocatoria cerrada", estado, dias: diasEntre(hoy, o.fechaCierre) };
+  if (estado === "proxima") {
+    const abre = diasEntre(hoy, o.fechaApertura);
+    return { nivel: "gris", texto: abre === 1 ? "Abre mañana" : `Abre en ${abre} días`, estado, dias: abre };
+  }
+  const dias = diasEntre(hoy, o.fechaCierre);
+  const texto = dias === 0 ? "Cierra hoy" : dias === 1 ? "Cierra mañana" : `Cierra en ${dias} días`;
+  return { nivel: dias > 60 ? "verde" : dias > 20 ? "ambar" : "rojo", texto, estado, dias };
+}
+
 export function formatearMonto(monto: number, moneda: string): string {
   return new Intl.NumberFormat("es-PE", {
     style: "currency",
