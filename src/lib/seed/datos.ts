@@ -322,6 +322,7 @@ type PerfilSemilla = {
   idiomas: string[];
   costoMaxUsd: number;
   necesitaFinanciamiento: boolean;
+  buscaSinBeca?: boolean;
   region: string;
   universidadOrigen: string;
 };
@@ -330,18 +331,18 @@ type PerfilSemilla = {
 export const CIUDADANOS: PerfilSemilla[] = [
   { email: "rosa@ventanilla.test", area: "Educación", nivel: "maestria", paises: ["España", "Chile", "México"], modalidades: ["presencial", "semipresencial"], idiomas: ["Español"], costoMaxUsd: 30000, necesitaFinanciamiento: true, region: "Ayacucho", universidadOrigen: "Universidad Pública de Huanta (ficticia)" },
   { email: "diego@ventanilla.test", area: "Ingeniería y tecnología", nivel: "doctorado", paises: ["Alemania", "Canadá", "Japón"], modalidades: ["presencial"], idiomas: ["Inglés", "Alemán"], costoMaxUsd: 0, necesitaFinanciamiento: true, region: "Lima", universidadOrigen: "Universidad Metropolitana de Lima (ficticia)" },
-  { email: "lucia@ventanilla.test", area: "Gestión pública y políticas", nivel: "especializacion", paises: ["Argentina", "Chile", "España"], modalidades: ["virtual", "semipresencial"], idiomas: ["Español"], costoMaxUsd: 8000, necesitaFinanciamiento: false, region: "Arequipa", universidadOrigen: "Universidad del Misti (ficticia)" },
+  { email: "lucia@ventanilla.test", area: "Gestión pública y políticas", nivel: "especializacion", paises: ["Argentina", "Chile", "España"], modalidades: ["virtual", "semipresencial"], idiomas: ["Español"], costoMaxUsd: 8000, necesitaFinanciamiento: false, buscaSinBeca: true, region: "Arequipa", universidadOrigen: "Universidad del Misti (ficticia)" },
 ];
 
 /** Población simulada adicional para que el tablero de indicadores muestre datos por región. */
 export const POBLACION_SIMULADA: PerfilSemilla[] = [
   { email: "usuario01@ventanilla.test", area: "Ciencias de la salud", nivel: "maestria", paises: ["España"], modalidades: ["presencial"], idiomas: ["Español"], costoMaxUsd: 20000, necesitaFinanciamiento: true, region: "Puno", universidadOrigen: "Universidad del Altiplano (ficticia)" },
   { email: "usuario02@ventanilla.test", area: "Medio ambiente y sostenibilidad", nivel: "doctorado", paises: ["Brasil", "Países Bajos"], modalidades: ["presencial"], idiomas: ["Inglés"], costoMaxUsd: 0, necesitaFinanciamiento: true, region: "Loreto", universidadOrigen: "Universidad Amazónica (ficticia)" },
-  { email: "usuario03@ventanilla.test", area: "Economía y negocios", nivel: "maestria", paises: ["Reino Unido", "Canadá"], modalidades: ["presencial"], idiomas: ["Inglés"], costoMaxUsd: 0, necesitaFinanciamiento: false, region: "Lima", universidadOrigen: "Universidad Metropolitana de Lima (ficticia)" },
+  { email: "usuario03@ventanilla.test", area: "Economía y negocios", nivel: "maestria", paises: ["Reino Unido", "Canadá"], modalidades: ["presencial"], idiomas: ["Inglés"], costoMaxUsd: 0, necesitaFinanciamiento: false, buscaSinBeca: true, region: "Lima", universidadOrigen: "Universidad Metropolitana de Lima (ficticia)" },
   { email: "usuario04@ventanilla.test", area: "Educación", nivel: "especializacion", paises: ["Francia", "España"], modalidades: ["semipresencial"], idiomas: ["Español"], costoMaxUsd: 10000, necesitaFinanciamiento: true, region: "Cusco", universidadOrigen: "Universidad Imperial (ficticia)" },
   { email: "usuario05@ventanilla.test", area: "Ingeniería y tecnología", nivel: "maestria", paises: ["Corea del Sur", "Japón"], modalidades: ["presencial"], idiomas: ["Inglés"], costoMaxUsd: 0, necesitaFinanciamiento: true, region: "Piura", universidadOrigen: "Universidad del Norte Grau (ficticia)" },
   { email: "usuario06@ventanilla.test", area: "Gestión pública y políticas", nivel: "maestria", paises: ["España", "Reino Unido"], modalidades: ["presencial"], idiomas: ["Español"], costoMaxUsd: 25000, necesitaFinanciamiento: true, region: "Junín", universidadOrigen: "Universidad del Centro (ficticia)" },
   { email: "usuario07@ventanilla.test", area: "Ciencias sociales", nivel: "doctorado", paises: ["Chile", "Argentina"], modalidades: ["presencial"], idiomas: ["Español"], costoMaxUsd: 0, necesitaFinanciamiento: true, region: "Ayacucho", universidadOrigen: "Universidad Pública de Huanta (ficticia)" },
   { email: "usuario08@ventanilla.test", area: "Artes y humanidades", nivel: "maestria", paises: ["Alemania", "España"], modalidades: ["presencial"], idiomas: ["Español"], costoMaxUsd: 15000, necesitaFinanciamiento: true, region: "La Libertad", universidadOrigen: "Universidad Moche (ficticia)" },
-  { email: "usuario09@ventanilla.test", area: "Ciencias de la salud", nivel: "especializacion", paises: ["Brasil", "España"], modalidades: ["virtual"], idiomas: ["Español"], costoMaxUsd: 5000, necesitaFinanciamiento: false, region: "Cajamarca", universidadOrigen: "Universidad de los Andes del Norte (ficticia)" },
+  { email: "usuario09@ventanilla.test", area: "Ciencias de la salud", nivel: "especializacion", paises: ["Brasil", "España"], modalidades: ["virtual"], idiomas: ["Español"], costoMaxUsd: 5000, necesitaFinanciamiento: false, buscaSinBeca: true, region: "Cajamarca", universidadOrigen: "Universidad de los Andes del Norte (ficticia)" },
 ];

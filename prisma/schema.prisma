@@ -173,7 +173,10 @@ model Perfil {
   idioma                 String
   /// Costo total máximo en USD referenciales (0 = sin límite)
   costoMaxUsd            Float
+  /// Busca oportunidades con beca o crédito
   necesitaFinanciamiento Boolean
+  /// Busca también (o solo) oportunidades sin beca (D44)
+  buscaSinBeca           Boolean  @default(false)
   region                 String
   universidadOrigen      String
   actualizadoEn          DateTime

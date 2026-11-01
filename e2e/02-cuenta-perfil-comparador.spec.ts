@@ -38,8 +38,8 @@ test("una persona se registra con consentimiento, define su perfil y recibe reco
   await idiomas.getByLabel("Inglés", { exact: true }).check();
   await page.getByLabel("España").check();
   await page.getByLabel("Chile").check();
-  await page.getByLabel("¿Cuánto podrías pagar en total?").selectOption("30000");
-  await page.getByLabel("Sí").check();
+  await page.getByLabel(/¿Cuánto podrías pagar en total\?/).selectOption("30000");
+  await page.getByLabel("Con beca o crédito").check();
   await page.getByLabel("Región donde vives").selectOption("Puno");
   await page.getByLabel("Universidad donde estudiaste").fill("Universidad del Altiplano (ficticia)");
   await revisarAccesibilidad(page);
@@ -58,6 +58,17 @@ test("una persona se registra con consentimiento, define su perfil y recibe reco
   await expect(page.getByLabel("España")).toBeChecked();
   await expect(page.getByRole("group", { name: "Modalidades que te interesan" }).getByLabel("Virtual", { exact: true })).toBeChecked();
   await expect(page.getByRole("group", { name: "Idiomas en que quieres estudiar" }).getByLabel("Inglés", { exact: true })).toBeChecked();
+
+  // Con y sin beca a la vez, sin límite de costo: el criterio de financiamiento deja de contar (6 criterios).
+  await page.getByLabel("Sin beca (con recursos propios)").check();
+  await page.getByLabel(/¿Cuánto podrías pagar en total\?/).selectOption("");
+  await page.getByRole("button", { name: "Guardar perfil y ver recomendaciones" }).click();
+  await expect(page).toHaveURL(/\/recomendaciones/);
+  await expect(page.getByRole("article").first()).toContainText(/Coincide en \d de 6 criterios/);
+  await page.goto("/perfil");
+  await expect(page.getByLabel("Con beca o crédito")).toBeChecked();
+  await expect(page.getByLabel("Sin beca (con recursos propios)")).toBeChecked();
+  await expect(page.getByLabel(/¿Cuánto podrías pagar en total\?/)).toHaveValue("");
 });
 
 test("ingreso con contraseña incorrecta y correcta; el encabezado cambia según la sesión", async ({ page }) => {

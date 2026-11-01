@@ -139,6 +139,14 @@ test("la ficha muestra todos los grupos de la ficha estándar y el enlace oficia
     await expect(page.getByRole("heading", { name: titulo, level: 2 })).toBeVisible();
   }
   await expect(page.getByRole("link", { name: /Ir a la convocatoria oficial/ })).toHaveAttribute("href", /^https:\/\/example\.org\//);
+  // Compartir (D46): cada red recibe el enlace de la ficha y el aviso de que es de ejemplo.
+  const compartir = page.getByRole("region", { name: "Compartir esta oportunidad" });
+  const id = page.url().split("/").pop()!;
+  await expect(compartir.getByRole("link", { name: /^WhatsApp/ })).toHaveAttribute("href", new RegExp(`^https://wa\\.me/\\?text=.*ficha%20de%20ejemplo.*${id}`));
+  await expect(compartir.getByRole("link", { name: /^Facebook/ })).toHaveAttribute("href", new RegExp(`facebook\\.com/sharer/sharer\\.php\\?u=.*${id}`));
+  await expect(compartir.getByRole("link", { name: /^LinkedIn/ })).toHaveAttribute("href", /linkedin\.com\/sharing/);
+  await expect(compartir.getByRole("link", { name: /^X/ })).toHaveAttribute("href", /twitter\.com\/intent\/tweet/);
+  await expect(compartir.getByRole("button", { name: "Copiar enlace" })).toBeVisible();
   await revisarAccesibilidad(page);
 });
 

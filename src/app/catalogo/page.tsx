@@ -139,6 +139,9 @@ export default async function Catalogo({
           Programas de posgrado y becas en el exterior publicados por {new Set(todas.map((o) => o.entidadId)).size} entidades.
           Cada ficha indica su fuente y la fecha de su última actualización.
         </p>
+        <nav aria-label="Vista del catálogo" className="mt-3">
+          <Link href="/catalogo/mapa" className="btn-secundario text-sm">Ver en el mapa mundial</Link>
+        </nav>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[18rem_1fr]">

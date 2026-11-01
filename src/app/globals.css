@@ -84,3 +84,9 @@ a {
     @apply text-xl font-bold text-marca-oscura;
   }
 }
+
+/* Mapa del catálogo: países con oportunidades, resaltados al pasar o enfocar */
+.mapa-pais { cursor: pointer; }
+.mapa-pais:hover path, .mapa-pais:focus-visible path { fill: #f59e0b; }
+.mapa-pais:focus-visible { outline: none; }
+.mapa-pais:focus-visible path { stroke: #073b45; stroke-width: 2; }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { obtenerHoy } from "@/lib/hoy";
@@ -24,6 +25,7 @@ import {
 import { AvisoDesactualizada, EtiquetaEstado, textoPlazo } from "@/components/oportunidad";
 import { AccionesOportunidad } from "@/components/BotonesOportunidad";
 import { contextoAcciones } from "@/lib/contexto";
+import { Compartir } from "@/components/Compartir";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -69,7 +71,11 @@ function Datos({ filas }: { filas: [string, React.ReactNode][] }) {
 export default async function FichaOportunidad({ params }: Params) {
   const o = await cargar((await params).id);
   if (!o) notFound();
-  const [hoy, ctx] = await Promise.all([obtenerHoy(), contextoAcciones()]);
+  const [hoy, ctx, h] = await Promise.all([obtenerHoy(), contextoAcciones(), headers()]);
+  // Enlace absoluto para compartir, con el dominio por el que se entró.
+  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
+  const protocolo = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  const enlace = `${protocolo}://${host}/oportunidades/${o.id}`;
   const estado = estadoConvocatoria(o, hoy);
   const m = (n: number) => formatearMonto(n, o.moneda);
   const tramites = o.tramites.map((t) => t.tramite).sort((a, b) => a.orden - b.orden);
@@ -106,6 +112,7 @@ export default async function FichaOportunidad({ params }: Params) {
           <AccionesOportunidad id={o.id} nombre={o.nombre} rol={ctx.rol} guardada={ctx.guardadas.has(o.id)}
             enComparador={ctx.comparar.has(o.id)} volver={`/oportunidades/${o.id}`} />
         </div>
+        <Compartir url={enlace} titulo={o.nombre} />
       </header>
 
       {estaDesactualizada(o, hoy) && (

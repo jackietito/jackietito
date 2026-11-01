@@ -25,6 +25,12 @@ test("la ciudadana recibe alertas de vencimiento y de nuevas oportunidades, con 
   const venc = page.getByRole("article").filter({ hasText: "Beca de Cooperación Iberoamericana en Innovación Educativa" }).filter({ hasText: "Vencimiento" });
   await expect(venc).toBeVisible();
   await expect(venc).toContainText("También te lo enviamos por correo a rosa@ventanilla.test (envío simulado");
+  // Semáforo (D45): a 25 días del cierre corresponde verde, con texto además del color.
+  await expect(venc).toContainText("A tiempo: cierra en 30 días o menos");
+  // Vista previa del correo simulado.
+  await venc.getByText("Ver el correo que te enviaríamos (simulado)").click();
+  await expect(venc).toContainText("Talento sin Fronteras <avisos@ventanilla.test>");
+  await expect(venc).toContainText("Correo de ejemplo del prototipo académico: no se envía de verdad.");
   await expect(page.getByRole("article").filter({ hasText: "Nueva oportunidad para ti: Beca para Maestría en Educación y Tecnologías" })).toBeVisible();
   await revisarAccesibilidad(page);
 
@@ -44,9 +50,9 @@ test("con la fecha simulada, la alerta pasa al umbral de 7 días", async ({ page
 
     await ingresar(page, "diego@ventanilla.test");
     await page.goto("/alertas");
-    await expect(
-      page.getByRole("article").filter({ hasText: /Cierra en [1-7] días?: Doctorado en Energías Renovables/ }),
-    ).toBeVisible();
+    const urgente = page.getByRole("article").filter({ hasText: /Cierra en [1-7] días?: Doctorado en Energías Renovables/ });
+    await expect(urgente).toBeVisible();
+    await expect(urgente).toContainText("Urgente: cierra en 7 días o menos");
     await salir(page);
   } finally {
     // Restablece la fecha real en un contexto limpio, para no afectar a las demás pruebas.

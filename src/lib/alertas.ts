@@ -117,3 +117,24 @@ export async function sincronizarAlertas(db: PrismaClient, usuarioId: string, ho
   }
   return crear.length;
 }
+
+export type Semaforo = { nivel: "rojo" | "ambar" | "verde"; texto: string };
+
+/**
+ * Color de semáforo de una alerta con fecha (D45): rojo cuando la fecha está más
+ * próxima. Las alertas sin plazo (nueva oportunidad, respuesta) no llevan semáforo.
+ */
+export function semaforo(a: { tipo: string; clave: string; titulo: string }): Semaforo | null {
+  if (a.tipo === "vencimiento") {
+    const umbral = Number(a.clave.split("-")[1]);
+    if (umbral <= 7) return { nivel: "rojo", texto: "Urgente: cierra en 7 días o menos" };
+    if (umbral <= 15) return { nivel: "ambar", texto: "Pronto: cierra en 15 días o menos" };
+    return { nivel: "verde", texto: "A tiempo: cierra en 30 días o menos" };
+  }
+  if (a.tipo === "tramite") {
+    return a.titulo.startsWith("Trámite atrasado")
+      ? { nivel: "rojo", texto: "Urgente: la fecha recomendada ya pasó" }
+      : { nivel: "ambar", texto: "Pronto: empieza en 7 días o menos" };
+  }
+  return null;
+}

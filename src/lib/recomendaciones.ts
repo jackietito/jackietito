@@ -36,13 +36,22 @@ export function textoCriterio(c: Criterio, o: Oportunidad): string {
     case "modalidad": return "Modalidad que te interesa";
     case "idioma": return `Idioma: ${o.idioma}`;
     case "costo": return "Dentro de tu presupuesto";
-    case "financiamiento": return "Ofrece financiamiento";
+    case "financiamiento": return o.financiamientoTipo === "ninguno" ? "Sin beca, como buscas" : "Ofrece financiamiento";
   }
 }
 
-/** Criterios que aplican al perfil: el de financiamiento solo si lo necesita. */
-export function totalCriterios(p: Pick<Perfil, "necesitaFinanciamiento">): number {
-  return p.necesitaFinanciamiento ? CRITERIOS.length : CRITERIOS.length - 1;
+type Busqueda = Pick<Perfil, "necesitaFinanciamiento" | "buscaSinBeca">;
+
+/**
+ * El criterio de financiamiento cuenta solo si la persona eligió una sola opción:
+ * «con beca o crédito» o «sin beca». Si busca ambas, no discrimina (D44).
+ */
+function financiamientoAplica(p: Busqueda): boolean {
+  return p.necesitaFinanciamiento !== p.buscaSinBeca;
+}
+
+export function totalCriterios(p: Busqueda): number {
+  return financiamientoAplica(p) ? CRITERIOS.length : CRITERIOS.length - 1;
 }
 
 export function criteriosCoincidentes(p: Perfil, o: Oportunidad): Criterio[] {
@@ -53,8 +62,10 @@ export function criteriosCoincidentes(p: Perfil, o: Oportunidad): Criterio[] {
   if (modalidadesDePerfil(p).includes(o.modalidad)) res.push("modalidad");
   if (idiomasDePerfil(p).includes(o.idioma)) res.push("idioma");
   if (p.costoMaxUsd <= 0 || costoTotalUsd(o) <= p.costoMaxUsd) res.push("costo");
-  // Si no necesita financiamiento, el criterio no se cuenta ni resta.
-  if (p.necesitaFinanciamiento && o.financiamientoTipo !== "ninguno") res.push("financiamiento");
+  if (financiamientoAplica(p)) {
+    const ofrece = o.financiamientoTipo !== "ninguno";
+    if (p.necesitaFinanciamiento ? ofrece : !ofrece) res.push("financiamiento");
+  }
   return res;
 }
 

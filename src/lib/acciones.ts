@@ -98,7 +98,7 @@ export async function guardarPerfil(_: EstadoFormulario, fd: FormData): Promise<
     modalidades: fd.getAll("modalidades").map(String).filter((m) => m in MODALIDADES),
     idiomas: fd.getAll("idiomas").map(String).filter((i) => (IDIOMAS as readonly string[]).includes(i)),
     costoMaxUsd: texto(fd, "costoMaxUsd"),
-    necesitaFinanciamiento: texto(fd, "necesitaFinanciamiento"),
+    financiamiento: fd.getAll("financiamiento").map(String).filter((f) => f === "con" || f === "sin"),
     region: texto(fd, "region"),
     universidadOrigen: texto(fd, "universidadOrigen"),
   };
@@ -108,11 +108,10 @@ export async function guardarPerfil(_: EstadoFormulario, fd: FormData): Promise<
   if (v.paises.length === 0) errores.paises = "Marca al menos un país de interés.";
   if (v.modalidades.length === 0) errores.modalidades = "Marca al menos una modalidad.";
   if (v.idiomas.length === 0) errores.idiomas = "Marca al menos un idioma.";
-  const costo = Number(v.costoMaxUsd);
-  if (v.costoMaxUsd === "" || Number.isNaN(costo) || costo < 0) errores.costoMaxUsd = "Elige un rango de costo.";
-  if (v.necesitaFinanciamiento !== "si" && v.necesitaFinanciamiento !== "no") {
-    errores.necesitaFinanciamiento = "Indica si necesitas financiamiento.";
-  }
+  // El costo es opcional: vacío equivale a «sin límite» (0).
+  const costo = v.costoMaxUsd === "" ? 0 : Number(v.costoMaxUsd);
+  if (Number.isNaN(costo) || costo < 0) errores.costoMaxUsd = "Elige un rango de costo de la lista.";
+  if (v.financiamiento.length === 0) errores.financiamiento = "Marca si buscas oportunidades con beca, sin beca o ambas.";
   if (!(REGIONES as readonly string[]).includes(v.region)) errores.region = "Elige tu región de residencia.";
   if (!v.universidadOrigen) errores.universidadOrigen = "Escribe el nombre de tu universidad de origen.";
   else if (v.universidadOrigen.length > 120) errores.universidadOrigen = "Usa como máximo 120 caracteres.";
@@ -126,7 +125,8 @@ export async function guardarPerfil(_: EstadoFormulario, fd: FormData): Promise<
     modalidad: v.modalidades.join("|"),
     idioma: v.idiomas.join("|"),
     costoMaxUsd: costo,
-    necesitaFinanciamiento: v.necesitaFinanciamiento === "si",
+    necesitaFinanciamiento: v.financiamiento.includes("con"),
+    buscaSinBeca: v.financiamiento.includes("sin"),
     region: v.region,
     universidadOrigen: v.universidadOrigen,
     actualizadoEn: aFechaCalendario(new Date()),

@@ -7,7 +7,7 @@ import { BotonEnviar, CampoTexto, MensajeError, ResumenErrores, ariaCampo } from
 
 export type ValoresPerfil = {
   area: string; nivel: string; paises: string[]; modalidades: string[]; idiomas: string[];
-  costoMaxUsd: string; necesitaFinanciamiento: string; region: string; universidadOrigen: string;
+  costoMaxUsd: string; financiamiento: string[]; region: string; universidadOrigen: string;
 };
 
 const RANGOS_COSTO: [string, string][] = [
@@ -16,7 +16,6 @@ const RANGOS_COSTO: [string, string][] = [
   ["20000", "Hasta 20 000 USD"],
   ["30000", "Hasta 30 000 USD"],
   ["60000", "Hasta 60 000 USD"],
-  ["0", "No tengo un límite"],
 ];
 
 function Selector({ id, etiqueta, valor, opciones, error }: {
@@ -63,7 +62,7 @@ export function FormPerfil({ inicial }: { inicial: ValoresPerfil }) {
   const v = { ...inicial, ...(estado.valores as Partial<ValoresPerfil> | undefined) };
   const e = estado.errores ?? {};
   // Si el perfil tiene un monto que no está en la lista, se agrega como opción.
-  const rangos = v.costoMaxUsd && !RANGOS_COSTO.some(([c]) => c === v.costoMaxUsd)
+  const rangos = v.costoMaxUsd && v.costoMaxUsd !== "0" && !RANGOS_COSTO.some(([c]) => c === v.costoMaxUsd)
     ? [[v.costoMaxUsd, `Hasta ${Number(v.costoMaxUsd).toLocaleString("es-PE")} USD`] as [string, string], ...RANGOS_COSTO]
         .sort((a, b) => (Number(a[0]) || Infinity) - (Number(b[0]) || Infinity))
     : RANGOS_COSTO;
@@ -85,20 +84,30 @@ export function FormPerfil({ inicial }: { inicial: ValoresPerfil }) {
 
       <fieldset className="tarjeta space-y-4">
         <legend className="titulo-seccion px-1">Costos y financiamiento</legend>
-        <Selector id="costoMaxUsd" etiqueta="¿Cuánto podrías pagar en total?" valor={v.costoMaxUsd} opciones={rangos} error={e.costoMaxUsd} />
-        <fieldset {...ariaCampo("necesitaFinanciamiento", e.necesitaFinanciamiento)}>
-          <legend className="etiqueta-campo">¿Necesitas una beca o crédito para estudiar?</legend>
-          <div id="necesitaFinanciamiento" tabIndex={-1} className="mt-1 flex gap-6">
-            {[["si", "Sí"], ["no", "No"]].map(([valor, texto]) => (
-              <div key={valor} className="flex min-h-11 items-center gap-2">
-                <input id={`fin-${valor}`} type="radio" name="necesitaFinanciamiento" value={valor}
-                  defaultChecked={v.necesitaFinanciamiento === valor} className="h-6 w-6 accent-marca" />
+        <fieldset {...ariaCampo("financiamiento", e.financiamiento)}>
+          <legend className="etiqueta-campo">¿Qué oportunidades buscas?</legend>
+          <p className="text-sm text-suave">Puedes marcar las dos.</p>
+          <div id="financiamiento" tabIndex={-1} className="mt-1 grid gap-1 sm:grid-cols-2">
+            {[["con", "Con beca o crédito"], ["sin", "Sin beca (con recursos propios)"]].map(([valor, texto]) => (
+              <div key={valor} className="flex min-h-11 items-center gap-3">
+                <input id={`fin-${valor}`} type="checkbox" name="financiamiento" value={valor}
+                  defaultChecked={v.financiamiento.includes(valor)} className="h-6 w-6 accent-marca" />
                 <label htmlFor={`fin-${valor}`}>{texto}</label>
               </div>
             ))}
           </div>
-          <MensajeError id="necesitaFinanciamiento" texto={e.necesitaFinanciamiento} />
+          <MensajeError id="financiamiento" texto={e.financiamiento} />
         </fieldset>
+        <div>
+          <label htmlFor="costoMaxUsd" className="etiqueta-campo">
+            ¿Cuánto podrías pagar en total? <span className="font-normal text-suave">(opcional)</span>
+          </label>
+          <select id="costoMaxUsd" name="costoMaxUsd" defaultValue={v.costoMaxUsd === "0" ? "" : v.costoMaxUsd} className="campo" {...ariaCampo("costoMaxUsd", e.costoMaxUsd)}>
+            <option value="">Sin límite</option>
+            {rangos.map(([valor, texto]) => <option key={valor} value={valor}>{texto}</option>)}
+          </select>
+          <MensajeError id="costoMaxUsd" texto={e.costoMaxUsd} />
+        </div>
       </fieldset>
 
       <fieldset className="tarjeta space-y-4">

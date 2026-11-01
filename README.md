@@ -107,6 +107,15 @@ Cualquier persona puede, además, crear su propia cuenta de ciudadano desde **Cr
 | RF18 Reporte a entidades | `/reporte` | Con el administrador, elige una entidad; con un gestor, ves el de tu entidad. |
 | Criterio de aceptación | `/gestion` y `/admin` | Mira el indicador 1 como administrador, crea o completa una ficha como gestor y vuelve al tablero: el número cambia. |
 
+### Qué probar de las mejoras de noviembre
+
+| Mejora | Dónde | Cómo |
+|---|---|---|
+| Con y sin beca; costo opcional | «Mi perfil» | Marca «Con beca o crédito» y «Sin beca»; deja «¿Cuánto podrías pagar?» en «Sin límite». |
+| Semáforo y correo simulado | «Alertas» | Con `rosa@ventanilla.test`: el aviso de vencimiento lleva color y texto; abre «Ver el correo que te enviaríamos». |
+| Compartir | Ficha de una oportunidad | Botones de WhatsApp, Facebook, LinkedIn, X y «Copiar enlace». |
+| Mapa mundial | Catálogo → «Ver en el mapa mundial» | Toca un país o un continente para filtrar el catálogo. |
+
 ## Pruebas
 
 ```bash

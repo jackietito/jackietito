@@ -31,7 +31,7 @@ export default async function Perfil({ searchParams }: { searchParams: Promise<{
           modalidades: p ? modalidadesDePerfil(p) : [],
           idiomas: p ? idiomasDePerfil(p) : [],
           costoMaxUsd: p ? String(p.costoMaxUsd) : "",
-          necesitaFinanciamiento: p ? (p.necesitaFinanciamiento ? "si" : "no") : "",
+          financiamiento: p ? [...(p.necesitaFinanciamiento ? ["con"] : []), ...(p.buscaSinBeca ? ["sin"] : [])] : [],
           region: p?.region ?? "",
           universidadOrigen: p?.universidadOrigen ?? "",
         }}
