@@ -164,6 +164,27 @@ test("el asistente del inicio lleva al catálogo filtrado en tres toques", async
   for (let i = 0; i < (await tarjetas.count()); i++) await expect(tarjetas.nth(i)).toContainText("España");
 });
 
+test("semáforo «¿Llego a tiempo?»: holgura en verde y alternativas cuando no se llega", async ({ page }) => {
+  // Cierra en 60 días o más: llega con holgura.
+  await page.goto(`/catalogo?q=${encodeURIComponent("Beca Nacional de Posgrado en Pedagogía e Interculturalidad")}`);
+  await page.getByRole("link", { name: "Beca Nacional de Posgrado en Pedagogía e Interculturalidad", exact: true }).click();
+  const resumen = page.getByRole("complementary", { name: "Resumen" });
+  await expect(resumen).toContainText("¿Llego a tiempo?");
+  await expect(resumen).toContainText("Llegas con holgura");
+  await expect(resumen).toContainText("Pagarías aprox.");
+  await revisarAccesibilidad(page);
+
+  // Programa en inglés que cierra en pocos días: los trámites no alcanzan; propone alternativas.
+  await page.goto(`/catalogo?q=${encodeURIComponent("Maestría en Ciencia de Datos")}`);
+  await page.getByRole("link", { name: "Maestría en Ciencia de Datos", exact: true }).click();
+  await expect(resumen).toContainText("Los trámites toman más tiempo del que queda");
+  const alternativas = resumen.getByRole("heading", { name: "Oportunidades similares que cierran después" });
+  await expect(alternativas).toBeVisible();
+  const enlaces = resumen.getByRole("listitem").getByRole("link");
+  expect(await enlaces.count()).toBeGreaterThan(0);
+  expect(await enlaces.count()).toBeLessThanOrEqual(2);
+});
+
 test("filtra por costo total, financiamiento y fecha de inicio", async ({ page }) => {
   await page.goto("/catalogo?costoMax=10000&financiamiento=ninguno&inicioDesde=2000-01-01");
   await expect(page.getByRole("list", { name: "Filtros aplicados" }).getByRole("listitem")).toHaveCount(3);
@@ -178,9 +199,24 @@ test("la ficha muestra todos los grupos de la ficha estándar y el enlace oficia
   await page.goto("/catalogo?q=Innovación Educativa");
   await page.getByRole("link", { name: "Beca de Cooperación Iberoamericana en Innovación Educativa", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Beca de Cooperación Iberoamericana en Innovación Educativa");
-  for (const titulo of ["Datos académicos", "Convocatoria", "Costos", "Financiamiento", "Requisitos", "Trámites nacionales asociados", "Fuente y actualización"]) {
+  for (const titulo of ["Datos académicos", "Convocatoria"]) {
     await expect(page.getByRole("heading", { name: titulo, level: 2 })).toBeVisible();
   }
+  // El detalle va en pestañas (D62): cada una muestra su parte de la ficha estándar.
+  const pestanas = page.getByRole("tablist", { name: "Detalle de la oportunidad" });
+  for (const [pestana, titulos] of [
+    ["Requisitos", ["Requisitos"]],
+    ["Costos y financiamiento", ["Costos", "Financiamiento"]],
+    ["Trámites", ["Trámites nacionales asociados"]],
+    ["Fuente", ["Fuente y actualización"]],
+  ] as const) {
+    await pestanas.getByRole("tab", { name: pestana }).click();
+    await expect(pestanas.getByRole("tab", { name: pestana })).toHaveAttribute("aria-selected", "true");
+    for (const titulo of titulos) await expect(page.getByRole("heading", { name: titulo, level: 3 })).toBeVisible();
+  }
+  // Con el teclado: flecha a la izquierda vuelve a «Trámites».
+  await page.keyboard.press("ArrowLeft");
+  await expect(pestanas.getByRole("tab", { name: "Trámites" })).toBeFocused();
   await expect(page.getByRole("link", { name: /Ir a la convocatoria oficial/ })).toHaveAttribute("href", /^https:\/\/example\.org\//);
   // Compartir (D46): cada red recibe el enlace de la ficha y el aviso de que es de ejemplo.
   const compartir = page.getByRole("region", { name: "Compartir esta oportunidad" });

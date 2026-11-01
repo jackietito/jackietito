@@ -188,6 +188,7 @@ export async function guardarTramite(_: EstadoFormulario, fd: FormData): Promise
 
   const datos = {
     enlaces: lineasEnlaces.join("\n"),
+    tipo: ["idioma", "documento", "certificacion", "antecedentes"].includes(t("tipo")) ? t("tipo") : "",
     nombre: t("nombre"), entidadResponsable: t("entidadResponsable"), descripcion: t("descripcion"),
     documentos: t("documentos").split("\n").map((d) => d.trim()).filter(Boolean).join("\n"),
     plazoDias, plazoTexto: t("plazoTexto"), costoReferencial, costoNota: t("costoNota"),

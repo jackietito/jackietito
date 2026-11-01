@@ -118,6 +118,7 @@ test("el gestor crea y actualiza una ficha, y el administrador ve el efecto en e
   await expect(page.getByRole("status")).toHaveText(`Guardamos «${nombre}».`);
   await page.goto(`/catalogo?q=${encodeURIComponent(nombre)}`);
   await page.getByRole("link", { name: nombre, exact: true }).click();
+  await page.getByRole("tab", { name: "Costos y financiamiento" }).click();
   await expect(page.getByText("70 % de la matrícula")).toBeVisible();
 
   await page.goto("/gestion");

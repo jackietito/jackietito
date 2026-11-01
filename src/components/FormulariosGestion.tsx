@@ -170,6 +170,13 @@ export function FormTramite({ inicial }: { inicial: Valores }) {
         {C("costoReferencial", "Costo referencial en soles (vacío si no es un monto fijo; 0 si es gratuito)", { type: "number", min: 0, step: "any", inputMode: "decimal" })}
         {C("costoNota", "Nota del costo (obligatoria si el costo está vacío)", { placeholder: "Por ejemplo: Según el TUPA de tu universidad" })}
         {C("orden", "Orden sugerido en la ruta", { type: "number", min: 0, inputMode: "numeric" })}
+        <Selector id="tipo" etiqueta="Tipo en la ruta (para calcular «¿Llego a tiempo?»)" valor={s(v, "tipo")} error={e.tipo} opciones={[
+          ["idioma", "Examen de idioma (en paralelo con lo demás)"],
+          ["documento", "Documento de la universidad (en paralelo entre sí)"],
+          ["certificacion", "Certificación del documento (en cadena)"],
+          ["antecedentes", "Antecedentes (en paralelo)"],
+          ["otro", "Otro (en paralelo)"],
+        ]} />
         {C("anticipacionDias", "Empezar cuántos días antes del cierre", { type: "number", min: 0, inputMode: "numeric" })}
         <div className="sm:col-span-2">{C("enlaceOficial", "Enlace de referencia", { type: "url", inputMode: "url", placeholder: "https://" })}</div>
         <div className="sm:col-span-2">

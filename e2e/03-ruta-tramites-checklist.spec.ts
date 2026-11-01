@@ -40,7 +40,7 @@ test("el mapa de trámites muestra los trámites con entidad, plazo y costo refe
 test("sin cuenta, preparar la postulación pide ingresar", async ({ page }) => {
   await page.goto(`/catalogo?q=${encodeURIComponent(OPORTUNIDAD)}`);
   await page.getByRole("link", { name: OPORTUNIDAD, exact: true }).click();
-  await page.getByRole("link", { name: "Preparar mi postulación" }).click();
+  await page.getByRole("link", { name: "Preparar mi postulación" }).first().click();
   await expect(page).toHaveURL(/\/ingresar\?volver=%2Fruta%2F/);
 });
 
@@ -48,7 +48,7 @@ test("genera la ruta y el checklist, marca avances y se conservan", async ({ pag
   await registrarCuenta(page);
   await page.goto(`/catalogo?q=${encodeURIComponent(OPORTUNIDAD)}`);
   await page.getByRole("link", { name: OPORTUNIDAD, exact: true }).click();
-  await page.getByRole("link", { name: "Preparar mi postulación" }).click();
+  await page.getByRole("link", { name: "Preparar mi postulación" }).first().click();
   await expect(page).toHaveURL(/\/ruta\//);
   await revisarAccesibilidad(page);
   await page.getByRole("button", { name: "Generar mi ruta y checklist" }).click();

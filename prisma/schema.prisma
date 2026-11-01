@@ -120,7 +120,8 @@ model Tramite {
   enlaceOficial      String
   /// Enlaces oficiales del trámite, uno por línea: «texto | https://…» (D56). Si hay, reemplazan al enlace de ejemplo.
   enlaces            String               @default("")
-  /// Marca de tipo para reglas de la ruta: "idioma" = examen de idioma (D57)
+  /// Tipo en la ruta (D57, D61): idioma | documento | certificacion | antecedentes | "" (otro).
+  /// Define qué trámites pueden hacerse a la vez para calcular «¿Llego a tiempo?».
   tipo               String               @default("")
   /// Orden sugerido en la ruta paso a paso
   orden              Int

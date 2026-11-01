@@ -55,7 +55,7 @@ test("la ruta omite el examen de idioma si el perfil acredita el idioma de la op
 
   await page.goto(`/catalogo?q=${encodeURIComponent("Maestría en Analítica de Negocios")}`);
   await page.getByRole("link", { name: "Maestría en Analítica de Negocios", exact: true }).click();
-  await page.getByRole("link", { name: "Preparar mi postulación" }).click();
+  await page.getByRole("link", { name: "Preparar mi postulación" }).first().click();
   await page.getByRole("button", { name: "Generar mi ruta y checklist" }).click();
   const ruta = page.getByRole("region", { name: "Ruta paso a paso" });
   await expect(ruta).toContainText("No incluimos el examen de idioma porque en tu perfil indicaste que acreditas inglés");

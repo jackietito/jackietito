@@ -26,6 +26,16 @@ async function main() {
       where: { nombre: "Rendir un examen internacional de idioma", tipo: "" },
       data: { tipo: "idioma" },
     }),
+    // Tipos para la ruta crítica de «¿Llego a tiempo?» (D61)
+    ...([
+      ["Solicitar copia certificada del diploma de grado", "documento"],
+      ["Solicitar certificado de estudios", "documento"],
+      ["Obtener constancia de verificación de firma", "certificacion"],
+      ["Apostillar documentos académicos", "certificacion"],
+      ["Traducir oficialmente los documentos", "certificacion"],
+      ["Obtener certificado de antecedentes penales", "antecedentes"],
+      ["Obtener certificado de antecedentes policiales", "antecedentes"],
+    ] as const).map(([nombre, tipo]) => prisma.tramite.updateMany({ where: { nombre, tipo: "" }, data: { tipo } })),
   ]);
   console.log("Actualización de datos:", cambios.map((c) => c.count));
 }
